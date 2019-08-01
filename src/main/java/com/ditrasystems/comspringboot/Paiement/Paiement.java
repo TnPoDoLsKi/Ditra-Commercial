@@ -34,6 +34,7 @@ public class Paiement {
 
   @ManyToOne
   Caisse caisse;
+
   public Paiement() {
   }
 
