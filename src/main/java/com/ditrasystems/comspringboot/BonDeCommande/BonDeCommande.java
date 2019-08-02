@@ -1,5 +1,6 @@
 package com.ditrasystems.comspringboot.BonDeCommande;
 
+import com.ditrasystems.comspringboot.ArticleBonCommande.ArticleBonCommande;
 import com.ditrasystems.comspringboot.Articles.Article;
 import com.ditrasystems.comspringboot.BonDeLivraison.BonDeLivrasion;
 import com.ditrasystems.comspringboot.Fornisseur.Fornisseur;
@@ -15,11 +16,8 @@ public class BonDeCommande {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private long id;
 
-  @ManyToMany
-  @JoinTable(name = "article_BonDeCommande",
-      joinColumns = { @JoinColumn(name = "articleId") },
-      inverseJoinColumns = { @JoinColumn(name = "BonDeCommandeId") })
-  private Collection<Article> articles =new ArrayList<>();
+  @OneToMany(mappedBy = "bonDeCommande")
+  private Collection<ArticleBonCommande> articleBonCommandes;
 
   @ManyToOne
   Fornisseur fornisseur;
@@ -40,11 +38,4 @@ public class BonDeCommande {
     this.id = id;
   }
 
-  public Collection<Article> getArticles() {
-    return articles;
-  }
-
-  public void setArticles(Collection<Article> articles) {
-    this.articles = articles;
-  }
 }

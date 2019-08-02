@@ -1,5 +1,6 @@
 package com.ditrasystems.comspringboot.Facture;
 
+import com.ditrasystems.comspringboot.ArticleFacture.ArticleFacture;
 import com.ditrasystems.comspringboot.Articles.Article;
 import com.ditrasystems.comspringboot.Avoir.Avoir;
 import com.ditrasystems.comspringboot.BonDeCommande.BonDeCommande;
@@ -17,13 +18,11 @@ public class Facture {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private long id;
-  private String type;
 
-  @ManyToMany
-  @JoinTable(name = "article_Facture",
-      joinColumns = { @JoinColumn(name = "articleId") },
-      inverseJoinColumns = { @JoinColumn(name = "FactureId") })
-  private Collection<Article> articles =new ArrayList<>();
+  private String code;
+
+  @OneToMany(mappedBy = "facture")
+  private Collection<ArticleFacture> articleFactures;
 
   @OneToOne(mappedBy = "facture", cascade = CascadeType.ALL)
   private Avoir avoir;
@@ -48,19 +47,7 @@ public class Facture {
     this.id = id;
   }
 
-  public String getType() {
-    return type;
-  }
 
-  public void setType(String type) {
-    this.type = type;
-  }
 
-  public Collection<Article> getArticles() {
-    return articles;
-  }
 
-  public void setArticles(Collection<Article> articles) {
-    this.articles = articles;
-  }
 }

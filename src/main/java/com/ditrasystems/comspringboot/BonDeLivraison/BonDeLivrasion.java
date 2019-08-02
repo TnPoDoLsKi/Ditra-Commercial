@@ -1,5 +1,6 @@
 package com.ditrasystems.comspringboot.BonDeLivraison;
 
+import com.ditrasystems.comspringboot.ArticleBonLivraison.ArticleBonLivraison;
 import com.ditrasystems.comspringboot.Articles.Article;
 import com.ditrasystems.comspringboot.Avoir.Avoir;
 import com.ditrasystems.comspringboot.BonDeCommande.BonDeCommande;
@@ -21,11 +22,8 @@ public class BonDeLivrasion {
   private long id;
   private String type;
 
-  @ManyToMany
-  @JoinTable(name = "article_BonDeLivrasion",
-      joinColumns = { @JoinColumn(name = "articleId") },
-      inverseJoinColumns = { @JoinColumn(name = "BonDeLivrasionId") })
-  private Collection<Article> articles =new ArrayList<>();
+  @OneToMany(mappedBy = "bonDeLivrasion")
+  private Collection<ArticleBonLivraison> articleBonLivraisons;
 
 
   @ManyToMany(mappedBy = "bonDeLivrasions")
@@ -63,11 +61,5 @@ public class BonDeLivrasion {
     this.type = type;
   }
 
-  public Collection<Article> getArticles() {
-    return articles;
-  }
 
-  public void setArticles(Collection<Article> articles) {
-    this.articles = articles;
-  }
 }

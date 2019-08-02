@@ -9,7 +9,7 @@ public class Depence {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private long id;
-  private String type;
+
 
   public Depence() {
   }
@@ -22,11 +22,4 @@ public class Depence {
     this.id = id;
   }
 
-  public String getType() {
-    return type;
-  }
-
-  public void setType(String type) {
-    this.type = type;
-  }
 }

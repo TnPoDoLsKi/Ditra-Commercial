@@ -1,5 +1,7 @@
 package com.ditrasystems.comspringboot.Banque;
 
+import com.ditrasystems.comspringboot.DemandeOffre.DemandeOffre;
+import com.ditrasystems.comspringboot.Fornisseur.Fornisseur;
 import com.ditrasystems.comspringboot.Marge.Marge;
 import com.ditrasystems.comspringboot.Paiement.Paiement;
 
@@ -18,6 +20,8 @@ public class Banque {
   @OneToMany(mappedBy = "banque")
   private Collection<Paiement> paiements = new ArrayList<>();
 
+  @ManyToMany(mappedBy = "banques")
+  private Collection<Fornisseur> fornisseurs = new ArrayList<>();
   public Banque() {
   }
 

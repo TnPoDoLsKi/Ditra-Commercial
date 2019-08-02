@@ -3,6 +3,7 @@ package com.ditrasystems.comspringboot.Avoir;
 import com.ditrasystems.comspringboot.Facture.Facture;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 public class Avoir {
@@ -11,7 +12,9 @@ public class Avoir {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private long id;
 
-  private String type;
+  private Date date;
+
+  private String code;
 
   @OneToOne
   private Facture facture;
@@ -28,11 +31,27 @@ public class Avoir {
     this.id = id;
   }
 
-  public String getType() {
-    return type;
+  public Date getDate() {
+    return date;
   }
 
-  public void setType(String type) {
-    this.type = type;
+  public void setDate(Date date) {
+    this.date = date;
+  }
+
+  public String getCode() {
+    return code;
+  }
+
+  public void setCode(String code) {
+    this.code = code;
+  }
+
+  public Facture getFacture() {
+    return facture;
+  }
+
+  public void setFacture(Facture facture) {
+    this.facture = facture;
   }
 }

@@ -1,12 +1,11 @@
 package com.ditrasystems.comspringboot.Articles;
 
 
-import com.ditrasystems.comspringboot.BonDeCommande.BonDeCommande;
-import com.ditrasystems.comspringboot.BonDeLivraison.BonDeLivrasion;
+import com.ditrasystems.comspringboot.ArticleBonCommande.ArticleBonCommande;
+import com.ditrasystems.comspringboot.ArticleBonLivraison.ArticleBonLivraison;
+import com.ditrasystems.comspringboot.ArticleFacture.ArticleFacture;
+import com.ditrasystems.comspringboot.ArticleOffre.ArticleOffre;
 import com.ditrasystems.comspringboot.Construction.Construction;
-import com.ditrasystems.comspringboot.DemandeOffre.DemandeOffre;
-import com.ditrasystems.comspringboot.Devis.Devis;
-import com.ditrasystems.comspringboot.Facture.Facture;
 import com.ditrasystems.comspringboot.Famille.Famille;
 import com.ditrasystems.comspringboot.Fornisseur.Fornisseur;
 import com.ditrasystems.comspringboot.Marge.Marge;
@@ -23,23 +22,45 @@ public class Article implements Serializable {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private long id;
+  
+  private String code;
+  
+  private String designation;
+  
+  private String nom;
 
   private String type;
 
-  @ManyToMany(mappedBy = "articles")
-  private Collection<Devis> devis;
+  private String codeABarre;
 
-  @ManyToMany(mappedBy = "articles")
-  private Collection<BonDeCommande> bonDeCommandes;
+  private float prixHT;
 
-  @ManyToMany(mappedBy = "articles")
-  private Collection<BonDeLivrasion> bonDeLivrasions;
+  private float remise;
 
-   @ManyToMany(mappedBy = "articles")
-  private Collection<Facture> factures;
+  private float tva;
 
-  @ManyToMany(mappedBy = "articles")
-  private Collection<DemandeOffre> demandeOffres;
+  private float fodec;
+
+  private float stock;
+
+  private float quantiteVendu;
+
+  private float stockMin;
+      
+  private float prixVenteHTMin;
+
+
+  @OneToMany(mappedBy = "article")
+  private Collection<ArticleBonCommande> articleBonCommandes;
+
+  @OneToMany(mappedBy = "article")
+  private Collection<ArticleBonLivraison> articleBonLivraisons;
+
+   @OneToMany(mappedBy = "article")
+  private Collection<ArticleFacture> articleFactures;
+
+  @OneToMany(mappedBy = "article")
+  private Collection<ArticleOffre> articleOffres;
 
 
 
@@ -49,37 +70,15 @@ public class Article implements Serializable {
   @OneToMany(mappedBy = "produitFini")
   private Collection<Construction> constructions = new ArrayList<>();
 
+
   @ManyToOne
   private Famille famille;
 
   @ManyToOne
   private Fornisseur fornisseur;
 
+
   public Article() {
-  }
-
-  public long getId() {
-    return id;
-  }
-
-  public void setId(long id) {
-    this.id = id;
-  }
-
-  public String getType() {
-    return type;
-  }
-
-  public void setType(String type) {
-    this.type = type;
-  }
-
-  public Collection<Devis> getDevis() {
-    return devis;
-  }
-
-  public void setDevis(Collection<Devis> devis) {
-    this.devis = devis;
   }
 
 

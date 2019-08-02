@@ -1,10 +1,12 @@
 package com.ditrasystems.comspringboot.DemandeOffre;
 
+import com.ditrasystems.comspringboot.ArticleOffre.ArticleOffre;
 import com.ditrasystems.comspringboot.Articles.Article;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 
 @Entity
 public class DemandeOffre {
@@ -12,13 +14,13 @@ public class DemandeOffre {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private long id;
-  private String type;
 
-  @ManyToMany
-  @JoinTable(name = "article_DemandeOffre",
-      joinColumns = { @JoinColumn(name = "articleId") },
-      inverseJoinColumns = { @JoinColumn(name = "DemandeOffreId") })
-  private Collection<Article> articles =new ArrayList<>();
+  private Date date;
+
+  private String code;
+
+  @OneToMany(mappedBy = "demandeOffre")
+  private Collection<ArticleOffre> articleOffres;
 
 
   public DemandeOffre() {
@@ -32,19 +34,21 @@ public class DemandeOffre {
     this.id = id;
   }
 
-  public String getType() {
-    return type;
+  public Date getDate() {
+    return date;
   }
 
-  public void setType(String type) {
-    this.type = type;
+  public void setDate(Date date) {
+    this.date = date;
   }
 
-  public Collection<Article> getArticles() {
-    return articles;
+  public String getCode() {
+    return code;
   }
 
-  public void setArticles(Collection<Article> articles) {
-    this.articles = articles;
+  public void setCode(String code) {
+    this.code = code;
   }
+
+
 }

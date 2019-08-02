@@ -12,7 +12,8 @@ public class Famille {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private long id;
-  private String type;
+
+  private String nom;
 
   @OneToMany(mappedBy = "famille")
   private Collection<Article> articles = new ArrayList<>();
@@ -29,12 +30,12 @@ public class Famille {
     this.id = id;
   }
 
-  public String getType() {
-    return type;
+  public String getNom() {
+    return nom;
   }
 
-  public void setType(String type) {
-    this.type = type;
+  public void setNom(String nom) {
+    this.nom = nom;
   }
 
   public Collection<Article> getArticles() {

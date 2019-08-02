@@ -10,11 +10,12 @@ public class Construction {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private long id;
 
-  private String type;
+  private float quantite;
 
   @ManyToOne
   private Article produitFini;
 
+  @ManyToOne
   private Article matierePrimaire;
 
   public Construction() {
@@ -28,11 +29,5 @@ public class Construction {
     this.id = id;
   }
 
-  public String getType() {
-    return type;
-  }
 
-  public void setType(String type) {
-    this.type = type;
-  }
 }

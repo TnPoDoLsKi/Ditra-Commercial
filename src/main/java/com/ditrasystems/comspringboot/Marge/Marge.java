@@ -9,7 +9,11 @@ public class Marge {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private long id;
-  private String type;
+
+  private float quantite;
+
+  private float prix;
+
 
   @ManyToOne
   private Article article;
@@ -24,14 +28,6 @@ public class Marge {
 
   public void setId(long id) {
     this.id = id;
-  }
-
-  public String getType() {
-    return type;
-  }
-
-  public void setType(String type) {
-    this.type = type;
   }
 
   public Article getArticle() {

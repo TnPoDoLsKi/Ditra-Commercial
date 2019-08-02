@@ -12,7 +12,6 @@ public class Caisse {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private long id;
-  private String type;
 
   @OneToMany(mappedBy = "caisse")
   private Collection<Paiement> paiements = new ArrayList<>();
@@ -27,11 +26,5 @@ public class Caisse {
     this.id = id;
   }
 
-  public String getType() {
-    return type;
-  }
 
-  public void setType(String type) {
-    this.type = type;
-  }
 }
