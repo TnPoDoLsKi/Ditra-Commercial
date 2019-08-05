@@ -1,12 +1,10 @@
-package com.ditrasystems.comspringboot.Fornisseur;
+package com.ditrasystems.comspringboot.Fournisseur;
 
 import com.ditrasystems.comspringboot.Articles.Article;
 import com.ditrasystems.comspringboot.Banque.Banque;
 import com.ditrasystems.comspringboot.BonDeCommande.BonDeCommande;
 import com.ditrasystems.comspringboot.BonDeLivraison.BonDeLivrasion;
-import com.ditrasystems.comspringboot.Construction.Construction;
 import com.ditrasystems.comspringboot.Facture.Facture;
-import com.ditrasystems.comspringboot.Marge.Marge;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
@@ -17,7 +15,7 @@ import java.util.Collection;
 @Entity
 @SQLDelete(sql=" UPDATE fornisseur SET deleted =true WHERE id = ?")
 @Where(clause = "deleted = false")
-public class Fornisseur {
+public class Fournisseur {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -73,7 +71,7 @@ public class Fornisseur {
   @OneToMany(mappedBy = "fornisseur")
   private Collection<Facture> factures = new ArrayList<>();
 
-  public Fornisseur() {
+  public Fournisseur() {
   }
 
   public long getId() {

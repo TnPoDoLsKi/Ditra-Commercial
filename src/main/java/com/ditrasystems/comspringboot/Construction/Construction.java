@@ -1,6 +1,7 @@
 package com.ditrasystems.comspringboot.Construction;
 
 import com.ditrasystems.comspringboot.Articles.Article;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
@@ -35,5 +36,35 @@ public class Construction {
     this.id = id;
   }
 
+  public boolean isDeleted() {
+    return deleted;
+  }
 
+  public void setDeleted(boolean deleted) {
+    this.deleted = deleted;
+  }
+
+  public float getQuantite() {
+    return quantite;
+  }
+
+  public void setQuantite(float quantite) {
+    this.quantite = quantite;
+  }
+
+  public Article getProduitFini() {
+    return produitFini;
+  }
+
+  public void setProduitFini(Article produitFini) {
+    this.produitFini = produitFini;
+  }
+
+  public Article getMatierePrimaire() {
+    return matierePrimaire;
+  }
+
+  public void setMatierePrimaire(Article matierePrimaire) {
+    this.matierePrimaire = matierePrimaire;
+  }
 }
