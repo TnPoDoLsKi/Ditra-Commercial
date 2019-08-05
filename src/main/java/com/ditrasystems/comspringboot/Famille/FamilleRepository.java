@@ -6,5 +6,5 @@ import java.util.Optional;
 
 public interface FamilleRepository extends JpaRepository<Famille,Long> {
 
-  Optional<Famille> findByName(String name);
+  Optional<Famille> findFamilleByNom(String name);
 }

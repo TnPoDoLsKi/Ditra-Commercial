@@ -89,7 +89,7 @@ public class FamilleService {
 
   public ResponseEntity<?> getByCode(String name) {
 
-    Optional<Famille> famille = familleRepository.findByName(name);
+    Optional<Famille> famille = familleRepository.findFamilleByNom(name);
 
     if (!famille.isPresent()){
       ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),606,"Famille dosen't exist");

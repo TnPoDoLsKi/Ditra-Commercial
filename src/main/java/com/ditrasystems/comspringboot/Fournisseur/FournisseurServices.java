@@ -84,7 +84,7 @@ public class FournisseurServices {
 
   public ResponseEntity<?> getByCode(String code) {
 
-    Optional<Fournisseur> fornisseur = fournisseurRepository.findByCode(code);
+    Optional<Fournisseur> fornisseur = fournisseurRepository.findFournisseurByCode(code);
 
     if (!fornisseur.isPresent()){
       ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),605,"Fournisseur dosen't exist");
