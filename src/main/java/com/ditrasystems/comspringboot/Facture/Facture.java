@@ -1,11 +1,9 @@
 package com.ditrasystems.comspringboot.Facture;
 
 import com.ditrasystems.comspringboot.ArticleFacture.ArticleFacture;
-import com.ditrasystems.comspringboot.Articles.Article;
 import com.ditrasystems.comspringboot.Avoir.Avoir;
-import com.ditrasystems.comspringboot.BonDeCommande.BonDeCommande;
 import com.ditrasystems.comspringboot.BonDeLivraison.BonDeLivrasion;
-import com.ditrasystems.comspringboot.Fornisseur.Fornisseur;
+import com.ditrasystems.comspringboot.Fournisseur.Fournisseur;
 import com.ditrasystems.comspringboot.Paiement.Paiement;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
@@ -40,7 +38,7 @@ public class Facture {
   private Collection<BonDeLivrasion> bonDeLivrasions  = new ArrayList<>();
 
   @ManyToOne
-  private Fornisseur fornisseur;
+  private Fournisseur fournisseur;
 
   public Facture() {
   }

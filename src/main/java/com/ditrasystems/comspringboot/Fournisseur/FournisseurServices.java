@@ -1,4 +1,4 @@
-package com.ditrasystems.comspringboot.Fornisseur;
+package com.ditrasystems.comspringboot.Fournisseur;
 
 import com.ditrasystems.comspringboot.Utils.ErrorResponseModel;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,68 +9,68 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
-public class FornisseurServices {
+public class FournisseurServices {
 
   @Autowired
-  FornisseurRepository fornisseurRepository;
+  FournisseurRepository fournisseurRepository;
 
-  public ResponseEntity<?> create(Fornisseur fornisseur) {
+  public ResponseEntity<?> create(Fournisseur fournisseur) {
 
-    if (fornisseur.getName()==null)
+    if (fournisseur.getName()==null)
     {
-        ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),600,"Fornisseur name required");
+        ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),600,"Fournisseur name required");
         return new ResponseEntity<>(errorResponseModel,HttpStatus.BAD_REQUEST);
     }
 
-    if (fornisseur.getCode()==null)
+    if (fournisseur.getCode()==null)
     {
-      ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),601,"Fornisseur code required");
+      ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),601,"Fournisseur code required");
       return new ResponseEntity<>(errorResponseModel,HttpStatus.BAD_REQUEST);
     }
 
-    if (fornisseur.getAdresse()==null)
+    if (fournisseur.getAdresse()==null)
     {
-      ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),602,"Fornisseur adresse required");
+      ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),602,"Fournisseur adresse required");
       return new ResponseEntity<>(errorResponseModel,HttpStatus.BAD_REQUEST);
     }
 
-    if (fornisseur.getTel1()==null)
+    if (fournisseur.getTel1()==null)
     {
-      ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),603,"Fornisseur tel1 required");
+      ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),603,"Fournisseur tel1 required");
       return new ResponseEntity<>(errorResponseModel,HttpStatus.BAD_REQUEST);
     }
 
-    if (fornisseur.getVille()==null)
+    if (fournisseur.getVille()==null)
     {
-      ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),604,"Fornisseur ville required");
+      ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),604,"Fournisseur ville required");
       return new ResponseEntity<>(errorResponseModel,HttpStatus.BAD_REQUEST);
     }
 
 
-    fornisseurRepository.save(fornisseur);
+    fournisseurRepository.save(fournisseur);
 
-    return new ResponseEntity<Fornisseur>(fornisseur, HttpStatus.CREATED);
+    return new ResponseEntity<Fournisseur>(fournisseur, HttpStatus.CREATED);
   }
 
   public ResponseEntity<?> delete(long id) {
-    Optional<Fornisseur> fornisseur1 = fornisseurRepository.findById(id);
+    Optional<Fournisseur> fornisseur1 = fournisseurRepository.findById(id);
 
     if (!fornisseur1.isPresent()){
-      ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),605,"Fornisseur dosen't exist");
+      ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),605,"Fournisseur dosen't exist");
       return new ResponseEntity<>(errorResponseModel,HttpStatus.BAD_REQUEST);
     }
 
-    fornisseurRepository.delete(fornisseur1.get());
+    fournisseurRepository.delete(fornisseur1.get());
 
     return new ResponseEntity<>(HttpStatus.OK);
 
   }
 
   public ResponseEntity<?> getById(long id) {
-    Optional<Fornisseur> fornisseur = fornisseurRepository.findById(id);
+    Optional<Fournisseur> fornisseur = fournisseurRepository.findById(id);
 
     if (!fornisseur.isPresent()){
-      ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),605,"Fornisseur dosen't exist");
+      ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),605,"Fournisseur dosen't exist");
       return new ResponseEntity<>(errorResponseModel,HttpStatus.BAD_REQUEST);
     }
 
@@ -79,27 +79,27 @@ public class FornisseurServices {
   }
 
   public ResponseEntity<?> getAll() {
-    return new ResponseEntity<>(fornisseurRepository.findAll(),HttpStatus.OK);
+    return new ResponseEntity<>(fournisseurRepository.findAll(),HttpStatus.OK);
   }
 
   public ResponseEntity<?> getByCode(String code) {
 
-    Optional<Fornisseur> fornisseur = fornisseurRepository.findByCode(code);
+    Optional<Fournisseur> fornisseur = fournisseurRepository.findByCode(code);
 
     if (!fornisseur.isPresent()){
-      ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),605,"Fornisseur dosen't exist");
+      ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),605,"Fournisseur dosen't exist");
       return new ResponseEntity<>(errorResponseModel,HttpStatus.BAD_REQUEST);
     }
 
-    return new ResponseEntity<Fornisseur>(fornisseur.get(),HttpStatus.OK);
+    return new ResponseEntity<Fournisseur>(fornisseur.get(),HttpStatus.OK);
   }
 
   public ResponseEntity<?> edit(long id, String name, String code, String activite, String tel1, String tel2, String adresse, String codePostale, String ville, String pays, String codeTva, String matFiscale, String cin, Float solde, String email, String website) {
 
-    Optional<Fornisseur> fornisseur = fornisseurRepository.findById(id);
+    Optional<Fournisseur> fornisseur = fournisseurRepository.findById(id);
 
     if (!fornisseur.isPresent()){
-      ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),605,"Fornisseur dosen't exist");
+      ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),605,"Fournisseur dosen't exist");
       return new ResponseEntity<>(errorResponseModel,HttpStatus.BAD_REQUEST);
     }
 
@@ -162,7 +162,7 @@ public class FornisseurServices {
       fornisseur.get().setWebsite(website);
     }
 
-    fornisseurRepository.save(fornisseur.get());
+    fournisseurRepository.save(fornisseur.get());
 
     return new ResponseEntity<>(HttpStatus.OK);
   }

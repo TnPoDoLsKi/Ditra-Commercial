@@ -1,4 +1,4 @@
-package com.ditrasystems.comspringboot.Fornisseur;
+package com.ditrasystems.comspringboot.Fournisseur;
 
 import com.ditrasystems.comspringboot.Articles.Article;
 import com.ditrasystems.comspringboot.Banque.Banque;
@@ -15,7 +15,7 @@ import java.util.Collection;
 @Entity
 @SQLDelete(sql=" UPDATE fornisseur SET deleted =true WHERE id = ?")
 @Where(clause = "deleted = false")
-public class Fornisseur {
+public class Fournisseur {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -54,7 +54,7 @@ public class Fornisseur {
   private String website;
 
 
-  @ManyToMany(cascade = {CascadeType.PERSIST,CascadeType.MERGE})
+  @ManyToMany(cascade = {CascadeType.ALL})
   @JoinTable(name = "banque_fornisseur",
       joinColumns = { @JoinColumn(name = "fornisseurId") },
       inverseJoinColumns = { @JoinColumn(name = "banqueId") })
@@ -73,7 +73,7 @@ public class Fornisseur {
   @OneToMany(mappedBy = "fornisseur",cascade = CascadeType.ALL)
   private Collection<Facture> factures = new ArrayList<>();
 
-  public Fornisseur() {
+  public Fournisseur() {
   }
 
   public long getId() {

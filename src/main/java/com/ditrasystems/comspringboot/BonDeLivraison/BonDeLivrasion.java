@@ -1,13 +1,10 @@
 package com.ditrasystems.comspringboot.BonDeLivraison;
 
 import com.ditrasystems.comspringboot.ArticleBonLivraison.ArticleBonLivraison;
-import com.ditrasystems.comspringboot.Articles.Article;
-import com.ditrasystems.comspringboot.Avoir.Avoir;
 import com.ditrasystems.comspringboot.BonDeCommande.BonDeCommande;
 import com.ditrasystems.comspringboot.BonDeRetour.BonDeRetour;
 import com.ditrasystems.comspringboot.Facture.Facture;
-import com.ditrasystems.comspringboot.Fornisseur.Fornisseur;
-import com.ditrasystems.comspringboot.Marge.Marge;
+import com.ditrasystems.comspringboot.Fournisseur.Fournisseur;
 import com.ditrasystems.comspringboot.Paiement.Paiement;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
@@ -40,7 +37,7 @@ public class BonDeLivrasion {
 
 
   @ManyToOne
-  Fornisseur fornisseur;
+  Fournisseur fournisseur;
 
   @ManyToOne
   Facture facture;

@@ -1,14 +1,12 @@
 package com.ditrasystems.comspringboot.BonDeCommande;
 
 import com.ditrasystems.comspringboot.ArticleBonCommande.ArticleBonCommande;
-import com.ditrasystems.comspringboot.Articles.Article;
 import com.ditrasystems.comspringboot.BonDeLivraison.BonDeLivrasion;
-import com.ditrasystems.comspringboot.Fornisseur.Fornisseur;
+import com.ditrasystems.comspringboot.Fournisseur.Fournisseur;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.Collection;
 
 @Entity
@@ -26,7 +24,7 @@ public class BonDeCommande {
   private Collection<ArticleBonCommande> articleBonCommandes;
 
   @ManyToOne
-  Fornisseur fornisseur;
+  Fournisseur fournisseur;
 
   @ManyToOne
   BonDeLivrasion bonDeLivrasion;
