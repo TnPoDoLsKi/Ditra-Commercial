@@ -4,9 +4,7 @@ import com.ditrasystems.comspringboot.Articles.Article;
 import com.ditrasystems.comspringboot.Banque.Banque;
 import com.ditrasystems.comspringboot.BonDeCommande.BonDeCommande;
 import com.ditrasystems.comspringboot.BonDeLivraison.BonDeLivrasion;
-import com.ditrasystems.comspringboot.Construction.Construction;
 import com.ditrasystems.comspringboot.Facture.Facture;
-import com.ditrasystems.comspringboot.Marge.Marge;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
@@ -22,6 +20,8 @@ public class Fornisseur {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private long id;
+
+  private String name;
 
   private String code;
 
@@ -54,23 +54,23 @@ public class Fornisseur {
   private String website;
 
 
-  @ManyToMany
+  @ManyToMany(cascade = {CascadeType.PERSIST,CascadeType.MERGE})
   @JoinTable(name = "banque_fornisseur",
       joinColumns = { @JoinColumn(name = "fornisseurId") },
       inverseJoinColumns = { @JoinColumn(name = "banqueId") })
   private Collection<Banque> banques =new ArrayList<>();
 
 
-  @OneToMany(mappedBy = "fornisseur")
+  @OneToMany(mappedBy = "fornisseur",cascade = CascadeType.ALL)
   private Collection<Article> articles = new ArrayList<>();
 
-  @OneToMany(mappedBy = "fornisseur")
+  @OneToMany(mappedBy = "fornisseur",cascade = CascadeType.ALL)
   private Collection<BonDeLivrasion> bonDeLivrasions = new ArrayList<>();
 
-  @OneToMany(mappedBy = "fornisseur")
+  @OneToMany(mappedBy = "fornisseur",cascade = CascadeType.ALL)
   private Collection<BonDeCommande> bonDeCommandes  = new ArrayList<>();
 
-  @OneToMany(mappedBy = "fornisseur")
+  @OneToMany(mappedBy = "fornisseur",cascade = CascadeType.ALL)
   private Collection<Facture> factures = new ArrayList<>();
 
   public Fornisseur() {
@@ -87,6 +87,8 @@ public class Fornisseur {
   public String getCode() {
     return code;
   }
+
+
 
   public void setCode(String code) {
     this.code = code;
@@ -234,5 +236,21 @@ public class Fornisseur {
 
   public void setArticles(Collection<Article> articles) {
     this.articles = articles;
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  public boolean isDeleted() {
+    return deleted;
+  }
+
+  public void setDeleted(boolean deleted) {
+    this.deleted = deleted;
   }
 }
