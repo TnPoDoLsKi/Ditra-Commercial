@@ -7,12 +7,16 @@ import com.ditrasystems.comspringboot.BonDeLivraison.BonDeLivrasion;
 import com.ditrasystems.comspringboot.Construction.Construction;
 import com.ditrasystems.comspringboot.Facture.Facture;
 import com.ditrasystems.comspringboot.Marge.Marge;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Collection;
 
 @Entity
+@SQLDelete(sql=" UPDATE fornisseur SET deleted =true WHERE id = ?")
+@Where(clause = "deleted = false")
 public class Fornisseur {
 
   @Id
@@ -22,6 +26,8 @@ public class Fornisseur {
   private String code;
 
   private String activite;
+
+  private boolean deleted;
 
   private String tel1;
 

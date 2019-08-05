@@ -2,6 +2,8 @@ package com.ditrasystems.comspringboot.DemandeOffre;
 
 import com.ditrasystems.comspringboot.ArticleOffre.ArticleOffre;
 import com.ditrasystems.comspringboot.Articles.Article;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -9,6 +11,8 @@ import java.util.Collection;
 import java.util.Date;
 
 @Entity
+@SQLDelete(sql=" UPDATE demande_offre SET deleted =true WHERE id = ?")
+@Where(clause = "deleted = false")
 public class DemandeOffre {
 
   @Id
@@ -16,6 +20,8 @@ public class DemandeOffre {
   private long id;
 
   private Date date;
+
+  private boolean deleted;
 
   private String code;
 

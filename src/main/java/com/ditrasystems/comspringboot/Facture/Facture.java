@@ -7,12 +7,16 @@ import com.ditrasystems.comspringboot.BonDeCommande.BonDeCommande;
 import com.ditrasystems.comspringboot.BonDeLivraison.BonDeLivrasion;
 import com.ditrasystems.comspringboot.Fornisseur.Fornisseur;
 import com.ditrasystems.comspringboot.Paiement.Paiement;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Collection;
 
 @Entity
+@SQLDelete(sql=" UPDATE facture SET deleted =true WHERE id = ?")
+@Where(clause = "deleted = false")
 public class Facture {
 
   @Id
@@ -20,6 +24,8 @@ public class Facture {
   private long id;
 
   private String code;
+
+  private boolean deleted;
 
   @OneToMany(mappedBy = "facture")
   private Collection<ArticleFacture> articleFactures;
