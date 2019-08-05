@@ -1,5 +1,6 @@
 package com.ditrasystems.comspringboot.Articles;
 
+import com.ditrasystems.comspringboot.Articles.Models.MatierePremierQuantity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -15,7 +16,7 @@ public class ArticleController {
   ArticleServices articleServices;
 
   @PostMapping("/article")
-  public ResponseEntity<?> create(@RequestBody Article article){
+  public ResponseEntity<?> create(@RequestBody Article article, @RequestBody List<MatierePremierQuantity> matierePremierQuantities){
     return articleServices.create(article);
   }
 
@@ -39,9 +40,16 @@ public class ArticleController {
     return articleServices.getAll(type);
   }
 
-  @GetMapping("/article/getMatierePremier/{id}")
-  public ResponseEntity<?> getMatierePremierOfProduitFini(@PathVariable long id){
-    return articleServices.getMatierePremierOfProduitFini(id);
+  @GetMapping("/article/{id}")
+  public ResponseEntity<?> getById(@PathVariable long id){
+    return articleServices.getById(id);
   }
+
+  @GetMapping("/article/constructions/{id}")
+  public ResponseEntity<?> getConstructions(@PathVariable long id){
+    return articleServices.getConstructions(id);
+  }
+
+
 
 }

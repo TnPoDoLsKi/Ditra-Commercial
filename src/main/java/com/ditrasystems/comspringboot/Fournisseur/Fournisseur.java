@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 @Entity
-@SQLDelete(sql=" UPDATE fornisseur SET deleted =true WHERE id = ?")
+@SQLDelete(sql=" UPDATE fournisseur SET deleted =true WHERE id = ?")
 @Where(clause = "deleted = false")
 public class Fournisseur {
 
@@ -53,22 +53,22 @@ public class Fournisseur {
 
 
   @ManyToMany
-  @JoinTable(name = "banque_fornisseur",
-      joinColumns = { @JoinColumn(name = "fornisseurId") },
+  @JoinTable(name = "banque_fournisseur",
+      joinColumns = { @JoinColumn(name = "fournisseurId") },
       inverseJoinColumns = { @JoinColumn(name = "banqueId") })
   private Collection<Banque> banques =new ArrayList<>();
 
 
-  @OneToMany(mappedBy = "fornisseur")
+  @OneToMany(mappedBy = "fournisseur")
   private Collection<Article> articles = new ArrayList<>();
 
-  @OneToMany(mappedBy = "fornisseur")
+  @OneToMany(mappedBy = "fournisseur")
   private Collection<BonDeLivrasion> bonDeLivrasions = new ArrayList<>();
 
-  @OneToMany(mappedBy = "fornisseur")
+  @OneToMany(mappedBy = "fournisseur")
   private Collection<BonDeCommande> bonDeCommandes  = new ArrayList<>();
 
-  @OneToMany(mappedBy = "fornisseur")
+  @OneToMany(mappedBy = "fournisseur")
   private Collection<Facture> factures = new ArrayList<>();
 
   public Fournisseur() {

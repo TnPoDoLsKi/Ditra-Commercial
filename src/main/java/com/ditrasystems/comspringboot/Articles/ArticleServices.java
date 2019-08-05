@@ -206,7 +206,7 @@ public class ArticleServices {
     return new ResponseEntity<>(articleRepository.findAll(),HttpStatus.OK);
   }
 
-  public ResponseEntity<?> getMatierePremierOfProduitFini(long id) {
+  public ResponseEntity<?> getConstructions(long id) {
     Optional<Article> article = articleRepository.findById(id);
 
     if (!article.isPresent()){
@@ -223,5 +223,16 @@ public class ArticleServices {
 
     return new ResponseEntity<>(article.get().getConstructions(),HttpStatus.OK);
 
+  }
+
+  public ResponseEntity<?> getById(long id) {
+    Optional<Article> article = articleRepository.findById(id);
+
+    if (!article.isPresent()){
+      ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),609,"Article dosen't exist");
+      return new ResponseEntity<>(errorResponseModel,HttpStatus.BAD_REQUEST);
+    }
+
+    return new ResponseEntity<>(article,HttpStatus.OK);
   }
 }

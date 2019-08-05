@@ -32,7 +32,6 @@ public class Article implements Serializable {
   private String code;
   
   private String designation;
-  
 
   private String type;
 
