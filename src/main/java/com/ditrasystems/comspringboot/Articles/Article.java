@@ -68,7 +68,7 @@ public class Article implements Serializable {
 
 
 
-  @OneToMany(mappedBy = "article")
+  @OneToMany(mappedBy = "article" , cascade = CascadeType.ALL )
   private Collection<Marge> marges = new ArrayList<>();
 
   @OneToMany(mappedBy = "produitFini",cascade = CascadeType.ALL)
@@ -265,4 +265,8 @@ public class Article implements Serializable {
   public void  addConstruction(Construction construction){
     constructions.add(construction);
   }
+  public void  addMarge(Marge marge){
+    marges.add(marge);
+  }
+
 }

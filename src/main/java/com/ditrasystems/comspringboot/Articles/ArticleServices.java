@@ -1,21 +1,20 @@
 package com.ditrasystems.comspringboot.Articles;
 
 import com.ditrasystems.comspringboot.Articles.Models.MatierePremierQuantity;
-import com.ditrasystems.comspringboot.Articles.Models.ProduitFiniModel;
+import com.ditrasystems.comspringboot.Articles.Models.ArticleModel;
 import com.ditrasystems.comspringboot.Construction.Construction;
 import com.ditrasystems.comspringboot.Construction.ConstructionRepository;
 import com.ditrasystems.comspringboot.Famille.Famille;
 import com.ditrasystems.comspringboot.Famille.FamilleRepository;
 import com.ditrasystems.comspringboot.Fournisseur.Fournisseur;
 import com.ditrasystems.comspringboot.Fournisseur.FournisseurRepository;
+import com.ditrasystems.comspringboot.Marge.Marge;
 import com.ditrasystems.comspringboot.Utils.ErrorResponseModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -34,9 +33,9 @@ public class ArticleServices {
   @Autowired
   ConstructionRepository constructionRepository;
 
-  public ResponseEntity<?> create(ProduitFiniModel produitFiniModel) {
+  public ResponseEntity<?> create(ArticleModel articleModel) {
 
-    Article article=produitFiniModel.getArticle();
+    Article article= articleModel.getArticle();
 
     if (article.getDesignation()==null) {
       ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),607,"Article designation required");
@@ -58,14 +57,14 @@ public class ArticleServices {
 
     if (article.getType().equals("PF")){
 
-      if (produitFiniModel.getMatierePremierQuantities().size() == 0){
+      if (articleModel.getMatierePremierQuantities().size() == 0){
         ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),612,"Produit Fini required matiere premier");
         return new ResponseEntity<>(errorResponseModel, HttpStatus.BAD_REQUEST);
       }
       article = articleRepository.save(article);
 
 
-      for (MatierePremierQuantity matierePremierQuantity : produitFiniModel.getMatierePremierQuantities()){
+      for (MatierePremierQuantity matierePremierQuantity : articleModel.getMatierePremierQuantities()){
 
         Optional<Article> MP = articleRepository.findById(matierePremierQuantity.getId());
 
@@ -80,9 +79,15 @@ public class ArticleServices {
         construction.setProduitFini(article);
         article.addConstruction(construction);
       }
-      article = articleRepository.save(article);
 
     }
+
+    for (Marge marge : articleModel.getMarges()){
+      article.addMarge(marge);
+      marge.setArticle(article);
+    }
+
+    article = articleRepository.save(article);
 
     return new ResponseEntity<>(article,HttpStatus.OK);
   }

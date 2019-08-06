@@ -1,13 +1,9 @@
 package com.ditrasystems.comspringboot.Articles;
 
-import com.ditrasystems.comspringboot.Articles.Models.MatierePremierQuantity;
-import com.ditrasystems.comspringboot.Articles.Models.ProduitFiniModel;
+import com.ditrasystems.comspringboot.Articles.Models.ArticleModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -17,8 +13,8 @@ public class ArticleController {
   ArticleServices articleServices;
 
   @PostMapping("/article")
-  public ResponseEntity<?> create(@RequestBody ProduitFiniModel produitFiniModel){
-    return articleServices.create(produitFiniModel);
+  public ResponseEntity<?> create(@RequestBody ArticleModel articleModel){
+    return articleServices.create(articleModel);
   }
 
   @PutMapping("/article/{id}")

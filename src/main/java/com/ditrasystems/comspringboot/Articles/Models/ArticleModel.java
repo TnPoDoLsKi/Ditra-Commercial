@@ -1,17 +1,20 @@
 package com.ditrasystems.comspringboot.Articles.Models;
 
 import com.ditrasystems.comspringboot.Articles.Article;
+import com.ditrasystems.comspringboot.Marge.Marge;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProduitFiniModel {
+public class ArticleModel {
 
   private Article article;
 
   private List<MatierePremierQuantity> matierePremierQuantities=new ArrayList<>();
 
-  public ProduitFiniModel() {
+  private List<Marge> marges = new ArrayList<>();
+
+  public ArticleModel() {
   }
 
   public Article getArticle() {
@@ -28,5 +31,13 @@ public class ProduitFiniModel {
 
   public void setMatierePremierQuantities(List<MatierePremierQuantity> matierePremierQuantities) {
     this.matierePremierQuantities = matierePremierQuantities;
+  }
+
+  public List<Marge> getMarges() {
+    return marges;
+  }
+
+  public void setMarges(List<Marge> marges) {
+    this.marges = marges;
   }
 }
