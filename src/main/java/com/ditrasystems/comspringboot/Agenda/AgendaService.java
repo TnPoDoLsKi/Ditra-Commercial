@@ -35,7 +35,7 @@ public class AgendaService {
     return new ResponseEntity<>(agendaRepository.save(agenda),HttpStatus.OK);
   }
 
-  public ResponseEntity<?> edit(long id, String nom, String profession, String tel1, String tel2, String cin, String email, long fournisseurId) {
+  public ResponseEntity<?> edit(long id, String nom, String profession, String tel1, String tel2, String cin, String email, Long fournisseurId) {
     Optional<Agenda> agenda = agendaRepository.findById(id);
 
     if (!agenda.isPresent()){
@@ -43,7 +43,7 @@ public class AgendaService {
       return new ResponseEntity<>(errorResponseModel,HttpStatus.BAD_REQUEST);
     }
 
-    if (fournisseurId != 0) {
+    if (fournisseurId != null) {
       Optional<Fournisseur> fournisseur = fournisseurRepository.findById(fournisseurId);
 
       if (!fournisseur.isPresent()) {

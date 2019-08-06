@@ -13,7 +13,7 @@ public class AgendaController {
   AgendaService agendaService;
 
   @PostMapping("/agenda")
-  public ResponseEntity<?> create(long fournisseurId, @RequestBody Agenda agenda){
+  public ResponseEntity<?> create(Long fournisseurId, @RequestBody Agenda agenda){
     return agendaService.create(fournisseurId,agenda);
   }
 
