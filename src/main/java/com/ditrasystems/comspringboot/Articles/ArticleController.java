@@ -18,32 +18,32 @@ public class ArticleController {
   }
 
   @PutMapping("/article/{id}")
-  public ResponseEntity<?> edit(@PathVariable long id, @RequestParam(required = false) long familleId, @RequestParam(required = false) long fournisseurId , @RequestParam(required = false) String code, @RequestParam(required = false) String designation, @RequestParam(required = false) String type, @RequestParam(required = false) String codeABarre, @RequestParam(required = false) float prixHT, @RequestParam(required = false) float remise, @RequestParam(required = false) float tva, @RequestParam(required = false) float fodec, @RequestParam(required = false) float stock , @RequestParam(required = false) float quantiteVendu, @RequestParam(required = false) float stockMin, @RequestParam(required = false) float prixVenteHTMin ){
+  public ResponseEntity<?> edit(@PathVariable Long id,  Long familleId,  Long fournisseurId ,  String code,  String designation,  String type,  String codeABarre,  Float prixHT,  Float remise,  Float tva,  Float fodec,  Float stock ,  Float quantiteVendu,  Float stockMin,  Float prixVenteHTMin ){
     return  articleServices.edit( id , familleId , fournisseurId,  code, designation, type, codeABarre, prixHT,  remise, tva, fodec, stock ,  quantiteVendu,  stockMin, prixVenteHTMin );
   }
 
   @DeleteMapping("/article/{id}")
-  public ResponseEntity<?> delete(@PathVariable long id){
+  public ResponseEntity<?> delete(@PathVariable Long id){
     return articleServices.delete(id);
   }
 
   @PutMapping("/article/addMatierePremier/{id}")
-  public ResponseEntity<?> addMatierePremier(@PathVariable long id, long matieresPremiers , float quantity ){
+  public ResponseEntity<?> addMatierePremier(@PathVariable Long id, @RequestParam  Long matieresPremiers , @RequestParam Float quantity ){
     return articleServices.addMatierePremier(id,matieresPremiers,quantity);
   }
 
   @GetMapping("/articles")
-  public ResponseEntity<?> getAll(@RequestParam(required = false) String type){
+  public ResponseEntity<?> getAll( String type){
     return articleServices.getAll(type);
   }
 
   @GetMapping("/article/{id}")
-  public ResponseEntity<?> getById(@PathVariable long id){
+  public ResponseEntity<?> getById(@PathVariable Long id){
     return articleServices.getById(id);
   }
 
   @GetMapping("/article/constructions/{id}")
-  public ResponseEntity<?> getConstructions(@PathVariable long id){
+  public ResponseEntity<?> getConstructions(@PathVariable Long id){
     return articleServices.getConstructions(id);
   }
 

@@ -43,4 +43,28 @@ public class Marge {
   public void setArticle(Article article) {
     this.article = article;
   }
+
+  public boolean isDeleted() {
+    return deleted;
+  }
+
+  public void setDeleted(boolean deleted) {
+    this.deleted = deleted;
+  }
+
+  public float getQuantite() {
+    return quantite;
+  }
+
+  public void setQuantite(float quantite) {
+    this.quantite = quantite;
+  }
+
+  public float getPrix() {
+    return prix;
+  }
+
+  public void setPrix(float prix) {
+    this.prix = prix;
+  }
 }

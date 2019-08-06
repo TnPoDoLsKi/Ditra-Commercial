@@ -38,19 +38,19 @@ public class ArticleServices {
     Article article= articleModel.getArticle();
 
     if (article.getDesignation()==null) {
-      ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),607,"Article designation required");
+      ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),607,"Article requis une designation ");
       return new ResponseEntity<>(errorResponseModel, HttpStatus.BAD_REQUEST);
 
     }
 
     if (article.getCode()==null) {
-      ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),608,"Article code required");
+      ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),608,"Article requis un code ");
       return new ResponseEntity<>(errorResponseModel, HttpStatus.BAD_REQUEST);
 
     }
 
     if (article.getType()==null) {
-      ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),610,"Article type required");
+      ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),610,"Article requis une type ");
       return new ResponseEntity<>(errorResponseModel, HttpStatus.BAD_REQUEST);
 
     }
@@ -58,7 +58,7 @@ public class ArticleServices {
     if (article.getType().equals("PF")){
 
       if (articleModel.getMatierePremierQuantities().size() == 0){
-        ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),612,"Produit Fini required matiere premier");
+        ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),612,"Produit Fini requis au min une matiere premiere");
         return new ResponseEntity<>(errorResponseModel, HttpStatus.BAD_REQUEST);
       }
       article = articleRepository.save(article);
@@ -69,7 +69,7 @@ public class ArticleServices {
         Optional<Article> MP = articleRepository.findById(matierePremierQuantity.getId());
 
         if (!MP.isPresent()){
-          ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),609,"Article dosen't exist");
+          ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),609,"Article n'existe pas");
           return new ResponseEntity<>(errorResponseModel,HttpStatus.BAD_REQUEST);
         }
 
@@ -97,21 +97,21 @@ public class ArticleServices {
     Optional<Article> article = articleRepository.findById(id);
 
     if (!article.isPresent()){
-      ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),609,"Article dosen't exist");
+      ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),609,"Article n'existe pas");
       return new ResponseEntity<>(errorResponseModel,HttpStatus.BAD_REQUEST);
     }
 
 
 
     if (fournisseurId != null){
-      Optional<Fournisseur> fornisseur = fournisseurRepository.findById(id);
+      Optional<Fournisseur> fournisseur = fournisseurRepository.findById(id);
 
-      if (!fornisseur.isPresent()){
-        ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),605,"Fournisseur dosen't exist");
+      if (!fournisseur.isPresent()){
+        ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),605,"Fournisseur n'existe pas");
         return new ResponseEntity<>(errorResponseModel,HttpStatus.BAD_REQUEST);
       }
 
-      article.get().setFournisseur(fornisseur.get());
+      article.get().setFournisseur(fournisseur.get());
 
     }
 
@@ -119,7 +119,7 @@ public class ArticleServices {
       Optional<Famille> famille = familleRepository.findById(id);
 
       if (!famille.isPresent()){
-        ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),606,"Famille dosen't exist");
+        ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),606,"Famille n'existe pas");
         return new ResponseEntity<>(errorResponseModel,HttpStatus.BAD_REQUEST);
       }
 
@@ -187,7 +187,7 @@ public class ArticleServices {
     Optional<Article> article = articleRepository.findById(id);
 
     if (!article.isPresent()){
-      ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),609,"Article dosen't exist");
+      ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),609,"Article n'existe pas");
       return new ResponseEntity<>(errorResponseModel,HttpStatus.BAD_REQUEST);
     }
 
@@ -201,7 +201,7 @@ public class ArticleServices {
     Optional<Article> article = articleRepository.findById(id);
 
     if (!article.isPresent()){
-      ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),609,"Article dosen't exist");
+      ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),609,"Article n'existe pas");
       return new ResponseEntity<>(errorResponseModel,HttpStatus.BAD_REQUEST);
     }
 
@@ -214,7 +214,7 @@ public class ArticleServices {
     Optional<Article> articleMP = articleRepository.findById(matieresPremiers);
 
     if (!articleMP.isPresent()){
-      ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),609,"Article dosen't exist");
+      ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),609,"Article n'existe pas");
       return new ResponseEntity<>(errorResponseModel,HttpStatus.BAD_REQUEST);
     }
 
@@ -246,12 +246,12 @@ public class ArticleServices {
     Optional<Article> article = articleRepository.findById(id);
 
     if (!article.isPresent()){
-      ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),609,"Article dosen't exist");
+      ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),609,"Article n'existe pas");
       return new ResponseEntity<>(errorResponseModel,HttpStatus.BAD_REQUEST);
     }
 
     if (!article.get().getType().equals("PF")){
-      ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),611,"Article isn't a PF");
+      ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),611,"L'Article n'est pas un PF");
       return new ResponseEntity<>(errorResponseModel,HttpStatus.BAD_REQUEST);
     }
 
@@ -265,7 +265,7 @@ public class ArticleServices {
     Optional<Article> article = articleRepository.findById(id);
 
     if (!article.isPresent()){
-      ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),609,"Article dosen't exist");
+      ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),609,"Article n'existe pas");
       return new ResponseEntity<>(errorResponseModel,HttpStatus.BAD_REQUEST);
     }
 
