@@ -1,5 +1,6 @@
 package com.ditrasystems.comspringboot.Fournisseur;
 
+import com.ditrasystems.comspringboot.Agenda.Agenda;
 import com.ditrasystems.comspringboot.Articles.Article;
 import com.ditrasystems.comspringboot.Banque.Banque;
 import com.ditrasystems.comspringboot.BonDeCommande.BonDeCommande;
@@ -21,15 +22,13 @@ public class Fournisseur {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private long id;
 
+  private String name;
+
   private String code;
 
   private String activite;
 
   private boolean deleted;
-
-  private String tel1;
-
-  private String tel2;
 
   private String adresse;
 
@@ -43,8 +42,6 @@ public class Fournisseur {
 
   private String matFiscale;
 
-  private String cin;
-
   private Float solde;
 
   private String email;
@@ -52,24 +49,27 @@ public class Fournisseur {
   private String website;
 
 
-  @ManyToMany
+  @ManyToMany(cascade = {CascadeType.ALL})
   @JoinTable(name = "banque_fournisseur",
       joinColumns = { @JoinColumn(name = "fournisseurId") },
       inverseJoinColumns = { @JoinColumn(name = "banqueId") })
   private Collection<Banque> banques =new ArrayList<>();
 
 
-  @OneToMany(mappedBy = "fournisseur")
+  @OneToMany(mappedBy = "fournisseur",cascade = CascadeType.ALL)
   private Collection<Article> articles = new ArrayList<>();
 
-  @OneToMany(mappedBy = "fournisseur")
+  @OneToMany(mappedBy = "fournisseur",cascade = CascadeType.ALL)
   private Collection<BonDeLivrasion> bonDeLivrasions = new ArrayList<>();
 
-  @OneToMany(mappedBy = "fournisseur")
+  @OneToMany(mappedBy = "fournisseur",cascade = CascadeType.ALL)
   private Collection<BonDeCommande> bonDeCommandes  = new ArrayList<>();
 
-  @OneToMany(mappedBy = "fournisseur")
+  @OneToMany(mappedBy = "fournisseur",cascade = CascadeType.ALL)
   private Collection<Facture> factures = new ArrayList<>();
+
+  @OneToMany(mappedBy = "fournisseur",cascade = CascadeType.ALL)
+  private Collection<Agenda> agendas= new ArrayList<>();
 
   public Fournisseur() {
   }
@@ -86,6 +86,14 @@ public class Fournisseur {
     return code;
   }
 
+  public String getName() {
+    return name;
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
+
   public void setCode(String code) {
     this.code = code;
   }
@@ -98,20 +106,12 @@ public class Fournisseur {
     this.activite = activite;
   }
 
-  public String getTel1() {
-    return tel1;
+  public boolean isDeleted() {
+    return deleted;
   }
 
-  public void setTel1(String tel1) {
-    this.tel1 = tel1;
-  }
-
-  public String getTel2() {
-    return tel2;
-  }
-
-  public void setTel2(String tel2) {
-    this.tel2 = tel2;
+  public void setDeleted(boolean deleted) {
+    this.deleted = deleted;
   }
 
   public String getAdresse() {
@@ -162,14 +162,6 @@ public class Fournisseur {
     this.matFiscale = matFiscale;
   }
 
-  public String getCin() {
-    return cin;
-  }
-
-  public void setCin(String cin) {
-    this.cin = cin;
-  }
-
   public Float getSolde() {
     return solde;
   }
@@ -202,6 +194,14 @@ public class Fournisseur {
     this.banques = banques;
   }
 
+  public Collection<Article> getArticles() {
+    return articles;
+  }
+
+  public void setArticles(Collection<Article> articles) {
+    this.articles = articles;
+  }
+
   public Collection<BonDeLivrasion> getBonDeLivrasions() {
     return bonDeLivrasions;
   }
@@ -226,11 +226,15 @@ public class Fournisseur {
     this.factures = factures;
   }
 
-  public Collection<Article> getArticles() {
-    return articles;
+  public Collection<Agenda> getAgendas() {
+    return agendas;
   }
 
-  public void setArticles(Collection<Article> articles) {
-    this.articles = articles;
+  public void setAgendas(Collection<Agenda> agendas) {
+    this.agendas = agendas;
+  }
+
+  public void addAgenda(Agenda agenda) {
+    agendas.add(agenda);
   }
 }
