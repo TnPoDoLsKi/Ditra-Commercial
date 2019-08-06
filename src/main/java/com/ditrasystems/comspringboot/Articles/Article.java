@@ -71,7 +71,7 @@ public class Article implements Serializable {
   @OneToMany(mappedBy = "article")
   private Collection<Marge> marges = new ArrayList<>();
 
-  @OneToMany(mappedBy = "produitFini")
+  @OneToMany(mappedBy = "produitFini",cascade = CascadeType.ALL)
   private Collection<Construction> constructions = new ArrayList<>();
 
 
@@ -260,5 +260,9 @@ public class Article implements Serializable {
 
   public void setFournisseur(Fournisseur fournisseur) {
     this.fournisseur = fournisseur;
+  }
+
+  public void  addConstruction(Construction construction){
+    constructions.add(construction);
   }
 }

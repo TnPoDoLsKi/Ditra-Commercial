@@ -20,6 +20,7 @@ public class Construction {
   private float quantite;
 
   @ManyToOne
+  @JsonIgnore
   private Article produitFini;
 
   @ManyToOne

@@ -1,5 +1,7 @@
 package com.ditrasystems.comspringboot.Articles;
 
+import com.ditrasystems.comspringboot.Articles.Models.MatierePremierQuantity;
+import com.ditrasystems.comspringboot.Articles.Models.ProduitFiniModel;
 import com.ditrasystems.comspringboot.Construction.Construction;
 import com.ditrasystems.comspringboot.Construction.ConstructionRepository;
 import com.ditrasystems.comspringboot.Famille.Famille;
@@ -32,7 +34,10 @@ public class ArticleServices {
   @Autowired
   ConstructionRepository constructionRepository;
 
-  public ResponseEntity<?> create(Article article) {
+  public ResponseEntity<?> create(ProduitFiniModel produitFiniModel) {
+
+    Article article=produitFiniModel.getArticle();
+
     if (article.getDesignation()==null) {
       ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),607,"Article designation required");
       return new ResponseEntity<>(errorResponseModel, HttpStatus.BAD_REQUEST);
@@ -51,7 +56,33 @@ public class ArticleServices {
 
     }
 
-    article = articleRepository.save(article);
+    if (article.getType().equals("PF")){
+
+      if (produitFiniModel.getMatierePremierQuantities().size() == 0){
+        ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),612,"Produit Fini required matiere premier");
+        return new ResponseEntity<>(errorResponseModel, HttpStatus.BAD_REQUEST);
+      }
+      article = articleRepository.save(article);
+
+
+      for (MatierePremierQuantity matierePremierQuantity : produitFiniModel.getMatierePremierQuantities()){
+
+        Optional<Article> MP = articleRepository.findById(matierePremierQuantity.getId());
+
+        if (!MP.isPresent()){
+          ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),609,"Article dosen't exist");
+          return new ResponseEntity<>(errorResponseModel,HttpStatus.BAD_REQUEST);
+        }
+
+        Construction construction = new Construction();
+        construction.setQuantite(matierePremierQuantity.getQuantity());
+        construction.setMatierePrimaire(MP.get());
+        construction.setProduitFini(article);
+        article.addConstruction(construction);
+      }
+      article = articleRepository.save(article);
+
+    }
 
     return new ResponseEntity<>(article,HttpStatus.OK);
   }

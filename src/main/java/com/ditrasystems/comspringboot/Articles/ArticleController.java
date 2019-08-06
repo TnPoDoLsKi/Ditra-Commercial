@@ -1,6 +1,7 @@
 package com.ditrasystems.comspringboot.Articles;
 
 import com.ditrasystems.comspringboot.Articles.Models.MatierePremierQuantity;
+import com.ditrasystems.comspringboot.Articles.Models.ProduitFiniModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -16,8 +17,8 @@ public class ArticleController {
   ArticleServices articleServices;
 
   @PostMapping("/article")
-  public ResponseEntity<?> create(@RequestBody Article article, @RequestBody List<MatierePremierQuantity> matierePremierQuantities){
-    return articleServices.create(article);
+  public ResponseEntity<?> create(@RequestBody ProduitFiniModel produitFiniModel){
+    return articleServices.create(produitFiniModel);
   }
 
   @PutMapping("/article/{id}")
