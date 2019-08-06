@@ -18,7 +18,7 @@ public class AgendaController {
   }
 
   @PutMapping("/agenda/{id}")
-  public ResponseEntity<?> edit(@PathVariable long id,String nom, String profession,String tel1,String tel2 ,String cin ,String email,long fournisseurId){
+  public ResponseEntity<?> edit(@PathVariable long id,String nom, String profession,String tel1,String tel2 ,String cin ,String email,Long fournisseurId){
     return agendaService.edit( id, nom,  profession, tel1, tel2 , cin , email,fournisseurId);
   }
 

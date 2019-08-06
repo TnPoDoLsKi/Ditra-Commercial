@@ -32,8 +32,6 @@ public class Article implements Serializable {
   private String code;
   
   private String designation;
-  
-  private String nom;
 
   private String type;
 
@@ -70,10 +68,10 @@ public class Article implements Serializable {
 
 
 
-  @OneToMany(mappedBy = "article")
+  @OneToMany(mappedBy = "article" , cascade = CascadeType.ALL )
   private Collection<Marge> marges = new ArrayList<>();
 
-  @OneToMany(mappedBy = "produitFini")
+  @OneToMany(mappedBy = "produitFini",cascade = CascadeType.ALL)
   private Collection<Construction> constructions = new ArrayList<>();
 
 
@@ -119,13 +117,6 @@ public class Article implements Serializable {
     this.designation = designation;
   }
 
-  public String getNom() {
-    return nom;
-  }
-
-  public void setNom(String nom) {
-    this.nom = nom;
-  }
 
   public String getType() {
     return type;
@@ -270,4 +261,12 @@ public class Article implements Serializable {
   public void setFournisseur(Fournisseur fournisseur) {
     this.fournisseur = fournisseur;
   }
+
+  public void  addConstruction(Construction construction){
+    constructions.add(construction);
+  }
+  public void  addMarge(Marge marge){
+    marges.add(marge);
+  }
+
 }
