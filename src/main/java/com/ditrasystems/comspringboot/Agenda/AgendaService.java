@@ -20,8 +20,8 @@ public class AgendaService {
   AgendaRepository agendaRepository;
 
 
-  public ResponseEntity<?> create(long fournisseurId, Agenda agenda) {
-   if (fournisseurId != 0) {
+  public ResponseEntity<?> create(Long fournisseurId, Agenda agenda) {
+   if (fournisseurId != null) {
      Optional<Fournisseur> fournisseur = fournisseurRepository.findById(fournisseurId);
 
      if (!fournisseur.isPresent()) {
