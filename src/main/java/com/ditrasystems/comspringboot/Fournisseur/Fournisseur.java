@@ -5,6 +5,7 @@ import com.ditrasystems.comspringboot.Articles.Article;
 import com.ditrasystems.comspringboot.Banque.Banque;
 import com.ditrasystems.comspringboot.BonDeCommande.BonDeCommande;
 import com.ditrasystems.comspringboot.BonDeLivraison.BonDeLivrasion;
+import com.ditrasystems.comspringboot.DemandeOffre.DemandeOffre;
 import com.ditrasystems.comspringboot.Facture.Facture;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
@@ -56,6 +57,9 @@ public class Fournisseur {
   private Collection<Banque> banques =new ArrayList<>();
 
 
+
+
+
   @OneToMany(mappedBy = "fournisseur",cascade = CascadeType.ALL)
   private Collection<Article> articles = new ArrayList<>();
 
@@ -70,6 +74,9 @@ public class Fournisseur {
 
   @OneToMany(mappedBy = "fournisseur",cascade = CascadeType.ALL)
   private Collection<Agenda> agendas= new ArrayList<>();
+
+  @OneToMany(mappedBy = "fournisseur",cascade = CascadeType.ALL)
+  private Collection<DemandeOffre> demandeOffres= new ArrayList<>();
 
   public Fournisseur() {
   }

@@ -2,6 +2,7 @@ package com.ditrasystems.comspringboot.DemandeOffre;
 
 import com.ditrasystems.comspringboot.ArticleOffre.ArticleOffre;
 import com.ditrasystems.comspringboot.Articles.Article;
+import com.ditrasystems.comspringboot.Fournisseur.Fournisseur;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
@@ -25,9 +26,11 @@ public class DemandeOffre {
 
   private String code;
 
-  @OneToMany(mappedBy = "demandeOffre")
+  @OneToMany(mappedBy = "demandeOffre",cascade = CascadeType.ALL)
   private Collection<ArticleOffre> articleOffres;
 
+  @ManyToOne
+  private Fournisseur fournisseur;
 
   public DemandeOffre() {
   }
@@ -56,5 +59,27 @@ public class DemandeOffre {
     this.code = code;
   }
 
+  public boolean isDeleted() {
+    return deleted;
+  }
 
+  public void setDeleted(boolean deleted) {
+    this.deleted = deleted;
+  }
+
+  public Collection<ArticleOffre> getArticleOffres() {
+    return articleOffres;
+  }
+
+  public void setArticleOffres(Collection<ArticleOffre> articleOffres) {
+    this.articleOffres = articleOffres;
+  }
+
+  public Fournisseur getFournisseur() {
+    return fournisseur;
+  }
+
+  public void setFournisseur(Fournisseur fournisseur) {
+    this.fournisseur = fournisseur;
+  }
 }
