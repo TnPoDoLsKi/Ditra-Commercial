@@ -91,7 +91,7 @@ public class BonDeCommandeServices {
     Optional<BonDeCommande> bonDeCommande = bonDeCommandeRepository.findById(id);
 
     if (!bonDeCommande.isPresent()){
-      ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),617,"Demande d'offre n'existe pas");
+      ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),617,"Bon de commande n'existe pas");
       return new ResponseEntity<>(errorResponseModel,HttpStatus.BAD_REQUEST);
     }
 
@@ -113,7 +113,7 @@ public class BonDeCommandeServices {
     Optional<BonDeCommande> bonDeCommande = bonDeCommandeRepository.findById(id);
 
     if (!bonDeCommande.isPresent()){
-      ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),617,"Demande d'offre n'existe pas");
+      ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),618,"Bon de commande n'existe pas");
       return new ResponseEntity<>(errorResponseModel,HttpStatus.BAD_REQUEST);
     }
 
@@ -154,7 +154,7 @@ public class BonDeCommandeServices {
     Optional<BonDeCommande> bonDeCommande = bonDeCommandeRepository.findById(id);
 
     if (!bonDeCommande.isPresent()) {
-      ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(), 617, "Demande d'offre n'existe pas");
+      ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(), 618, "Bon de commande n'existe pas");
       return new ResponseEntity<>(errorResponseModel, HttpStatus.BAD_REQUEST);
     }
 
@@ -173,7 +173,7 @@ public class BonDeCommandeServices {
         Optional<ArticleBonCommande> articleBonCommande = articleBonCommandeRepository.findArticleBonCommandeByArticleAndBonDeCommande(article1.get(),bonDeCommande.get());
 
         if (!articleBonCommande.isPresent()) {
-          ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(), 609, "cette demande d'offre ne contient pas ce article");
+          ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(), 619, "cette Bon de commande ne contient pas ce article");
           return new ResponseEntity<>(errorResponseModel, HttpStatus.BAD_REQUEST);
         }
 
@@ -194,7 +194,7 @@ public class BonDeCommandeServices {
     Optional<BonDeCommande> bonDeCommande = bonDeCommandeRepository.findById(id);
 
     if (!bonDeCommande.isPresent()) {
-      ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(), 617, "Demande d'offre n'existe pas");
+      ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(), 617, "Bon de commande n'existe pas");
       return new ResponseEntity<>(errorResponseModel, HttpStatus.BAD_REQUEST);
     }
 
