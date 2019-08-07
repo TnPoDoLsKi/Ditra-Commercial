@@ -30,7 +30,7 @@ public class BonDeCommande {
   private Date date;
 
 
-  @OneToMany(mappedBy = "bonDeCommande")
+  @OneToMany(mappedBy = "bonDeCommande",cascade = CascadeType.ALL)
   private Collection<ArticleBonCommande> articleBonCommandes;
 
 
@@ -54,4 +54,51 @@ public class BonDeCommande {
     this.id = id;
   }
 
+  public boolean isDeleted() {
+    return deleted;
+  }
+
+  public void setDeleted(boolean deleted) {
+    this.deleted = deleted;
+  }
+
+  public String getCode() {
+    return code;
+  }
+
+  public void setCode(String code) {
+    this.code = code;
+  }
+
+  public Date getDate() {
+    return date;
+  }
+
+  public void setDate(Date date) {
+    this.date = date;
+  }
+
+  public Collection<ArticleBonCommande> getArticleBonCommandes() {
+    return articleBonCommandes;
+  }
+
+  public void setArticleBonCommandes(Collection<ArticleBonCommande> articleBonCommandes) {
+    this.articleBonCommandes = articleBonCommandes;
+  }
+
+  public Fournisseur getFournisseur() {
+    return fournisseur;
+  }
+
+  public void setFournisseur(Fournisseur fournisseur) {
+    this.fournisseur = fournisseur;
+  }
+
+  public Collection<BonDeLivrasion> getBonDeLivrasions() {
+    return bonDeLivrasions;
+  }
+
+  public void setBonDeLivrasions(Collection<BonDeLivrasion> bonDeLivrasions) {
+    this.bonDeLivrasions = bonDeLivrasions;
+  }
 }

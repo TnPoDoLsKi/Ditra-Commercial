@@ -54,7 +54,7 @@ public class Article implements Serializable {
   private float prixVenteHTMin;
 
 
-  @OneToMany(mappedBy = "article")
+  @OneToMany(mappedBy = "article",cascade = CascadeType.ALL)
   private Collection<ArticleBonCommande> articleBonCommandes;
 
   @OneToMany(mappedBy = "article")

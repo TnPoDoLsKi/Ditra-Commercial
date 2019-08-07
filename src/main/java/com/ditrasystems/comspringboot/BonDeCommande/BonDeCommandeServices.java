@@ -1,12 +1,11 @@
 package com.ditrasystems.comspringboot.BonDeCommande;
 
-import com.ditrasystems.comspringboot.ArticleOffre.ArticleOffre;
-import com.ditrasystems.comspringboot.ArticleOffre.ArticleOffreRepository;
+import com.ditrasystems.comspringboot.ArticleBonCommande.ArticleBonCommande;
+import com.ditrasystems.comspringboot.ArticleBonCommande.ArticleBonCommandeRepository;
 import com.ditrasystems.comspringboot.Articles.Article;
 import com.ditrasystems.comspringboot.Articles.ArticleRepository;
-import com.ditrasystems.comspringboot.DemandeOffre.DemandeOffre;
-import com.ditrasystems.comspringboot.DemandeOffre.Models.ArticleQuantityModel;
-import com.ditrasystems.comspringboot.DemandeOffre.Models.DemandeOffreModel;
+import com.ditrasystems.comspringboot.BonDeCommande.Models.ArticleQuantityModel;
+import com.ditrasystems.comspringboot.BonDeCommande.Models.BonDeCommandeModel;
 import com.ditrasystems.comspringboot.Fournisseur.Fournisseur;
 import com.ditrasystems.comspringboot.Fournisseur.FournisseurRepository;
 import com.ditrasystems.comspringboot.Utils.ErrorResponseModel;
@@ -32,11 +31,11 @@ public class BonDeCommandeServices {
   BonDeCommandeRepository bonDeCommandeRepository;
 
   @Autowired
-  ArticleOffreRepository articleOffreRepository;
+  ArticleBonCommandeRepository articleBonCommandeRepository;
 
 
-  public ResponseEntity<?> create(DemandeOffreModel demandeOffreModel) {
-    Optional<Fournisseur> fournisseur = fournisseurRepository.findById(demandeOffreModel.getFournisseur());
+  public ResponseEntity<?> create(BonDeCommandeModel bonDeCommandeModel) {
+    Optional<Fournisseur> fournisseur = fournisseurRepository.findById(bonDeCommandeModel.getFournisseur());
 
     if (!fournisseur.isPresent()){
       ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),605,"Fournisseur n'existe pas");
@@ -45,9 +44,9 @@ public class BonDeCommandeServices {
 
 
 
-    List<ArticleOffre> articleOffres = new ArrayList<>();
+    List<ArticleBonCommande> articleBonCommandes = new ArrayList<>();
 
-    for (ArticleQuantityModel articleQuantityModel :demandeOffreModel.getArticlesQuantity()) {
+    for (ArticleQuantityModel articleQuantityModel :bonDeCommandeModel.getArticlesQuantity()) {
 
      Optional<Article> article = articleRepository.findById(articleQuantityModel.getarticle());
 
@@ -56,30 +55,31 @@ public class BonDeCommandeServices {
         return new ResponseEntity<>(errorResponseModel, HttpStatus.BAD_REQUEST);
       }
 
-      if (article.get().getFournisseur().getId() != demandeOffreModel.getFournisseur()){
+      if (article.get().getFournisseur().getId() != bonDeCommandeModel.getFournisseur()){
         ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(), 616, "Cet article n'appartient pas a ce fournisseur");
         return new ResponseEntity<>(errorResponseModel, HttpStatus.BAD_REQUEST);
       }
 
-      ArticleOffre articleOffre = new ArticleOffre();
+      ArticleBonCommande articleBonCommande = new ArticleBonCommande();
 
-      articleOffre.setArticle(article.get());
-      articleOffre.setPrix(article.get().getPrixHT());
-      articleOffre.setQuantite(articleQuantityModel.getQuantity());
-      articleOffres.add(articleOffre);
+      articleBonCommande.setArticle(article.get());
+      articleBonCommande.setPrix(article.get().getPrixHT());
+      articleBonCommande.setQuantite(articleQuantityModel.getQuantity());
+      articleBonCommandes.add(articleBonCommande);
     }
 
-    DemandeOffre demandeOffre = new DemandeOffre();
+    BonDeCommande bonDeCommande = new BonDeCommande();
 
-    demandeOffre.setFournisseur(fournisseur.get());
+    bonDeCommande.setFournisseur(fournisseur.get());
 
-    demandeOffre.setCode(demandeOffreModel.getCode());
+    bonDeCommande.setCode(bonDeCommandeModel.getCode());
 
-    demandeOffre = bonDeCommandeRepository.save(demandeOffre);
+    bonDeCommande = bonDeCommandeRepository.save(bonDeCommande);
 
-    for (ArticleOffre articleOffre :articleOffres){
-      articleOffre.setDemandeOffre(demandeOffre);
-      articleOffreRepository.save(articleOffre);
+    for (ArticleBonCommande articleBonCommandee :articleBonCommandes){
+      articleBonCommandee.setBonDeCommande(bonDeCommande);
+      articleBonCommandeRepository.save(articleBonCommandee);
+
     }
 
 
@@ -88,36 +88,36 @@ public class BonDeCommandeServices {
 
 
   public ResponseEntity<?> edit(Long id, String code, Date date) {
-    Optional<DemandeOffre> demandeOffre = bonDeCommandeRepository.findById(id);
+    Optional<BonDeCommande> bonDeCommande = bonDeCommandeRepository.findById(id);
 
-    if (!demandeOffre.isPresent()){
+    if (!bonDeCommande.isPresent()){
       ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),617,"Demande d'offre n'existe pas");
       return new ResponseEntity<>(errorResponseModel,HttpStatus.BAD_REQUEST);
     }
 
     if (code != null){
-      demandeOffre.get().setCode(code);
+      bonDeCommande.get().setCode(code);
     }
 
     if (date != null){
-      demandeOffre.get().setDate(date);
+      bonDeCommande.get().setDate(date);
     }
 
 
-    bonDeCommandeRepository.save(demandeOffre.get());
+    bonDeCommandeRepository.save(bonDeCommande.get());
     return new ResponseEntity<>(HttpStatus.OK);
   }
 
   public ResponseEntity<?> editArticle(Long id, List<ArticleQuantityModel> articleQuantityModels) {
 
-    Optional<DemandeOffre> demandeOffre = bonDeCommandeRepository.findById(id);
+    Optional<BonDeCommande> bonDeCommande = bonDeCommandeRepository.findById(id);
 
-    if (!demandeOffre.isPresent()){
+    if (!bonDeCommande.isPresent()){
       ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),617,"Demande d'offre n'existe pas");
       return new ResponseEntity<>(errorResponseModel,HttpStatus.BAD_REQUEST);
     }
 
-    List<ArticleOffre> articleOffres = new ArrayList<>();
+    List<ArticleBonCommande> articleBonCommandes = new ArrayList<>();
 
 
     for (ArticleQuantityModel articleQuantityModel :articleQuantityModels) {
@@ -129,36 +129,36 @@ public class BonDeCommandeServices {
         return new ResponseEntity<>(errorResponseModel, HttpStatus.BAD_REQUEST);
       }
 
-      if (article.get().getFournisseur().getId() != demandeOffre.get().getFournisseur().getId()){
+      if (article.get().getFournisseur().getId() != bonDeCommande.get().getFournisseur().getId()){
         ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(), 616, "Cet article n'appartient pas a ce fournisseur");
         return new ResponseEntity<>(errorResponseModel, HttpStatus.BAD_REQUEST);
       }
 
-      ArticleOffre articleOffre = new ArticleOffre();
+      ArticleBonCommande articleBonCommande = new ArticleBonCommande();
 
-      articleOffre.setArticle(article.get());
-      articleOffre.setPrix(article.get().getPrixHT());
-      articleOffre.setQuantite(articleQuantityModel.getQuantity());
-      articleOffres.add(articleOffre);
+      articleBonCommande.setArticle(article.get());
+      articleBonCommande.setPrix(article.get().getPrixHT());
+      articleBonCommande.setQuantite(articleQuantityModel.getQuantity());
+      articleBonCommandes.add(articleBonCommande);
     }
 
-    for (ArticleOffre articleOffre :articleOffres){
-      articleOffre.setDemandeOffre(demandeOffre.get());
-      articleOffreRepository.save(articleOffre);
+    for (ArticleBonCommande articleBonCommande :articleBonCommandes){
+      articleBonCommande.setBonDeCommande(bonDeCommande.get());
+      articleBonCommandeRepository.save(articleBonCommande);
     }
 
     return new ResponseEntity<>(HttpStatus.OK);
   }
 
   public ResponseEntity<?> deleteArticle(Long id, List<Article> articles) {
-    Optional<DemandeOffre> demandeOffre = bonDeCommandeRepository.findById(id);
+    Optional<BonDeCommande> bonDeCommande = bonDeCommandeRepository.findById(id);
 
-    if (!demandeOffre.isPresent()) {
+    if (!bonDeCommande.isPresent()) {
       ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(), 617, "Demande d'offre n'existe pas");
       return new ResponseEntity<>(errorResponseModel, HttpStatus.BAD_REQUEST);
     }
 
-    List<ArticleOffre> articleOffres = new ArrayList<>();
+    List<ArticleBonCommande> articleBonCommandes = new ArrayList<>();
 
     if (articles != null) {
       for (Article article : articles) {
@@ -170,19 +170,19 @@ public class BonDeCommandeServices {
           return new ResponseEntity<>(errorResponseModel, HttpStatus.BAD_REQUEST);
         }
 
-        Optional<ArticleOffre> articleOffre = articleOffreRepository.findArticleOffreByArticleAndAndDemandeOffre(article1.get(),demandeOffre.get());
+        Optional<ArticleBonCommande> articleBonCommande = articleBonCommandeRepository.findArticleBonCommandeByArticleAndBonDeCommande(article1.get(),bonDeCommande.get());
 
-        if (!articleOffre.isPresent()) {
+        if (!articleBonCommande.isPresent()) {
           ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(), 609, "cette demande d'offre ne contient pas ce article");
           return new ResponseEntity<>(errorResponseModel, HttpStatus.BAD_REQUEST);
         }
 
-        articleOffres.add(articleOffre.get());
+        articleBonCommandes.add(articleBonCommande.get());
       }
 
 
-      for (ArticleOffre articleOffre : articleOffres) {
-        articleOffreRepository.delete(articleOffre);
+      for (ArticleBonCommande articleBonCommande : articleBonCommandes) {
+        articleBonCommandeRepository.delete(articleBonCommande);
       }
     }
 
@@ -191,14 +191,14 @@ public class BonDeCommandeServices {
   }
 
   public ResponseEntity<?> delete(Long id) {
-    Optional<DemandeOffre> demandeOffre = bonDeCommandeRepository.findById(id);
+    Optional<BonDeCommande> bonDeCommande = bonDeCommandeRepository.findById(id);
 
-    if (!demandeOffre.isPresent()) {
+    if (!bonDeCommande.isPresent()) {
       ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(), 617, "Demande d'offre n'existe pas");
       return new ResponseEntity<>(errorResponseModel, HttpStatus.BAD_REQUEST);
     }
 
-    bonDeCommandeRepository.delete(demandeOffre.get());
+    bonDeCommandeRepository.delete(bonDeCommande.get());
 
     return new ResponseEntity<>(HttpStatus.OK);
   }
