@@ -7,7 +7,9 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 
 @Entity
 @SQLDelete(sql=" UPDATE bon_de_commande SET deleted =true WHERE id = ?")
@@ -18,16 +20,26 @@ public class BonDeCommande {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private long id;
 
+
   private boolean deleted;
+
+
+  private String code;
+
+
+  private Date date;
+
 
   @OneToMany(mappedBy = "bonDeCommande")
   private Collection<ArticleBonCommande> articleBonCommandes;
 
+
   @ManyToOne
   Fournisseur fournisseur;
 
-  @ManyToOne
-  BonDeLivrasion bonDeLivrasion;
+
+  @ManyToMany(mappedBy = "bonDeCommandes")
+  private Collection<BonDeLivrasion> bonDeLivrasions = new ArrayList<>();
 
 
 

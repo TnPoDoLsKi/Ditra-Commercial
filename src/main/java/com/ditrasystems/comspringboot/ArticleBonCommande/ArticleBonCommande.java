@@ -20,6 +20,10 @@ public class ArticleBonCommande {
   @Id
   private long id;
 
+  private float quantiteCommander;
+
+  private float quantiteLivrer;
+
   private boolean deleted;
 
   @ManyToOne
@@ -29,7 +33,6 @@ public class ArticleBonCommande {
   @ManyToOne
   @JoinColumn(name = "bonDeCommande_id")
   private BonDeCommande bonDeCommande;
-
 
   private float prix;
 

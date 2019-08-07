@@ -1,6 +1,7 @@
 package com.ditrasystems.comspringboot.BonDeLivraison;
 
 import com.ditrasystems.comspringboot.ArticleBonLivraison.ArticleBonLivraison;
+import com.ditrasystems.comspringboot.Banque.Banque;
 import com.ditrasystems.comspringboot.BonDeCommande.BonDeCommande;
 import com.ditrasystems.comspringboot.BonDeRetour.BonDeRetour;
 import com.ditrasystems.comspringboot.Facture.Facture;
@@ -32,8 +33,11 @@ public class BonDeLivrasion {
   @ManyToMany(mappedBy = "bonDeLivrasions")
   private Collection<Paiement> paiements;
 
-  @OneToMany(mappedBy = "bonDeLivrasion")
-  private Collection<BonDeCommande> bonDeCommandes = new ArrayList<>();
+  @ManyToMany(cascade = {CascadeType.ALL})
+  @JoinTable(name = "bondecommande_bondelivrasion",
+      joinColumns = { @JoinColumn(name = "bondelivraisonId") },
+      inverseJoinColumns = { @JoinColumn(name = "bondecommandeId") })
+  private Collection<BonDeCommande> bonDeCommandes =new ArrayList<>();
 
 
   @ManyToOne
