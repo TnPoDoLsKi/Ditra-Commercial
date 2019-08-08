@@ -44,6 +44,14 @@ public class BonDeLivrasion {
   private Collection<BonDeCommande> bonDeCommandes =new ArrayList<>();
 
 
+
+  @ManyToMany
+  @JoinTable(name = "bondelivraison_facture",
+      joinColumns = { @JoinColumn(name = "bondelivraisonId") },
+      inverseJoinColumns = { @JoinColumn(name = "factureId") })
+  private Collection<Facture> factures =new ArrayList<>();
+
+
   @ManyToOne
   Fournisseur fournisseur;
 

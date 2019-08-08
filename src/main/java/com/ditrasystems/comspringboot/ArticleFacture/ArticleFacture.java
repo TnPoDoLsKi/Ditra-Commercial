@@ -6,10 +6,7 @@ import com.ditrasystems.comspringboot.Facture.Facture;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
 @Entity
 @SQLDelete(sql=" UPDATE article_facture SET deleted =true WHERE id = ?")
@@ -18,6 +15,7 @@ public class ArticleFacture {
 
 
   @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private long id;
 
   private boolean deleted;
@@ -34,6 +32,11 @@ public class ArticleFacture {
   private float prix;
 
   private float quantite;
+
+  private Long bonDeCommande;
+
+  private Long bonDeLivraison;
+
 
   public ArticleFacture() {
   }
