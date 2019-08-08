@@ -127,6 +127,7 @@ public class BonDeLivraisonServices {
         articleBonCommandeRepository.save(articleBonCommande.get());
       }
 
+
        ArticleBonLivraison articleBonLivraison = new ArticleBonLivraison();
 
        articleBonLivraison.setArticle(article.get());
@@ -181,7 +182,120 @@ public class BonDeLivraisonServices {
     }
 
 
-    bonDeLivraisonRepository.save(bonDeLivrasion.get());
+    return new ResponseEntity<>(bonDeLivraisonRepository.save(bonDeLivrasion.get()),HttpStatus.OK);
+  }
+
+
+  public ResponseEntity<?> editArticle(Long id, List<ArticleBonLivraison> articleBonLivraisons) {
+
+    Optional<BonDeLivrasion> bonDeLivrasion = bonDeLivraisonRepository.findById(id);
+
+    if (!bonDeLivrasion.isPresent()){
+      ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),622,"Bon de livraison n'existe pas");
+      return new ResponseEntity<>(errorResponseModel,HttpStatus.BAD_REQUEST);
+    }
+
+    for (ArticleBonLivraison articleBonLivraison : articleBonLivraisons){
+
+      Optional<ArticleBonLivraison> articleBonLivraison1 = articleBonLivraisonRepository.findById(articleBonLivraison.getId());
+
+
+      if (!articleBonLivraison1.isPresent()) {
+        ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(), 623, "la table intermediaire entre larticle et la bon de livraison n'existe pas");
+        return new ResponseEntity<>(errorResponseModel, HttpStatus.BAD_REQUEST);
+      }
+
+      if (articleBonLivraison.getPrix() != null){
+        articleBonLivraison1.get().setPrix(articleBonLivraison.getPrix());
+      }
+
+      if (articleBonLivraison.getQuantite() != null){
+
+        if (articleBonLivraison1.get().getBonDeCommande() != null){
+          Optional<BonDeCommande> bonDeCommande = bonDeCommandeRepository.findById(articleBonLivraison1.get().getBonDeCommande());
+
+          Optional<ArticleBonCommande>articleBonCommande = articleBonCommandeRepository.findArticleBonCommandeByArticleAndBonDeCommande(articleBonLivraison1.get().getArticle(),bonDeCommande.get());
+
+          articleBonCommande.get().setQuantiteLivrer(articleBonCommande.get().getQuantiteLivrer() - articleBonLivraison.getQuantite() + articleBonLivraison1.get().getQuantite());
+
+
+          if (articleBonCommande.get().getQuantiteLivrer() > articleBonCommande.get().getQuantiteCommander()){
+            ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),621,"la quantite livrer est plus grand que la quantite a livrer ");
+            return new ResponseEntity<>(errorResponseModel,HttpStatus.BAD_REQUEST);
+          }
+           articleBonCommandeRepository.save(articleBonCommande.get());
+        }
+
+        Float stock = articleBonLivraison1.get().getArticle().getStock();
+        stock = stock - articleBonLivraison1.get().getQuantite() + articleBonLivraison.getQuantite();
+        articleBonLivraison1.get().getArticle().setStock(stock);
+      }
+
+      articleBonLivraisonRepository.save(articleBonLivraison1.get());
+    }
+
+    return new ResponseEntity<>(HttpStatus.OK);
+  }
+
+  public ResponseEntity<?> deleteArticle(Long id, List<ArticleBonLivraison> articleBonLivraisons) {
+
+    Optional<BonDeLivrasion> bonDeLivrasion = bonDeLivraisonRepository.findById(id);
+
+    if (!bonDeLivrasion.isPresent()){
+      ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),622,"Bon de livraison n'existe pas");
+      return new ResponseEntity<>(errorResponseModel,HttpStatus.BAD_REQUEST);
+    }
+
+    for (ArticleBonLivraison articleBonLivraison : articleBonLivraisons){
+
+      Optional<ArticleBonLivraison> articleBonLivraison1 = articleBonLivraisonRepository.findById(articleBonLivraison.getId());
+
+
+      if (!articleBonLivraison1.isPresent()) {
+        ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(), 623, "la table intermediaire entre larticle et la bon de livraison n'existe pas");
+        return new ResponseEntity<>(errorResponseModel, HttpStatus.BAD_REQUEST);
+      }
+
+
+
+        if (articleBonLivraison1.get().getBonDeCommande() != null){
+          Optional<BonDeCommande> bonDeCommande = bonDeCommandeRepository.findById(articleBonLivraison1.get().getBonDeCommande());
+
+          Optional<ArticleBonCommande> articleBonCommande = articleBonCommandeRepository.findArticleBonCommandeByArticleAndBonDeCommande(articleBonLivraison1.get().getArticle(),bonDeCommande.get());
+
+          System.out.println(articleBonCommande.get().getId());
+
+          articleBonCommande.get().setQuantiteLivrer(articleBonCommande.get().getQuantiteLivrer() - articleBonLivraison1.get().getQuantite());
+
+          articleBonCommandeRepository.save(articleBonCommande.get());
+
+        }
+        Float stock = articleBonLivraison1.get().getArticle().getStock();
+
+        articleBonLivraison1.get().getArticle().setStock(stock - articleBonLivraison1.get().getQuantite());
+
+
+      articleBonLivraisonRepository.save(articleBonLivraison1.get());
+
+      articleBonLivraisonRepository.delete(articleBonLivraison1.get());
+
+    }
+
+    return new ResponseEntity<>(HttpStatus.OK);
+  }
+
+  public ResponseEntity<?> delete(Long id) {
+
+    Optional<BonDeLivrasion> bonDeLivrasion = bonDeLivraisonRepository.findById(id);
+
+    if (!bonDeLivrasion.isPresent()){
+      ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),622,"Bon de livraison n'existe pas");
+      return new ResponseEntity<>(errorResponseModel,HttpStatus.BAD_REQUEST);
+    }
+
+    deleteArticle(id, (List<ArticleBonLivraison>) bonDeLivrasion.get().getArticleBonLivraisons());
+
+    bonDeLivraisonRepository.delete(bonDeLivrasion.get());
     return new ResponseEntity<>(HttpStatus.OK);
   }
 }

@@ -37,7 +37,7 @@ public class BonDeLivrasion {
   @ManyToMany(mappedBy = "bonDeLivrasions")
   private Collection<Paiement> paiements;
 
-  @ManyToMany(cascade = {CascadeType.ALL})
+  @ManyToMany(cascade = {CascadeType.PERSIST,CascadeType.MERGE})
   @JoinTable(name = "bondecommande_bondelivrasion",
       joinColumns = { @JoinColumn(name = "bondelivraisonId") },
       inverseJoinColumns = { @JoinColumn(name = "bondecommandeId") })

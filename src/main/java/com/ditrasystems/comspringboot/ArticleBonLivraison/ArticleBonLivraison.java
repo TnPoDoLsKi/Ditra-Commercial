@@ -27,9 +27,9 @@ public class ArticleBonLivraison {
   private BonDeLivrasion bonDeLivrasion;
 
 
-  private float prix;
+  private Float prix;
 
-  private float quantite;
+  private Float quantite;
 
   private Long bonDeCommande;
 
@@ -68,19 +68,19 @@ public class ArticleBonLivraison {
     this.bonDeLivrasion = bonDeLivrasion;
   }
 
-  public float getPrix() {
+  public Float getPrix() {
     return prix;
   }
 
-  public void setPrix(float prix) {
+  public void setPrix(Float prix) {
     this.prix = prix;
   }
 
-  public float getQuantite() {
+  public Float getQuantite() {
     return quantite;
   }
 
-  public void setQuantite(float quantite) {
+  public void setQuantite(Float quantite) {
     this.quantite = quantite;
   }
 
