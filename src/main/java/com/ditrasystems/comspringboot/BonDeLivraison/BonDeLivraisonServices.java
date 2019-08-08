@@ -11,7 +11,6 @@ import com.ditrasystems.comspringboot.BonDeCommande.BonDeCommande;
 import com.ditrasystems.comspringboot.BonDeCommande.BonDeCommandeRepository;
 import com.ditrasystems.comspringboot.BonDeLivraison.Models.ArticleQuantityModel;
 import com.ditrasystems.comspringboot.BonDeLivraison.Models.BonDeLivraisonModel;
-import com.ditrasystems.comspringboot.DemandeOffre.DemandeOffre;
 import com.ditrasystems.comspringboot.Fournisseur.Fournisseur;
 import com.ditrasystems.comspringboot.Fournisseur.FournisseurRepository;
 import com.ditrasystems.comspringboot.Utils.ErrorResponseModel;
@@ -297,5 +296,21 @@ public class BonDeLivraisonServices {
 
     bonDeLivraisonRepository.delete(bonDeLivrasion.get());
     return new ResponseEntity<>(HttpStatus.OK);
+  }
+
+  public ResponseEntity<?> getAll() {
+    return new ResponseEntity<>(bonDeLivraisonRepository.findAll(),HttpStatus.OK);
+  }
+
+  public ResponseEntity<?> getById(Long id) {
+
+    Optional<BonDeLivrasion> bonDeLivrasion = bonDeLivraisonRepository.findById(id);
+
+    if (!bonDeLivrasion.isPresent()){
+      ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),622,"Bon de livraison n'existe pas");
+      return new ResponseEntity<>(errorResponseModel,HttpStatus.BAD_REQUEST);
+    }
+    return new ResponseEntity<>(bonDeLivrasion.get(),HttpStatus.OK);
+
   }
 }

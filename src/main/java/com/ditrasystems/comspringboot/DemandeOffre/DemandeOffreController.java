@@ -43,4 +43,14 @@ public class DemandeOffreController {
     return demandeOffreServices.delete(id);
   }
 
+
+  @GetMapping("/demandeOffres")
+  public ResponseEntity<?> getAll(){
+    return demandeOffreServices.getAll();
+  }
+
+  @GetMapping("/demandeOffre/{id}")
+  public ResponseEntity<?> getById(@PathVariable Long id){
+    return demandeOffreServices.getById(id);
+  }
 }

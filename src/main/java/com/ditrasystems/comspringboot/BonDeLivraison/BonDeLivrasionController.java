@@ -42,4 +42,15 @@ public class BonDeLivrasionController {
   public ResponseEntity<?> delete(@PathVariable Long id){
     return bonDeLivraisonServices.delete(id);
   }
+
+
+  @GetMapping("/bonDeLivrasions")
+  public ResponseEntity<?> getAll(){
+    return bonDeLivraisonServices.getAll();
+  }
+
+  @GetMapping("/bonDeLivrasion/{id}")
+  public ResponseEntity<?> getById(@PathVariable Long id){
+    return bonDeLivraisonServices.getById(id);
+  }
  }
