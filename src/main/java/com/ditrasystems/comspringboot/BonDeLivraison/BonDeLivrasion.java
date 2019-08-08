@@ -13,6 +13,7 @@ import org.hibernate.annotations.Where;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 
 @Entity
 @SQLDelete(sql=" UPDATE bon_de_livrasion SET deleted =true WHERE id = ?")
@@ -22,11 +23,14 @@ public class BonDeLivrasion {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private long id;
-  private String type;
+
+  private String code;
+
+  private Date date;
 
   private boolean deleted;
 
-  @OneToMany(mappedBy = "bonDeLivrasion")
+  @OneToMany(mappedBy = "bonDeLivrasion" , cascade = CascadeType.ALL)
   private Collection<ArticleBonLivraison> articleBonLivraisons;
 
 
@@ -60,13 +64,79 @@ public class BonDeLivrasion {
     this.id = id;
   }
 
-  public String getType() {
-    return type;
+  public String getCode() {
+    return code;
   }
 
-  public void setType(String type) {
-    this.type = type;
+  public void setCode(String code) {
+    this.code = code;
   }
 
+  public Date getDate() {
+    return date;
+  }
 
+  public void setDate(Date date) {
+    this.date = date;
+  }
+
+  public boolean isDeleted() {
+    return deleted;
+  }
+
+  public void setDeleted(boolean deleted) {
+    this.deleted = deleted;
+  }
+
+  public Collection<ArticleBonLivraison> getArticleBonLivraisons() {
+    return articleBonLivraisons;
+  }
+
+  public void setArticleBonLivraisons(Collection<ArticleBonLivraison> articleBonLivraisons) {
+    this.articleBonLivraisons = articleBonLivraisons;
+  }
+
+  public Collection<Paiement> getPaiements() {
+    return paiements;
+  }
+
+  public void setPaiements(Collection<Paiement> paiements) {
+    this.paiements = paiements;
+  }
+
+  public Collection<BonDeCommande> getBonDeCommandes() {
+    return bonDeCommandes;
+  }
+
+  public void setBonDeCommandes(Collection<BonDeCommande> bonDeCommandes) {
+    this.bonDeCommandes = bonDeCommandes;
+  }
+
+  public Fournisseur getFournisseur() {
+    return fournisseur;
+  }
+
+  public void setFournisseur(Fournisseur fournisseur) {
+    this.fournisseur = fournisseur;
+  }
+
+  public Facture getFacture() {
+    return facture;
+  }
+
+  public void setFacture(Facture facture) {
+    this.facture = facture;
+  }
+
+  public BonDeRetour getBonDeRetour() {
+    return bonDeRetour;
+  }
+
+  public void setBonDeRetour(BonDeRetour bonDeRetour) {
+    this.bonDeRetour = bonDeRetour;
+  }
+
+  public void addBonDeCommande(BonDeCommande bonDeCommande){
+    this.bonDeCommandes.add(bonDeCommande);
+  }
 }
