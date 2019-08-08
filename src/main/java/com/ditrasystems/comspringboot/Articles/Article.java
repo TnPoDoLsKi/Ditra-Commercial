@@ -63,7 +63,7 @@ public class Article implements Serializable {
    @OneToMany(mappedBy = "article")
   private Collection<ArticleFacture> articleFactures;
 
-  @OneToMany(mappedBy = "article")
+  @OneToMany(mappedBy = "article" ,cascade = CascadeType.ALL)
   private Collection<ArticleOffre> articleOffres;
 
 

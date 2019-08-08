@@ -104,7 +104,7 @@ public class ArticleServices {
 
 
     if (fournisseurId != null){
-      Optional<Fournisseur> fournisseur = fournisseurRepository.findById(id);
+      Optional<Fournisseur> fournisseur = fournisseurRepository.findById(fournisseurId);
 
       if (!fournisseur.isPresent()){
         ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),605,"Fournisseur n'existe pas");
@@ -116,7 +116,7 @@ public class ArticleServices {
     }
 
     if (familleId != null){
-      Optional<Famille> famille = familleRepository.findById(id);
+      Optional<Famille> famille = familleRepository.findById(familleId);
 
       if (!famille.isPresent()){
         ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),606,"Famille n'existe pas");

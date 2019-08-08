@@ -8,6 +8,7 @@ import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.Date;
 
 @Entity
 @SQLDelete(sql=" UPDATE bon_de_commande SET deleted =true WHERE id = ?")
@@ -17,6 +18,10 @@ public class BonDeCommande {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private long id;
+
+  private String code;
+
+  private Date date;
 
   private boolean deleted;
 
