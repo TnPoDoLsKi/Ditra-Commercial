@@ -2,6 +2,7 @@ package com.ditrasystems.comspringboot.BonDeCommande;
 
 import com.ditrasystems.comspringboot.ArticleBonCommande.ArticleBonCommande;
 import com.ditrasystems.comspringboot.BonDeLivraison.BonDeLivrasion;
+import com.ditrasystems.comspringboot.Facture.Facture;
 import com.ditrasystems.comspringboot.Fournisseur.Fournisseur;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
@@ -41,6 +42,12 @@ public class BonDeCommande {
   @ManyToMany(mappedBy = "bonDeCommandes")
   private Collection<BonDeLivrasion> bonDeLivrasions = new ArrayList<>();
 
+
+  @ManyToMany
+  @JoinTable(name = "bonDeCommandes_facture",
+      joinColumns = { @JoinColumn(name = "bonDeCommandesId") },
+      inverseJoinColumns = { @JoinColumn(name = "factureId") })
+  private Collection<Facture> factures =new ArrayList<>();
 
 
   public BonDeCommande() {

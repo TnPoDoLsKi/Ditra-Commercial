@@ -44,4 +44,13 @@ public class BonDeCommandeController {
     return bonDeCommandeServices.delete(id);
   }
 
+  @GetMapping("/bonCommandes")
+  public ResponseEntity<?> getAll(){
+    return bonDeCommandeServices.getAll();
+  }
+
+  @GetMapping("/bonCommande/{id}")
+  public ResponseEntity<?> getById(@PathVariable Long id){
+    return bonDeCommandeServices.getById(id);
+  }
 }

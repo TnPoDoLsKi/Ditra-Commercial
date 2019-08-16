@@ -203,4 +203,20 @@ public class BonDeCommandeServices {
     return new ResponseEntity<>(HttpStatus.OK);
   }
 
+  public ResponseEntity<?> getAll() {
+    return new ResponseEntity<>(bonDeCommandeRepository.findAll(),HttpStatus.OK);
+  }
+
+  public ResponseEntity<?> getById(Long id) {
+
+    Optional<BonDeCommande> bonDeCommande = bonDeCommandeRepository.findById(id);
+
+    if (!bonDeCommande.isPresent()) {
+      ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(), 617, "Bon de commande n'existe pas");
+      return new ResponseEntity<>(errorResponseModel, HttpStatus.BAD_REQUEST);
+    }
+
+
+    return new ResponseEntity<>(bonDeCommande.get(),HttpStatus.OK);
+  }
 }

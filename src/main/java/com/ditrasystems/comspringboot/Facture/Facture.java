@@ -2,7 +2,9 @@ package com.ditrasystems.comspringboot.Facture;
 
 import com.ditrasystems.comspringboot.ArticleFacture.ArticleFacture;
 import com.ditrasystems.comspringboot.Avoir.Avoir;
+import com.ditrasystems.comspringboot.BonDeCommande.BonDeCommande;
 import com.ditrasystems.comspringboot.BonDeLivraison.BonDeLivrasion;
+
 import com.ditrasystems.comspringboot.Fournisseur.Fournisseur;
 import com.ditrasystems.comspringboot.Paiement.Paiement;
 import org.hibernate.annotations.SQLDelete;
@@ -25,7 +27,7 @@ public class Facture {
 
   private boolean deleted;
 
-  @OneToMany(mappedBy = "facture")
+  @OneToMany(mappedBy = "facture" , cascade = CascadeType.ALL)
   private Collection<ArticleFacture> articleFactures;
 
   @OneToOne(mappedBy = "facture", cascade = CascadeType.ALL)
@@ -34,8 +36,13 @@ public class Facture {
   @ManyToMany(mappedBy = "factures")
   private Collection<Paiement> paiements;
 
-  @OneToMany(mappedBy = "facture")
-  private Collection<BonDeLivrasion> bonDeLivrasions  = new ArrayList<>();
+
+  @ManyToMany(mappedBy = "factures")
+  private Collection<BonDeLivrasion> bonDeLivrasions = new ArrayList<>();
+
+
+  @ManyToMany(mappedBy = "factures")
+  private Collection<BonDeCommande> bonDeCommandes = new ArrayList<>();
 
   @ManyToOne
   private Fournisseur fournisseur;

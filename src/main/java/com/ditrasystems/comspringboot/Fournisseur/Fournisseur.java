@@ -50,7 +50,7 @@ public class Fournisseur {
   private String website;
 
 
-  @ManyToMany(cascade = {CascadeType.ALL})
+  @ManyToMany(cascade = {CascadeType.PERSIST,CascadeType.MERGE})
   @JoinTable(name = "banque_fournisseur",
       joinColumns = { @JoinColumn(name = "fournisseurId") },
       inverseJoinColumns = { @JoinColumn(name = "banqueId") })

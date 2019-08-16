@@ -202,4 +202,20 @@ public class DemandeOffreServices {
     return new ResponseEntity<>(HttpStatus.OK);
   }
 
+  public ResponseEntity<?> getAll() {
+    return new ResponseEntity<>(demandeOffreRepository.findAll(),HttpStatus.OK);
+
+  }
+
+  public ResponseEntity<?> getById(Long id) {
+    Optional<DemandeOffre> demandeOffre = demandeOffreRepository.findById(id);
+
+    if (!demandeOffre.isPresent()) {
+      ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(), 617, "Demande d'offre n'existe pas");
+      return new ResponseEntity<>(errorResponseModel, HttpStatus.BAD_REQUEST);
+    }
+
+
+    return new ResponseEntity<>(demandeOffre.get(),HttpStatus.OK);
+  }
 }
