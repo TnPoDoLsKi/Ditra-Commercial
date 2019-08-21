@@ -68,28 +68,28 @@ public class Agenda {
     this.nom = nom;
   }
 
-  public String getprofession() {
+  public String getProfession() {
     return profession;
   }
 
-  public void setprofession(String profession) {
+  public void setProfession(String profession) {
     this.profession = profession;
   }
 
-  public String getTel1() {
+  public String getTelephone_1() {
     return telephone_1;
   }
 
-  public void setTel1(String tel1) {
-    this.telephone_1 = tel1;
+  public void setTelephone_1(String telephone_1) {
+    this.telephone_1 = telephone_1;
   }
 
-  public String getTel2() {
+  public String getTelephone_2() {
     return telephone_2;
   }
 
-  public void setTel2(String tel2) {
-    this.telephone_2 = tel2;
+  public void setTelephone_2(String telephone_2) {
+    this.telephone_2 = telephone_2;
   }
 
   public String getCin() {
@@ -116,27 +116,19 @@ public class Agenda {
     this.email = email;
   }
 
-  public Fournisseur getFournisseur() {
-    return fournisseur;
-  }
-
-  public void setFournisseur(Fournisseur fournisseur) {
-    this.fournisseur = fournisseur;
-  }
-
-  public String getProfession() {
-    return profession;
-  }
-
-  public void setProfession(String profession) {
-    this.profession = profession;
-  }
-
   public Boolean getPrincipale() {
     return principale;
   }
 
   public void setPrincipale(Boolean principale) {
     this.principale = principale;
+  }
+
+  public Fournisseur getFournisseur() {
+    return fournisseur;
+  }
+
+  public void setFournisseur(Fournisseur fournisseur) {
+    this.fournisseur = fournisseur;
   }
 }

@@ -61,15 +61,15 @@ public class AgendaService {
     }
 
     if (profession != null){
-      agenda.get().setprofession(profession);
+      agenda.get().setProfession(profession);
     }
 
     if (tel1 != null){
-      agenda.get().setTel1(tel1);
+      agenda.get().setTelephone_1(tel1);
     }
 
     if (tel2 != null){
-      agenda.get().setTel2(tel2);
+      agenda.get().setTelephone_2(tel2);
     }
 
     if (cin != null){
