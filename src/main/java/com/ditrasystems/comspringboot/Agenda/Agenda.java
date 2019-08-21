@@ -12,7 +12,6 @@ import javax.persistence.*;
 @Where(clause = "deleted = false")
 public class Agenda {
 
-
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private long id;
@@ -24,6 +23,8 @@ public class Agenda {
   private String telephone_1;
 
   private String telephone_2;
+
+  private String fax;
 
   private String cin;
 
@@ -130,5 +131,13 @@ public class Agenda {
 
   public void setFournisseur(Fournisseur fournisseur) {
     this.fournisseur = fournisseur;
+  }
+
+  public String getFax() {
+    return fax;
+  }
+
+  public void setFax(String fax) {
+    this.fax = fax;
   }
 }

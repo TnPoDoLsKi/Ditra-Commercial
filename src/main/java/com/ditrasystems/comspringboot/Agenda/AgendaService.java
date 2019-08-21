@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Optional;
 
 @Service
@@ -20,9 +21,9 @@ public class AgendaService {
   AgendaRepository agendaRepository;
 
 
-  public ResponseEntity<?> create(Long fournisseurId, Agenda agenda) {
-   if (fournisseurId != null) {
-     Optional<Fournisseur> fournisseur = fournisseurRepository.findById(fournisseurId);
+  public ResponseEntity<?> createService(String fournisseurCode, Agenda agenda) {
+   if (fournisseurCode != null) {
+     Optional<Fournisseur> fournisseur = fournisseurRepository.findFournisseurByCode(fournisseurCode);
 
      if (!fournisseur.isPresent()) {
        ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(), 605, "Fournisseur n'existe pas");
@@ -35,7 +36,38 @@ public class AgendaService {
     return new ResponseEntity<>(agendaRepository.save(agenda),HttpStatus.OK);
   }
 
-  public ResponseEntity<?> edit(long id, String nom, String profession, String tel1, String tel2, String cin, String email, Long fournisseurId) {
+  public ResponseEntity<?> getAllService() {
+    return new ResponseEntity<>(agendaRepository.findAll(),HttpStatus.OK);
+
+  }
+
+  public ResponseEntity<?> getAgendaByIdService(long id){
+    Optional<Agenda> agenda = agendaRepository.findById(id);
+
+    if (!agenda.isPresent()){
+      ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),613,"Agenda n'existe pas");
+      return new ResponseEntity<>(errorResponseModel,HttpStatus.BAD_REQUEST);
+    }
+    return new ResponseEntity<>(agenda,HttpStatus.OK);
+
+  }
+
+  public ResponseEntity<?> getAgendaByFournisseurCodeService(String fournisseurCode){
+
+    Optional<Fournisseur> fournisseur = fournisseurRepository.findFournisseurByCode(fournisseurCode);
+
+    if (!fournisseur.isPresent()){
+      ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),605,"Fournisseur n'existe pas");
+      return new ResponseEntity<>(errorResponseModel,HttpStatus.BAD_REQUEST);
+    }
+
+    ArrayList<Agenda> agendas = agendaRepository.findByFournisseurId(fournisseur.get().getId());
+
+    return new ResponseEntity<>(agendas,HttpStatus.OK);
+
+  }
+
+  public ResponseEntity<?> updateService(long id, String nom, String profession, String tel1, String tel2, String cin, String email,String fax, Boolean principale, String fournisseurCode) {
     Optional<Agenda> agenda = agendaRepository.findById(id);
 
     if (!agenda.isPresent()){
@@ -43,8 +75,8 @@ public class AgendaService {
       return new ResponseEntity<>(errorResponseModel,HttpStatus.BAD_REQUEST);
     }
 
-    if (fournisseurId != null) {
-      Optional<Fournisseur> fournisseur = fournisseurRepository.findById(fournisseurId);
+    if (fournisseurCode != null) {
+      Optional<Fournisseur> fournisseur = fournisseurRepository.findFournisseurByCode(fournisseurCode);
 
       if (!fournisseur.isPresent()) {
         ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(), 605, "Fournisseur n'existe pas");
@@ -72,6 +104,10 @@ public class AgendaService {
       agenda.get().setTelephone_2(tel2);
     }
 
+    if (fax != null){
+      agenda.get().setFax(fax);
+    }
+
     if (cin != null){
       agenda.get().setCin(cin);
     }
@@ -79,13 +115,16 @@ public class AgendaService {
     if (email != null){
       agenda.get().setEmail(email);
     }
+    if (principale != null){
+      agenda.get().setPrincipale(principale);
+    }
 
     agendaRepository.save(agenda.get());
 
     return new ResponseEntity<>(HttpStatus.OK);
   }
 
-  public ResponseEntity<?> delete(long id) {
+  public ResponseEntity<?> deleteService(long id) {
 
     Optional<Agenda> agenda = agendaRepository.findById(id);
 

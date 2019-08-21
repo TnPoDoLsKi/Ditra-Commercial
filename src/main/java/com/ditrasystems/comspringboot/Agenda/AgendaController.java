@@ -13,18 +13,34 @@ public class AgendaController {
   AgendaService agendaService;
 
   @PostMapping("/agenda")
-  public ResponseEntity<?> create(Long fournisseurId, @RequestBody Agenda agenda){
-    return agendaService.create(fournisseurId,agenda);
+  public ResponseEntity<?> create(String fournisseurCode, @RequestBody Agenda agenda){
+    return agendaService.createService(fournisseurCode,agenda);
+  }
+
+  @GetMapping("/agendas")
+  public ResponseEntity<?> getAll(){
+    return agendaService.getAllService();
+
+  }
+
+  @GetMapping("/agenda/{id}")
+  public ResponseEntity<?> getAgendaById(@PathVariable long id){
+    return agendaService.getAgendaByIdService(id);
+  }
+
+  @GetMapping("/agendas/byFournisseur/{fournisseurCode}")
+  public ResponseEntity<?> getAgendaByFournisseurCode(@PathVariable String fournisseurCode){
+    return agendaService.getAgendaByFournisseurCodeService(fournisseurCode);
   }
 
   @PutMapping("/agenda/{id}")
-  public ResponseEntity<?> edit(@PathVariable long id,String nom, String profession,String tel1,String tel2 ,String cin ,String email,Long fournisseurId){
-    return agendaService.edit( id, nom,  profession, tel1, tel2 , cin , email,fournisseurId);
+  public ResponseEntity<?> update(@PathVariable long id,String nom, String profession,String tel1,String tel2 ,String cin ,String email,String fax, Boolean principale,String fournisseurCode){
+    return agendaService.updateService( id, nom,  profession, tel1, tel2 , cin , email,fax, principale, fournisseurCode);
   }
 
   @DeleteMapping("/agenda/{id}")
   public ResponseEntity<?> delete(@PathVariable long id){
-    return agendaService.delete(id);
+    return agendaService.deleteService(id);
   }
 
 

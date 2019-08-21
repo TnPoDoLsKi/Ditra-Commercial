@@ -25,7 +25,7 @@ public class FournisseurServices {
 
     if (fournisseur.getName()==null)
     {
-        ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),600,"Fournisseur name requis");
+        ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),600,"Fournisseur nom requis");
         return new ResponseEntity<>(errorResponseModel,HttpStatus.BAD_REQUEST);
     }
 
