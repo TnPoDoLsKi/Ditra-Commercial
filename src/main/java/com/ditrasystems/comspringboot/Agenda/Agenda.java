@@ -1,6 +1,7 @@
 package com.ditrasystems.comspringboot.Agenda;
 
 import com.ditrasystems.comspringboot.Fournisseur.Fournisseur;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
@@ -20,20 +21,35 @@ public class Agenda {
 
   private String profession;
 
-  private String tel1;
+  private String telephone_1;
 
-  private String tel2;
+  private String telephone_2;
 
   private String cin;
 
+  @JsonIgnore
   private boolean deleted;
 
   private String email;
 
+  private Boolean principale;
+
+  @JsonIgnore
   @ManyToOne
   Fournisseur fournisseur;
 
   public Agenda() {
+  }
+
+  public Agenda(String nom, String profession, String tel1, String tel2, String cin, String email, Boolean principale, Fournisseur fournisseur) {
+    this.nom = nom;
+    this.profession = profession;
+    this.telephone_1 = tel1;
+    this.telephone_2 = tel2;
+    this.cin = cin;
+    this.email = email;
+    this.principale = principale;
+    this.fournisseur = fournisseur;
   }
 
   public long getId() {
@@ -61,19 +77,19 @@ public class Agenda {
   }
 
   public String getTel1() {
-    return tel1;
+    return telephone_1;
   }
 
   public void setTel1(String tel1) {
-    this.tel1 = tel1;
+    this.telephone_1 = tel1;
   }
 
   public String getTel2() {
-    return tel2;
+    return telephone_2;
   }
 
   public void setTel2(String tel2) {
-    this.tel2 = tel2;
+    this.telephone_2 = tel2;
   }
 
   public String getCin() {
@@ -106,5 +122,21 @@ public class Agenda {
 
   public void setFournisseur(Fournisseur fournisseur) {
     this.fournisseur = fournisseur;
+  }
+
+  public String getProfession() {
+    return profession;
+  }
+
+  public void setProfession(String profession) {
+    this.profession = profession;
+  }
+
+  public Boolean getPrincipale() {
+    return principale;
+  }
+
+  public void setPrincipale(Boolean principale) {
+    this.principale = principale;
   }
 }

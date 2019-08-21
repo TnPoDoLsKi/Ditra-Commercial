@@ -7,6 +7,7 @@ import com.ditrasystems.comspringboot.BonDeCommande.BonDeCommande;
 import com.ditrasystems.comspringboot.BonDeLivraison.BonDeLivrasion;
 import com.ditrasystems.comspringboot.DemandeOffre.DemandeOffre;
 import com.ditrasystems.comspringboot.Facture.Facture;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
@@ -23,12 +24,13 @@ public class Fournisseur {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private long id;
 
-  private String name;
+  private String nom;
 
   private String code;
 
   private String activite;
 
+  @JsonIgnore
   private boolean deleted;
 
   private String adresse;
@@ -49,7 +51,13 @@ public class Fournisseur {
 
   private String website;
 
+  private Float plafont_credit;
 
+  private String observation;
+
+
+
+  @JsonIgnore
   @ManyToMany(cascade = {CascadeType.PERSIST,CascadeType.MERGE})
   @JoinTable(name = "banque_fournisseur",
       joinColumns = { @JoinColumn(name = "fournisseurId") },
@@ -59,22 +67,27 @@ public class Fournisseur {
 
 
 
-
+  @JsonIgnore
   @OneToMany(mappedBy = "fournisseur",cascade = CascadeType.ALL)
   private Collection<Article> articles = new ArrayList<>();
 
+  @JsonIgnore
   @OneToMany(mappedBy = "fournisseur",cascade = CascadeType.ALL)
   private Collection<BonDeLivrasion> bonDeLivrasions = new ArrayList<>();
 
+  @JsonIgnore
   @OneToMany(mappedBy = "fournisseur",cascade = CascadeType.ALL)
   private Collection<BonDeCommande> bonDeCommandes  = new ArrayList<>();
 
+  @JsonIgnore
   @OneToMany(mappedBy = "fournisseur",cascade = CascadeType.ALL)
   private Collection<Facture> factures = new ArrayList<>();
 
+  @JsonIgnore
   @OneToMany(mappedBy = "fournisseur",cascade = CascadeType.ALL)
   private Collection<Agenda> agendas= new ArrayList<>();
 
+  @JsonIgnore
   @OneToMany(mappedBy = "fournisseur",cascade = CascadeType.ALL)
   private Collection<DemandeOffre> demandeOffres= new ArrayList<>();
 
@@ -94,11 +107,11 @@ public class Fournisseur {
   }
 
   public String getName() {
-    return name;
+    return nom;
   }
 
   public void setName(String name) {
-    this.name = name;
+    this.nom = name;
   }
 
   public void setCode(String code) {
@@ -243,5 +256,37 @@ public class Fournisseur {
 
   public void addAgenda(Agenda agenda) {
     agendas.add(agenda);
+  }
+
+  public String getNom() {
+    return nom;
+  }
+
+  public void setNom(String nom) {
+    this.nom = nom;
+  }
+
+  public Float getPlafont_credit() {
+    return plafont_credit;
+  }
+
+  public void setPlafont_credit(Float plafont_credit) {
+    this.plafont_credit = plafont_credit;
+  }
+
+  public Collection<DemandeOffre> getDemandeOffres() {
+    return demandeOffres;
+  }
+
+  public void setDemandeOffres(Collection<DemandeOffre> demandeOffres) {
+    this.demandeOffres = demandeOffres;
+  }
+
+  public String getObservation() {
+    return observation;
+  }
+
+  public void setObservation(String observation) {
+    this.observation = observation;
   }
 }

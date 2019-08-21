@@ -19,6 +19,20 @@ public class FournisseurController {
     return fournisseurServices.create(fournisseur);
   }
 
+  @GetMapping("/fournisseurs")
+  public ResponseEntity<?> getAll(){
+    return fournisseurServices.getAllService();
+  }
+
+  @GetMapping("/fournisseur/{id}")
+  public ResponseEntity<?> getById(@PathVariable long id){
+    return fournisseurServices.getByIdService(id);
+  }
+
+  @GetMapping("/fournisseur/ByCode/{code}")
+  public ResponseEntity<?> getByCode(@PathVariable String code){
+    return fournisseurServices.getByCode(code);
+  }
 
   @PutMapping("/fournisseur/{id}")
   public ResponseEntity<?> edit(@PathVariable long id, String name, String code, String activite, String adresse,  String codePostale,  String ville,  String pays,  String codeTva,  String matFiscale,  Float solde,  String email,  String website){
@@ -28,21 +42,5 @@ public class FournisseurController {
   @DeleteMapping("/fournisseur/{id}")
   public ResponseEntity<?> delete(@PathVariable long id){
     return  fournisseurServices.delete(id);
-  }
-
-
-  @GetMapping("/fournisseur/{id}")
-  public ResponseEntity<?> getById(@PathVariable long id){
-    return fournisseurServices.getById(id);
-  }
-
-  @GetMapping("/fournisseurs")
-  public ResponseEntity<?> getAll(){
-    return fournisseurServices.getAll();
-  }
-
-  @GetMapping("/fournisseur/{code}")
-  public ResponseEntity<?> getByCode(@PathVariable String code){
-    return fournisseurServices.getByCode(code);
   }
 }

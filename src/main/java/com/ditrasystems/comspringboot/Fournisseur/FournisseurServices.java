@@ -2,12 +2,14 @@ package com.ditrasystems.comspringboot.Fournisseur;
 
 import com.ditrasystems.comspringboot.Agenda.Agenda;
 import com.ditrasystems.comspringboot.Fournisseur.Models.FournisseurModel;
+import com.ditrasystems.comspringboot.Fournisseur.Models.FournisseurWithAgendaPrincipal;
 import com.ditrasystems.comspringboot.Utils.ErrorResponseModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Optional;
 
 @Service
@@ -62,21 +64,7 @@ public class FournisseurServices {
     return new ResponseEntity<Fournisseur>(fournisseur, HttpStatus.CREATED);
   }
 
-  public ResponseEntity<?> delete(long id) {
-    Optional<Fournisseur> fournisseur1 = fournisseurRepository.findById(id);
-
-    if (!fournisseur1.isPresent()){
-      ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),605,"Fournisseur n'existe pas");
-      return new ResponseEntity<>(errorResponseModel,HttpStatus.BAD_REQUEST);
-    }
-
-    fournisseurRepository.delete(fournisseur1.get());
-
-    return new ResponseEntity<>(HttpStatus.OK);
-
-  }
-
-  public ResponseEntity<?> getById(long id) {
+  public ResponseEntity<?> getByIdService(long id) {
     Optional<Fournisseur> fournisseur = fournisseurRepository.findById(id);
 
     if (!fournisseur.isPresent()){
@@ -88,8 +76,27 @@ public class FournisseurServices {
 
   }
 
-  public ResponseEntity<?> getAll() {
-    return new ResponseEntity<>(fournisseurRepository.findAll(),HttpStatus.OK);
+  public ResponseEntity<?> getAllService() {
+
+    String  telephone = "";
+
+    ArrayList<FournisseurWithAgendaPrincipal> fournisseurWithAgendaPrincipals = new ArrayList<>();
+
+    ArrayList<Fournisseur> fournisseurs = (ArrayList<Fournisseur>) fournisseurRepository.findAll();
+
+    for(Fournisseur fournisseur : fournisseurs){
+
+      for (Agenda agenda : fournisseur.getAgendas()){
+        if (agenda.getPrincipale() == true){
+          telephone = agenda.getTel1();
+        }
+      }
+
+      FournisseurWithAgendaPrincipal fournisseurWithAgendaPrincipal = new FournisseurWithAgendaPrincipal(fournisseur.getCode(),fournisseur.getNom(),fournisseur.getActivite(),fournisseur.getVille(),fournisseur.getSolde(),telephone);
+      fournisseurWithAgendaPrincipals.add(fournisseurWithAgendaPrincipal);
+    }
+
+    return new ResponseEntity<>(fournisseurWithAgendaPrincipals,HttpStatus.OK);
   }
 
   public ResponseEntity<?> getByCode(String code) {
@@ -164,4 +171,19 @@ public class FournisseurServices {
 
     return new ResponseEntity<>(HttpStatus.OK);
   }
+
+  public ResponseEntity<?> delete(long id) {
+    Optional<Fournisseur> fournisseur = fournisseurRepository.findById(id);
+
+    if (!fournisseur.isPresent()){
+      ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),605,"Fournisseur n'existe pas");
+      return new ResponseEntity<>(errorResponseModel,HttpStatus.BAD_REQUEST);
+    }
+
+    fournisseurRepository.delete(fournisseur.get());
+
+    return new ResponseEntity<>(HttpStatus.OK);
+
+  }
+
 }

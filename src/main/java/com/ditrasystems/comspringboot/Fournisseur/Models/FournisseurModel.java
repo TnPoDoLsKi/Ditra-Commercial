@@ -7,6 +7,8 @@ import java.util.List;
 
 public class FournisseurModel {
 
+  //{ code, name, activite, pays, ville, codePostal, address, codeTVA, solde, plafontCredit, email, siteweb, observation }
+
   private Fournisseur fournisseur;
 
   private List<Agenda> agendaList;
