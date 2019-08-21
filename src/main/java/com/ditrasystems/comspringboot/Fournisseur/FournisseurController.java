@@ -16,7 +16,7 @@ public class FournisseurController {
 
   @PostMapping("/fournisseur")
   public ResponseEntity<?> create(@RequestBody FournisseurModel fournisseur){
-    return fournisseurServices.create(fournisseur);
+    return fournisseurServices.createService(fournisseur);
   }
 
   @GetMapping("/fournisseurs")
@@ -24,23 +24,18 @@ public class FournisseurController {
     return fournisseurServices.getAllService();
   }
 
-  @GetMapping("/fournisseur/{id}")
-  public ResponseEntity<?> getById(@PathVariable long id){
-    return fournisseurServices.getByIdService(id);
-  }
-
-  @GetMapping("/fournisseur/ByCode/{code}")
+  @GetMapping("/fournisseur/{code}")
   public ResponseEntity<?> getByCode(@PathVariable String code){
-    return fournisseurServices.getByCode(code);
+    return fournisseurServices.getByCodeService(code);
   }
 
-  @PutMapping("/fournisseur/{id}")
-  public ResponseEntity<?> edit(@PathVariable long id, String name, String code, String activite, String adresse,  String codePostale,  String ville,  String pays,  String codeTva,  String matFiscale,  Float solde,  String email,  String website){
-    return  fournisseurServices.edit(id,name,code,activite,adresse,codePostale,ville,pays,codeTva,matFiscale,solde,email,website);
+  @PutMapping("/fournisseur/{code}")
+  public ResponseEntity<?> editByCode(@PathVariable String code, String name, String codeUpdate, String activite, String adresse,  String codePostale,  String ville,  String pays,  String codeTva,  String matFiscale,  Float solde,  String email,  String website,Float plafont_credit,String observation){
+    return  fournisseurServices.updateService(code,name,codeUpdate,activite,adresse,codePostale,ville,pays,codeTva,matFiscale,solde,email,website,plafont_credit,observation);
   }
 
-  @DeleteMapping("/fournisseur/{id}")
-  public ResponseEntity<?> delete(@PathVariable long id){
-    return  fournisseurServices.delete(id);
+  @DeleteMapping("/fournisseur/{code}")
+  public ResponseEntity<?> delete(@PathVariable String code){
+    return  fournisseurServices.deleteService(code);
   }
 }

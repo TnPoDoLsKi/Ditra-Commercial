@@ -18,7 +18,7 @@ public class FournisseurServices {
   @Autowired
   FournisseurRepository fournisseurRepository;
 
-  public ResponseEntity<?> create(FournisseurModel fournisseurModel) {
+  public ResponseEntity<?> createService(FournisseurModel fournisseurModel) {
 
     Fournisseur fournisseur=fournisseurModel.getFournisseur();
 
@@ -64,8 +64,8 @@ public class FournisseurServices {
     return new ResponseEntity<Fournisseur>(fournisseur, HttpStatus.CREATED);
   }
 
-  public ResponseEntity<?> getByIdService(long id) {
-    Optional<Fournisseur> fournisseur = fournisseurRepository.findById(id);
+  public ResponseEntity<?> getByCodeService(String code) {
+    Optional<Fournisseur> fournisseur = fournisseurRepository.findFournisseurByCode(code);
 
     if (!fournisseur.isPresent()){
       ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),605,"Fournisseur n'existe pas");
@@ -99,21 +99,9 @@ public class FournisseurServices {
     return new ResponseEntity<>(fournisseurWithAgendaPrincipals,HttpStatus.OK);
   }
 
-  public ResponseEntity<?> getByCode(String code) {
+  public ResponseEntity<?> updateService(String code, String name, String codeUpdate, String activite, String adresse, String codePostale, String ville, String pays, String codeTva, String matFiscale, Float solde, String email, String website, Float plafont_credit,String observation) {
 
     Optional<Fournisseur> fournisseur = fournisseurRepository.findFournisseurByCode(code);
-
-    if (!fournisseur.isPresent()){
-      ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),605,"Fournisseur n'existe pas");
-      return new ResponseEntity<>(errorResponseModel,HttpStatus.BAD_REQUEST);
-    }
-
-    return new ResponseEntity<Fournisseur>(fournisseur.get(),HttpStatus.OK);
-  }
-
-  public ResponseEntity<?> edit(long id, String name, String code, String activite, String adresse, String codePostale, String ville, String pays, String codeTva, String matFiscale, Float solde, String email, String website) {
-
-    Optional<Fournisseur> fournisseur = fournisseurRepository.findById(id);
 
     if (!fournisseur.isPresent()){
       ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),605,"Fournisseur n'existe pas");
@@ -167,13 +155,21 @@ public class FournisseurServices {
       fournisseur.get().setWebsite(website);
     }
 
+    if (plafont_credit != null){
+      fournisseur.get().setPlafont_credit(plafont_credit);
+    }
+
+    if (observation != null){
+      fournisseur.get().setObservation(observation);
+    }
+
     fournisseurRepository.save(fournisseur.get());
 
     return new ResponseEntity<>(HttpStatus.OK);
   }
 
-  public ResponseEntity<?> delete(long id) {
-    Optional<Fournisseur> fournisseur = fournisseurRepository.findById(id);
+  public ResponseEntity<?> deleteService(String code) {
+    Optional<Fournisseur> fournisseur = fournisseurRepository.findFournisseurByCode(code);
 
     if (!fournisseur.isPresent()){
       ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),605,"Fournisseur n'existe pas");
