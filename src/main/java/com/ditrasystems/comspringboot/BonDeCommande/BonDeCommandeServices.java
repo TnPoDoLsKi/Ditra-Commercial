@@ -63,7 +63,7 @@ public class BonDeCommandeServices {
       ArticleBonCommande articleBonCommande = new ArticleBonCommande();
 
       articleBonCommande.setArticle(article.get());
-      articleBonCommande.setPrix(article.get().getPrixHT());
+      articleBonCommande.setPrix(article.get().getPAchatHT());
       articleBonCommande.setQuantite(articleQuantityModel.getQuantity());
       articleBonCommandes.add(articleBonCommande);
     }
@@ -137,7 +137,7 @@ public class BonDeCommandeServices {
       ArticleBonCommande articleBonCommande = new ArticleBonCommande();
 
       articleBonCommande.setArticle(article.get());
-      articleBonCommande.setPrix(article.get().getPrixHT());
+      articleBonCommande.setPrix(article.get().getPAchatHT());
       articleBonCommande.setQuantite(articleQuantityModel.getQuantity());
       articleBonCommandes.add(articleBonCommande);
     }

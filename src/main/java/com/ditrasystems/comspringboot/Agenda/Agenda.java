@@ -1,7 +1,9 @@
 package com.ditrasystems.comspringboot.Agenda;
 
 import com.ditrasystems.comspringboot.Fournisseur.Fournisseur;
+import com.ditrasystems.comspringboot.Utils.View;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonView;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 

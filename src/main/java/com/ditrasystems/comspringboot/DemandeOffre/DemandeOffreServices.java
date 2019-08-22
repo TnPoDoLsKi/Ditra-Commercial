@@ -63,7 +63,7 @@ public class DemandeOffreServices {
       ArticleOffre articleOffre = new ArticleOffre();
 
       articleOffre.setArticle(article.get());
-      articleOffre.setPrix(article.get().getPrixHT());
+      articleOffre.setPrix(article.get().getPAchatHT());
       articleOffre.setQuantite(articleQuantityModel.getQuantity());
       articleOffres.add(articleOffre);
     }
@@ -136,7 +136,7 @@ public class DemandeOffreServices {
       ArticleOffre articleOffre = new ArticleOffre();
 
       articleOffre.setArticle(article.get());
-      articleOffre.setPrix(article.get().getPrixHT());
+      articleOffre.setPrix(article.get().getPAchatHT());
       articleOffre.setQuantite(articleQuantityModel.getQuantity());
       articleOffres.add(articleOffre);
     }

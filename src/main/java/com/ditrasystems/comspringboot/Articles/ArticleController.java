@@ -1,6 +1,8 @@
 package com.ditrasystems.comspringboot.Articles;
 
 import com.ditrasystems.comspringboot.Articles.Models.ArticleModel;
+import com.ditrasystems.comspringboot.Utils.View;
+import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,21 +19,6 @@ public class ArticleController {
     return articleServices.create(articleModel);
   }
 
-  @PutMapping("/article/{id}")
-  public ResponseEntity<?> edit(@PathVariable Long id,  Long familleId,  Long fournisseurId ,  String code,  String designation,  String type,  String codeABarre,  Float prixHT,  Float remise,  Float tva,  Float fodec,  Float stock ,  Float quantiteVendu,  Float stockMin,  Float prixVenteHTMin ){
-    return  articleServices.edit( id , familleId , fournisseurId,  code, designation, type, codeABarre, prixHT,  remise, tva, fodec, stock ,  quantiteVendu,  stockMin, prixVenteHTMin );
-  }
-
-  @DeleteMapping("/article/{id}")
-  public ResponseEntity<?> delete(@PathVariable Long id){
-    return articleServices.delete(id);
-  }
-
-  @PutMapping("/article/addMatierePremier/{id}")
-  public ResponseEntity<?> addMatierePremier(@PathVariable Long id, @RequestParam  Long matieresPremiers , @RequestParam Float quantity ){
-    return articleServices.addMatierePremier(id,matieresPremiers,quantity);
-  }
-
   @GetMapping("/articles")
   public ResponseEntity<?> getAll( String type){
     return articleServices.getAll(type);
@@ -46,6 +33,21 @@ public class ArticleController {
   public ResponseEntity<?> getConstructions(@PathVariable Long id){
     return articleServices.getConstructions(id);
   }
+
+  @PutMapping("/article/{code}")
+  public ResponseEntity<?> edit(@PathVariable String code,  Long familleId,  Long fournisseurId ,  String codeA,  String designation,  String type,  String codeABarre,  Float PAchatHT,  Float remise,  Float tva,  Float fodec,  Float stock ,  Float quantiteVendu,  Float stockMin,  Float prixVenteHTMin ){
+    return  articleServices.edit( code , familleId , fournisseurId,  codeA, designation, type, codeABarre, PAchatHT,  remise, tva, fodec, stock ,  quantiteVendu,  stockMin, prixVenteHTMin );
+  }
+  @PutMapping("/article/addMatierePremier/{id}")
+  public ResponseEntity<?> addMatierePremier(@PathVariable long id, @RequestParam  Long matieresPremiers , @RequestParam Float quantity ){
+    return articleServices.addMatierePremier(id,matieresPremiers,quantity);
+  }
+
+  @DeleteMapping("/article/{code}")
+  public ResponseEntity<?> delete(@PathVariable String code){
+    return articleServices.delete(code);
+  }
+
 
 
 

@@ -1,5 +1,6 @@
 package com.ditrasystems.comspringboot.Articles;
 
+import com.ditrasystems.comspringboot.Articles.Models.ArticleModelGetAll;
 import com.ditrasystems.comspringboot.Articles.Models.MatierePremierQuantity;
 import com.ditrasystems.comspringboot.Articles.Models.ArticleModel;
 import com.ditrasystems.comspringboot.Construction.Construction;
@@ -15,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Optional;
 
 @Service
@@ -61,7 +63,7 @@ public class ArticleServices {
         ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),612,"Produit Fini requis au min une matiere premiere");
         return new ResponseEntity<>(errorResponseModel, HttpStatus.BAD_REQUEST);
       }
-      article = articleRepository.save(article);
+      //article = articleRepository.save(article);
 
 
       for (MatierePremierQuantity matierePremierQuantity : articleModel.getMatierePremierQuantities()){
@@ -87,114 +89,9 @@ public class ArticleServices {
       marge.setArticle(article);
     }
 
-    article = articleRepository.save(article);
+    //article = articleRepository.save(article);
 
-    return new ResponseEntity<>(article,HttpStatus.OK);
-  }
-
-  public ResponseEntity<?> edit(long id,Long familleId,Long fournisseurId, String code, String designation, String type, String codeABarre, Float prixHT, Float remise, Float tva, Float fodec, Float stock, Float quantiteVendu, Float stockMin, Float prixVenteHTMin) {
-
-    Optional<Article> article = articleRepository.findById(id);
-
-    if (!article.isPresent()){
-      ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),609,"Article n'existe pas");
-      return new ResponseEntity<>(errorResponseModel,HttpStatus.BAD_REQUEST);
-    }
-
-
-
-    if (fournisseurId != null){
-      Optional<Fournisseur> fournisseur = fournisseurRepository.findById(fournisseurId);
-
-      if (!fournisseur.isPresent()){
-        ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),605,"Fournisseur n'existe pas");
-        return new ResponseEntity<>(errorResponseModel,HttpStatus.BAD_REQUEST);
-      }
-
-      article.get().setFournisseur(fournisseur.get());
-
-    }
-
-    if (familleId != null){
-      Optional<Famille> famille = familleRepository.findById(familleId);
-
-      if (!famille.isPresent()){
-        ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),606,"Famille n'existe pas");
-        return new ResponseEntity<>(errorResponseModel,HttpStatus.BAD_REQUEST);
-      }
-
-      article.get().setFamille(famille.get());
-
-    }
-
-
-    if (code != null){
-      article.get().setCode(code);
-    }
-
-    if (designation != null){
-      article.get().setDesignation(designation);
-    }
-
-    if (type != null){
-      article.get().setType(type);
-    }
-
-    if (codeABarre!= null){
-      article.get().setCodeABarre(codeABarre);
-    }
-
-
-    if ( prixHT != null){
-      article.get().setPrixHT(prixHT);
-    }
-
-    if ( remise!= null){
-      article.get().setRemise(remise);
-    }
-
-    if ( tva!= null){
-      article.get().setTva(tva);
-    }
-
-    if (fodec != null){
-      article.get().setFodec(fodec);
-    }
-
-    if ( stock != null){
-      article.get().setStock(stock);
-    }
-
-    if (quantiteVendu!= null){
-      article.get().setQuantiteVendu(quantiteVendu);
-    }
-
-    if (stockMin != null){
-      article.get().setStockMin(stockMin);
-    }
-
-    if (prixVenteHTMin != null){
-      article.get().setPrixVenteHTMin(prixVenteHTMin);
-    }
-
-    articleRepository.save(article.get());
-
-    return new  ResponseEntity<>(HttpStatus.OK);
-  }
-
-  public ResponseEntity<?> delete(long id) {
-
-    Optional<Article> article = articleRepository.findById(id);
-
-    if (!article.isPresent()){
-      ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),609,"Article n'existe pas");
-      return new ResponseEntity<>(errorResponseModel,HttpStatus.BAD_REQUEST);
-    }
-
-    articleRepository.delete(article.get());
-
-    return new ResponseEntity<>(HttpStatus.OK);
-
+    return new ResponseEntity<>(articleRepository.save(article),HttpStatus.OK);
   }
 
   public ResponseEntity<?> addMatierePremier(long id, Long matieresPremiers,float quantity) {
@@ -235,11 +132,23 @@ public class ArticleServices {
 
   public ResponseEntity<?> getAll(String type) {
 
+    ArrayList<Article> articles = new ArrayList<>();
+    ArrayList<ArticleModelGetAll> articleModelGetAlls = new ArrayList<>();
+
     if (type!= null){
-      return new ResponseEntity<>(articleRepository.findByType(type),HttpStatus.OK);
+      articles = articleRepository.findByType(type);
+    }else {
+      articles = (ArrayList<Article>) articleRepository.findAll();
     }
 
-    return new ResponseEntity<>(articleRepository.findAll(),HttpStatus.OK);
+    for (Article article : articles) {
+
+      Float PAchatTTC = article.getPAchatHT() + ((article.getPAchatHT() * article.getTva()) / 100);
+      ArticleModelGetAll articleModelGetAll = new ArticleModelGetAll(article.getId(), article.getCode(), article.getDesignation(), article.getStock(), article.getType(), PAchatTTC, article.getFamille());
+      articleModelGetAlls.add(articleModelGetAll);
+    }
+
+    return new ResponseEntity<>(articleModelGetAlls,HttpStatus.OK);
   }
 
   public ResponseEntity<?> getConstructions(long id) {
@@ -270,5 +179,110 @@ public class ArticleServices {
     }
 
     return new ResponseEntity<>(article,HttpStatus.OK);
+  }
+
+  public ResponseEntity<?> edit(String codeArticle,Long familleId,Long fournisseurId, String code, String designation, String type, String codeABarre, Float PAchatHT, Float remise, Float tva, Float fodec, Float stock, Float quantiteVendu, Float stockMin, Float prixVenteHTMin) {
+
+    Article article = articleRepository.findByCode(codeArticle);
+
+    if (article == null){
+      ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),609,"Article n'existe pas");
+      return new ResponseEntity<>(errorResponseModel,HttpStatus.BAD_REQUEST);
+    }
+
+
+
+    if (fournisseurId != null){
+      Optional<Fournisseur> fournisseur = fournisseurRepository.findById(fournisseurId);
+
+      if (!fournisseur.isPresent()){
+        ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),605,"Fournisseur n'existe pas");
+        return new ResponseEntity<>(errorResponseModel,HttpStatus.BAD_REQUEST);
+      }
+
+      article.setFournisseur(fournisseur.get());
+
+    }
+
+    if (familleId != null){
+      Optional<Famille> famille = familleRepository.findById(familleId);
+
+      if (!famille.isPresent()){
+        ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),606,"Famille n'existe pas");
+        return new ResponseEntity<>(errorResponseModel,HttpStatus.BAD_REQUEST);
+      }
+
+      article.setFamille(famille.get());
+
+    }
+
+
+    if (code != null){
+      article.setCode(code);
+    }
+
+    if (designation != null){
+      article.setDesignation(designation);
+    }
+
+    if (type != null){
+      article.setType(type);
+    }
+
+    if (codeABarre!= null){
+      article.setCodeABarre(codeABarre);
+    }
+
+
+    if ( PAchatHT != null){
+      article.setPAchatHT(PAchatHT);
+    }
+
+    if ( remise!= null){
+      article.setRemise(remise);
+    }
+
+    if ( tva!= null){
+      article.setTva(tva);
+    }
+
+    if (fodec != null){
+      article.setFodec(fodec);
+    }
+
+    if ( stock != null){
+      article.setStock(stock);
+    }
+
+    if (quantiteVendu!= null){
+      article.setQuantiteVendu(quantiteVendu);
+    }
+
+    if (stockMin != null){
+      article.setStockMin(stockMin);
+    }
+
+    if (prixVenteHTMin != null){
+      article.setPrixVenteHTMin(prixVenteHTMin);
+    }
+
+    articleRepository.save(article);
+
+    return new  ResponseEntity<>(HttpStatus.OK);
+  }
+
+  public ResponseEntity<?> delete(String code) {
+
+    Article article = articleRepository.findByCode(code);
+
+    if (article == null){
+      ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),609,"Article n'existe pas");
+      return new ResponseEntity<>(errorResponseModel,HttpStatus.BAD_REQUEST);
+    }
+
+    articleRepository.delete(article);
+
+    return new ResponseEntity<>(HttpStatus.OK);
+
   }
 }

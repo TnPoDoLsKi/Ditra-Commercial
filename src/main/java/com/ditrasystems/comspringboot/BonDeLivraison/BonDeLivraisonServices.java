@@ -144,7 +144,7 @@ public class BonDeLivraisonServices {
 
       articleBonLivraisons.add(articleBonLivraison);
 
-      article.get().setPrixHT(articleQuantityModel.getPrix());
+      article.get().setPAchatHT(articleQuantityModel.getPrix());
       article.get().setStock(article.get().getStock()+articleQuantityModel.getQuantity());
 
       articleRepository.save(article.get());
