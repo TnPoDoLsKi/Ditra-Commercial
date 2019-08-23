@@ -4,7 +4,6 @@ import com.ditrasystems.comspringboot.Famille.Famille;
 
 public class ArticleModelGetAll {
 
-    private long id;
     private String code;
     private String designation;
     private float stock;
@@ -16,8 +15,7 @@ public class ArticleModelGetAll {
 
     public ArticleModelGetAll() {}
 
-    public ArticleModelGetAll(long id, String code, String designation, float stock, String type, float PAchatTTC, Famille famille, String codeFournisseur,String nomFournisseur) {
-        this.id = id;
+    public ArticleModelGetAll(String code, String designation, float stock, String type, float PAchatTTC, Famille famille, String codeFournisseur,String nomFournisseur) {
         this.code = code;
         this.designation = designation;
         this.stock = stock;
@@ -28,13 +26,6 @@ public class ArticleModelGetAll {
         this.nomFournisseur = nomFournisseur;
     }
 
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
 
     public String getCode() {
         return code;

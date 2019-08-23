@@ -53,18 +53,19 @@ public class ConstructionServices {
     construction.setProduitFini(articlePF);
     construction.setQuantite(quantity);
 
-    constructionRepository.save(construction);
-    return new ResponseEntity<>(HttpStatus.OK);
+    return new ResponseEntity<>(constructionRepository.save(construction),HttpStatus.OK);
   }
 
-/*  public ResponseEntity<?> getAll(String codePF) {
+  public ResponseEntity<?> getAll(String codePF) {
+
+    ArrayList<ConstructionModelGetALL> constructionModelGetALLS = new ArrayList<>();
     Article articlePF = articleRepository.findByCode(codePF);
     if (articlePF == null){
       ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),634,"articlePF n'existe pas");
       return new ResponseEntity<>(errorResponseModel,HttpStatus.BAD_REQUEST);
     }
 
-    ArrayList<Construction> construction = constructionRepository.findAllByProduitFini(articlePF.getId());
+    ArrayList<Construction> construction = constructionRepository.findAllByProduitFini(articlePF);
 
     if (construction.size() == 0){
       ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),614,"Construction n'existe pas");
@@ -72,19 +73,23 @@ public class ConstructionServices {
     }
     ConstructionModelGetALL constructionModelGetALL = new ConstructionModelGetALL();
     for (Construction construction1 : construction){
-      constructionModelGetALL.setCodeMP(construction1.getMatierePrimaire());
+
+      Article article = construction1.getMatierePrimaire();
+      float PAchatTTC = article.getPAchatHT() + ((article.getPAchatHT() * article.getTva()) / 100) + ((article.getPAchatHT() * article.getFodec()) / 100);
+
+      constructionModelGetALL.setCodeMP(construction1.getMatierePrimaire().getCode());
       constructionModelGetALL.setQuantite(construction1.getQuantite());
+      constructionModelGetALL.setDesignation(construction1.getMatierePrimaire().getDesignation());
+      constructionModelGetALL.setPAchatTTC(PAchatTTC);
 
-
+      constructionModelGetALLS.add(constructionModelGetALL);
     }
 
+    return new ResponseEntity<>(constructionModelGetALLS,HttpStatus.OK);
+  }
 
-    return new ResponseEntity<>(construction,HttpStatus.OK);
-  }*/
 
-
-/*
-  public ResponseEntity<?> edit(String codePF, String codeMP, Float quantity) {
+  public ResponseEntity<?> edit(String codePF, String codeMP,String codeMPUpdate, Float quantity) {
 
     Article articlePF = articleRepository.findByCode(codePF);
     if (articlePF == null){
@@ -98,7 +103,7 @@ public class ConstructionServices {
       return new ResponseEntity<>(errorResponseModel,HttpStatus.BAD_REQUEST);
     }
 
-    Construction construction = constructionRepository.findByMatierePrimaireAndProduitFini(articleMP.getId(),articlePF.getId());
+    Construction construction = constructionRepository.findByMatierePrimaireAndProduitFini(articleMP,articlePF);
 
     if (construction == null){
       ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),614,"Construction n'existe pas");
@@ -109,12 +114,19 @@ public class ConstructionServices {
       construction.setQuantite(quantity);
     }
 
-    construction.setMatierePrimaire(articleMP);
+    if (codeMPUpdate !=null){
+      Article articleMPUpdate = articleRepository.findByCode(codeMPUpdate);
+      if (articleMPUpdate == null){
+        ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),635,"articleMP n'existe pas");
+        return new ResponseEntity<>(errorResponseModel,HttpStatus.BAD_REQUEST);
+      }
+      construction.setMatierePrimaire(articleMPUpdate);
+    }
 
     constructionRepository.save(construction);
     return new ResponseEntity<>(HttpStatus.OK);
   }
-*/
+
 
   public ResponseEntity<?> delete(String codePF, String codeMP) {
     Article articlePF = articleRepository.findByCode(codePF);
@@ -129,7 +141,7 @@ public class ConstructionServices {
       return new ResponseEntity<>(errorResponseModel,HttpStatus.BAD_REQUEST);
     }
 
-    Construction construction = constructionRepository.findByMatierePrimaireAndProduitFini(articleMP.getId(),articlePF.getId());
+    Construction construction = constructionRepository.findByMatierePrimaireAndProduitFini(articleMP,articlePF);
 
     if (construction == null){
       ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),614,"Construction n'existe pas");

@@ -20,18 +20,15 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 @Entity
-@SQLDelete(sql=" UPDATE article SET deleted =true WHERE id = ?")
+@SQLDelete(sql=" UPDATE article SET deleted =true WHERE code = ?")
 @Where(clause = "deleted = false")
 public class Article implements Serializable {
 
   @Id
- // @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private long id;
+  private String code;
 
   @JsonIgnore
   private boolean deleted;
-
-  private String code;
 
   private String designation;
 
@@ -97,14 +94,6 @@ public class Article implements Serializable {
 
 
   public Article() {
-  }
-
-  public long getId() {
-    return id;
-  }
-
-  public void setId(long id) {
-    this.id = id;
   }
 
   public boolean isDeleted() {

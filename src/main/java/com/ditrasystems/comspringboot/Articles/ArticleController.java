@@ -29,10 +29,6 @@ public class ArticleController {
     return articleServices.getByCode(code);
   }
 
-  @GetMapping("/article/constructions/{id}")
-  public ResponseEntity<?> getConstructions(@PathVariable Long id){
-    return articleServices.getConstructions(id);
-  }
 
   @PutMapping("/article/{code}")
   public ResponseEntity<?> edit(@PathVariable String code,  Long familleId,  Long fournisseurId ,  String codeA,  String designation,  String type,  String codeABarre,  Float PAchatHT,  Float remise,  Float tva,  Float fodec,  Float stock ,  Float quantiteVendu,  Float stockMin,  Float prixVenteHTMin ){

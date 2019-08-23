@@ -16,6 +16,7 @@ public class ConstructionModelGetALL {
         this.quantite = quantite;
         this.PAchatTTC = PAchatTTC;
     }
+    public ConstructionModelGetALL() {}
 
     public String getCodeMP() {
         return codeMP;

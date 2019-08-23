@@ -162,14 +162,14 @@ public class DemandeOffreServices {
     if (articles != null) {
       for (Article article : articles) {
 
-        Optional<Article> article1 = articleRepository.findById(article.getId());
+        Article article1 = articleRepository.findByCode(article.getCode());
 
-        if (!article1.isPresent()) {
+        if (article1 == null) {
           ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(), 609, "Article n'existe pas");
           return new ResponseEntity<>(errorResponseModel, HttpStatus.BAD_REQUEST);
         }
 
-        Optional<ArticleOffre> articleOffre = articleOffreRepository.findArticleOffreByArticleAndAndDemandeOffre(article1.get(),demandeOffre.get());
+        Optional<ArticleOffre> articleOffre = articleOffreRepository.findArticleOffreByArticleAndAndDemandeOffre(article1,demandeOffre.get());
 
         if (!articleOffre.isPresent()) {
           ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(), 609, "cette demande d'offre ne contient pas ce article");

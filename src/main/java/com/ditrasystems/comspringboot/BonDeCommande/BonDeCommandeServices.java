@@ -163,14 +163,14 @@ public class BonDeCommandeServices {
     if (articles != null) {
       for (Article article : articles) {
 
-        Optional<Article> article1 = articleRepository.findById(article.getId());
+        Article article1 = articleRepository.findByCode(article.getCode());
 
-        if (!article1.isPresent()) {
+        if (article1 == null) {
           ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(), 609, "Article n'existe pas");
           return new ResponseEntity<>(errorResponseModel, HttpStatus.BAD_REQUEST);
         }
 
-        Optional<ArticleBonCommande> articleBonCommande = articleBonCommandeRepository.findArticleBonCommandeByArticleAndBonDeCommande(article1.get(),bonDeCommande.get());
+        Optional<ArticleBonCommande> articleBonCommande = articleBonCommandeRepository.findArticleBonCommandeByArticleAndBonDeCommande(article1,bonDeCommande.get());
 
         if (!articleBonCommande.isPresent()) {
           ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(), 619, "cette Bon de commande ne contient pas ce article");
