@@ -15,6 +15,7 @@ public class Construction {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private long id;
 
+  @JsonIgnore
   private boolean deleted;
 
   private float quantite;
@@ -24,6 +25,7 @@ public class Construction {
   private Article produitFini;
 
   @ManyToOne
+  @JsonIgnore
   private Article matierePrimaire;
 
   public Construction() {

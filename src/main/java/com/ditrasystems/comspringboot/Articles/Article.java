@@ -23,7 +23,7 @@ import java.util.Collection;
 @SQLDelete(sql=" UPDATE article SET deleted =true WHERE id = ?")
 @Where(clause = "deleted = false")
 public class Article implements Serializable {
-  //{ code, designation, familleId, type, codeABarre, fournisseurId, stock, stockMin, vendu, image, PAchatHT, remise, fodec, tva, PRevient, PVenteMin }
+
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private long id;
@@ -253,7 +253,7 @@ public class Article implements Serializable {
   }
 
   public Collection<Construction> getConstructions() {
-    return constructions;
+    return  constructions;
   }
 
   public void setConstructions(Collection<Construction> constructions) {

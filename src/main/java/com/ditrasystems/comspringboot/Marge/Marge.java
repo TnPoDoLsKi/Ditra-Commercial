@@ -1,6 +1,7 @@
 package com.ditrasystems.comspringboot.Marge;
 
 import com.ditrasystems.comspringboot.Articles.Article;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
@@ -14,13 +15,14 @@ public class Marge {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private long id;
 
+  @JsonIgnore
   private boolean deleted;
 
   private float quantite;
 
   private float prix;
 
-
+  @JsonIgnore
   @ManyToOne
   private Article article;
 

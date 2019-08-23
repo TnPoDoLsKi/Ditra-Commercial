@@ -1,6 +1,7 @@
 package com.ditrasystems.comspringboot.Articles;
 
 import com.ditrasystems.comspringboot.Articles.Models.ArticleModelGetAll;
+import com.ditrasystems.comspringboot.Articles.Models.ArticleModelGetOne;
 import com.ditrasystems.comspringboot.Articles.Models.MatierePremierQuantity;
 import com.ditrasystems.comspringboot.Articles.Models.ArticleModel;
 import com.ditrasystems.comspringboot.Construction.Construction;
@@ -17,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -89,41 +91,41 @@ public class ArticleServices {
       marge.setArticle(article);
     }
 
-    //article = articleRepository.save(article);
+    article = articleRepository.save(article);
 
-    return new ResponseEntity<>(articleRepository.save(article),HttpStatus.OK);
+    return new ResponseEntity<>(articleModel,HttpStatus.OK);
   }
 
-  public ResponseEntity<?> addMatierePremier(long id, Long matieresPremiers,float quantity) {
-    Optional<Article> article = articleRepository.findById(id);
+  public ResponseEntity<?> addMatierePremierForPFService(String code, String matieresPremiersCode,float quantity) {
+    Article article = articleRepository.findByCode(code);
 
-    if (!article.isPresent()){
+    if (article == null){
       ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),609,"Article n'existe pas");
       return new ResponseEntity<>(errorResponseModel,HttpStatus.BAD_REQUEST);
     }
 
-    if (!article.get().getType().equals("PF")){
-      ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),611,"Article isn't a PF");
+    if (!article.getType().equals("PF")){
+      ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),611,"Article n'est pasPF");
       return new ResponseEntity<>(errorResponseModel,HttpStatus.BAD_REQUEST);
     }
 
 
-    Optional<Article> articleMP = articleRepository.findById(matieresPremiers);
+    Article articleMP = articleRepository.findByCode(matieresPremiersCode);
 
-    if (!articleMP.isPresent()){
+    if (articleMP == null){
       ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),609,"Article n'existe pas");
       return new ResponseEntity<>(errorResponseModel,HttpStatus.BAD_REQUEST);
     }
 
-    if (!articleMP.get().getType().equals("MP")){
-      ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),612,"Article isn't a MP");
+    if (!articleMP.getType().equals("MP")){
+      ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),612,"Article n'est pasPF");
       return new ResponseEntity<>(errorResponseModel,HttpStatus.BAD_REQUEST);
     }
 
       Construction construction=new Construction();
 
-      construction.setMatierePrimaire(articleMP.get());
-      construction.setProduitFini(article.get());
+      construction.setMatierePrimaire(articleMP);
+      construction.setProduitFini(article);
       construction.setQuantite(quantity);
 
       constructionRepository.save(construction);
@@ -144,7 +146,7 @@ public class ArticleServices {
     for (Article article : articles) {
 
       Float PAchatTTC = article.getPAchatHT() + ((article.getPAchatHT() * article.getTva()) / 100);
-      ArticleModelGetAll articleModelGetAll = new ArticleModelGetAll(article.getId(), article.getCode(), article.getDesignation(), article.getStock(), article.getType(), PAchatTTC, article.getFamille());
+      ArticleModelGetAll articleModelGetAll = new ArticleModelGetAll(article.getId(), article.getCode(), article.getDesignation(), article.getStock(), article.getType(), PAchatTTC, article.getFamille(),article.getFournisseur().getCode(),article.getFournisseur().getNom());
       articleModelGetAlls.add(articleModelGetAll);
     }
 
@@ -170,15 +172,20 @@ public class ArticleServices {
 
   }
 
-  public ResponseEntity<?> getById(long id) {
-    Optional<Article> article = articleRepository.findById(id);
+  public ResponseEntity<?> getByCode(String code) {
+    Article article = articleRepository.findByCode(code);
 
-    if (!article.isPresent()){
+    if (article == null){
       ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),609,"Article n'existe pas");
       return new ResponseEntity<>(errorResponseModel,HttpStatus.BAD_REQUEST);
     }
 
-    return new ResponseEntity<>(article,HttpStatus.OK);
+    ArticleModelGetOne articleModelGetOne = new ArticleModelGetOne();
+    articleModelGetOne.setArticle(article);
+    articleModelGetOne.setMarges(article.getMarges());
+    articleModelGetOne.setConstructions(article.getConstructions());
+
+    return new ResponseEntity<>(articleModelGetOne,HttpStatus.OK);
   }
 
   public ResponseEntity<?> edit(String codeArticle,Long familleId,Long fournisseurId, String code, String designation, String type, String codeABarre, Float PAchatHT, Float remise, Float tva, Float fodec, Float stock, Float quantiteVendu, Float stockMin, Float prixVenteHTMin) {

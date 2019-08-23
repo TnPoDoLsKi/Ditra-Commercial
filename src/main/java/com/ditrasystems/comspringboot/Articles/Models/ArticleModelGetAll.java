@@ -11,10 +11,12 @@ public class ArticleModelGetAll {
     private String type;
     private float PAchatTTC;
     private Famille famille;
+    private String codeFournisseur;
+    private String nomFournisseur;
 
     public ArticleModelGetAll() {}
 
-    public ArticleModelGetAll(long id, String code, String designation, float stock, String type, float PAchatTTC, Famille famille) {
+    public ArticleModelGetAll(long id, String code, String designation, float stock, String type, float PAchatTTC, Famille famille, String codeFournisseur,String nomFournisseur) {
         this.id = id;
         this.code = code;
         this.designation = designation;
@@ -22,6 +24,8 @@ public class ArticleModelGetAll {
         this.type = type;
         this.PAchatTTC = PAchatTTC;
         this.famille = famille;
+        this.codeFournisseur = codeFournisseur;
+        this.nomFournisseur = nomFournisseur;
     }
 
     public long getId() {
@@ -78,5 +82,21 @@ public class ArticleModelGetAll {
 
     public void setFamille(Famille famille) {
         this.famille = famille;
+    }
+
+    public String getCodeFournisseur() {
+        return codeFournisseur;
+    }
+
+    public void setCodeFournisseur(String codeFournisseur) {
+        this.codeFournisseur = codeFournisseur;
+    }
+
+    public String getNomFournisseur() {
+        return nomFournisseur;
+    }
+
+    public void setNomFournisseur(String nomFournisseur) {
+        this.nomFournisseur = nomFournisseur;
     }
 }
