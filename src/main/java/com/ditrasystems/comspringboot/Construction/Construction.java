@@ -15,10 +15,10 @@ public class Construction {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private long id;
 
+  private float quantite;
+
   @JsonIgnore
   private boolean deleted;
-
-  private float quantite;
 
   @ManyToOne
   @JsonIgnore

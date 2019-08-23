@@ -96,42 +96,6 @@ public class ArticleServices {
     return new ResponseEntity<>(articleModel,HttpStatus.OK);
   }
 
-  public ResponseEntity<?> addMatierePremierForPFService(String code, String matieresPremiersCode,float quantity) {
-    Article article = articleRepository.findByCode(code);
-
-    if (article == null){
-      ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),609,"Article n'existe pas");
-      return new ResponseEntity<>(errorResponseModel,HttpStatus.BAD_REQUEST);
-    }
-
-    if (!article.getType().equals("PF")){
-      ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),611,"Article n'est pasPF");
-      return new ResponseEntity<>(errorResponseModel,HttpStatus.BAD_REQUEST);
-    }
-
-
-    Article articleMP = articleRepository.findByCode(matieresPremiersCode);
-
-    if (articleMP == null){
-      ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),609,"Article n'existe pas");
-      return new ResponseEntity<>(errorResponseModel,HttpStatus.BAD_REQUEST);
-    }
-
-    if (!articleMP.getType().equals("MP")){
-      ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),612,"Article n'est pasPF");
-      return new ResponseEntity<>(errorResponseModel,HttpStatus.BAD_REQUEST);
-    }
-
-      Construction construction=new Construction();
-
-      construction.setMatierePrimaire(articleMP);
-      construction.setProduitFini(article);
-      construction.setQuantite(quantity);
-
-      constructionRepository.save(construction);
-      return new ResponseEntity<>(HttpStatus.OK);
-    }
-
   public ResponseEntity<?> getAll(String type) {
 
     ArrayList<Article> articles = new ArrayList<>();

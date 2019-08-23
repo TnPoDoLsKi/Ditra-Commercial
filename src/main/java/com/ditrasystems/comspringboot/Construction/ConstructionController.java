@@ -12,13 +12,23 @@ public class ConstructionController {
   ConstructionServices constructionServices;
 
 
-  @PutMapping("/construction/{id}")
-  public ResponseEntity<?> edit(@PathVariable Long id , Long matiere , Float quantity ){
-    return  constructionServices.edit(id,matiere,quantity);
+  @PutMapping("/construction/{codePF}")
+  public ResponseEntity<?> create(@PathVariable String codePF, @RequestParam  String codeMP , @RequestParam float quantity ){
+    return constructionServices.create(codePF,codeMP,quantity);
   }
 
-  @DeleteMapping("/construction/{id}")
-  public ResponseEntity<?> delete(@PathVariable Long id){
-    return constructionServices.delete(id);
+/*  @PutMapping("/constructions/{codePF}")
+  public ResponseEntity<?> getAll(@PathVariable String codePF){
+    return constructionServices.getAll(codePF);
+  }*/
+
+ /* @PutMapping("/construction/{codePF}")
+  public ResponseEntity<?> edit(@PathVariable String codePF , String codeMP , float quantity ){
+    return  constructionServices.edit(codePF,codeMP,quantity);
+  }*/
+
+  @DeleteMapping("/construction/{codePF}/{codeMP}")
+  public ResponseEntity<?> delete(@PathVariable String codePF,@PathVariable String codeMP){
+    return constructionServices.delete(codePF,codeMP);
   }
 }

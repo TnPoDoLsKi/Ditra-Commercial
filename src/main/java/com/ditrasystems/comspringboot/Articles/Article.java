@@ -25,7 +25,7 @@ import java.util.Collection;
 public class Article implements Serializable {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
+ // @GeneratedValue(strategy = GenerationType.IDENTITY)
   private long id;
 
   @JsonIgnore

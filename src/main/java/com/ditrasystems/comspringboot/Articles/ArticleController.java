@@ -19,11 +19,6 @@ public class ArticleController {
     return articleServices.create(articleModel);
   }
 
-  @PutMapping("/article/addMatierePremier/{code}")
-  public ResponseEntity<?> addMatierePremierForPF(@PathVariable String code, @RequestParam  String matieresPremiersCode , @RequestParam Float quantity ){
-    return articleServices.addMatierePremierForPFService(code,matieresPremiersCode,quantity);
-  }
-
   @GetMapping("/articles")
   public ResponseEntity<?> getAll( String type){
     return articleServices.getAll(type);
