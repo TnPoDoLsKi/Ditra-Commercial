@@ -11,7 +11,7 @@ public class BonDeLivraisonModel {
 
   private List<BonDeCommande> bonDeCommandes = new ArrayList<>();
 
-  private Long fournisseur ;
+  private String codeFournisseur ;
 
   private String code;
 
@@ -36,12 +36,12 @@ public class BonDeLivraisonModel {
     this.bonDeCommandes = bonDeCommandes;
   }
 
-  public Long getFournisseur() {
-    return fournisseur;
+  public String getCodeFournisseur() {
+    return codeFournisseur;
   }
 
-  public void setFournisseur(Long fournisseur) {
-    this.fournisseur = fournisseur;
+  public void setCodeFournisseur(String codeFournisseur) {
+    this.codeFournisseur = codeFournisseur;
   }
 
   public String getCode() {

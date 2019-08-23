@@ -61,7 +61,7 @@ public class AgendaService {
       return new ResponseEntity<>(errorResponseModel,HttpStatus.BAD_REQUEST);
     }
 
-    ArrayList<Agenda> agendas = agendaRepository.findByFournisseurId(fournisseur.get().getId());
+    ArrayList<Agenda> agendas = agendaRepository.findByFournisseur(fournisseur.get());
 
     return new ResponseEntity<>(agendas,HttpStatus.OK);
 

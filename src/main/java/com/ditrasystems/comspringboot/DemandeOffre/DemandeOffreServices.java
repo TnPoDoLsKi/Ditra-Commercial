@@ -35,7 +35,7 @@ public class DemandeOffreServices {
 
 
   public ResponseEntity<?> create(DemandeOffreModel demandeOffreModel) {
-    Optional<Fournisseur> fournisseur = fournisseurRepository.findById(demandeOffreModel.getFournisseur());
+    Optional<Fournisseur> fournisseur = fournisseurRepository.findFournisseurByCode(demandeOffreModel.getCodeFournisseur());
 
     if (!fournisseur.isPresent()){
       ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),605,"Fournisseur n'existe pas");
@@ -55,7 +55,7 @@ public class DemandeOffreServices {
         return new ResponseEntity<>(errorResponseModel, HttpStatus.BAD_REQUEST);
       }
 
-      if (article.get().getFournisseur().getId() != demandeOffreModel.getFournisseur()){
+      if (article.get().getFournisseur().getCode() != demandeOffreModel.getCodeFournisseur()){
         ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(), 616, "Cet article n'appartient pas a ce fournisseur");
         return new ResponseEntity<>(errorResponseModel, HttpStatus.BAD_REQUEST);
       }
@@ -128,7 +128,7 @@ public class DemandeOffreServices {
         return new ResponseEntity<>(errorResponseModel, HttpStatus.BAD_REQUEST);
       }
 
-      if (article.get().getFournisseur().getId() != demandeOffre.get().getFournisseur().getId()){
+      if (article.get().getFournisseur().getCode() != demandeOffre.get().getFournisseur().getCode()){
         ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(), 616, "Cet article n'appartient pas a ce fournisseur");
         return new ResponseEntity<>(errorResponseModel, HttpStatus.BAD_REQUEST);
       }

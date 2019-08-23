@@ -35,7 +35,7 @@ public class BonDeCommandeServices {
 
 
   public ResponseEntity<?> create(BonDeCommandeModel bonDeCommandeModel) {
-    Optional<Fournisseur> fournisseur = fournisseurRepository.findById(bonDeCommandeModel.getFournisseur());
+    Optional<Fournisseur> fournisseur = fournisseurRepository.findFournisseurByCode(bonDeCommandeModel.getCodeFournisseur());
 
     if (!fournisseur.isPresent()){
       ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),605,"Fournisseur n'existe pas");
@@ -55,7 +55,7 @@ public class BonDeCommandeServices {
         return new ResponseEntity<>(errorResponseModel, HttpStatus.BAD_REQUEST);
       }
 
-      if (article.get().getFournisseur().getId() != bonDeCommandeModel.getFournisseur()){
+      if (article.get().getFournisseur().getCode() != bonDeCommandeModel.getCodeFournisseur()){
         ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(), 616, "Cet article n'appartient pas a ce fournisseur");
         return new ResponseEntity<>(errorResponseModel, HttpStatus.BAD_REQUEST);
       }
@@ -129,7 +129,7 @@ public class BonDeCommandeServices {
         return new ResponseEntity<>(errorResponseModel, HttpStatus.BAD_REQUEST);
       }
 
-      if (article.get().getFournisseur().getId() != bonDeCommande.get().getFournisseur().getId()){
+      if (article.get().getFournisseur().getCode() != bonDeCommande.get().getFournisseur().getCode()){
         ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(), 616, "Cet article n'appartient pas a ce fournisseur");
         return new ResponseEntity<>(errorResponseModel, HttpStatus.BAD_REQUEST);
       }

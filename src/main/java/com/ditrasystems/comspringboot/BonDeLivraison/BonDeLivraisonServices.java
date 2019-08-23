@@ -50,7 +50,7 @@ public class BonDeLivraisonServices {
   public ResponseEntity<?> create(BonDeLivraisonModel bonDeLivraisonModel) {
     BonDeLivrasion bonDeLivrasion = new BonDeLivrasion();
 
-    Optional<Fournisseur> fournisseur = fournisseurRepository.findById(bonDeLivraisonModel.getFournisseur());
+    Optional<Fournisseur> fournisseur = fournisseurRepository.findFournisseurByCode(bonDeLivraisonModel.getCodeFournisseur());
 
     if (!fournisseur.isPresent()){
       ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),605,"Fournisseur n'existe pas");
@@ -85,7 +85,7 @@ public class BonDeLivraisonServices {
         return new ResponseEntity<>(errorResponseModel, HttpStatus.BAD_REQUEST);
       }
 
-      if (article.get().getFournisseur().getId() != bonDeLivraisonModel.getFournisseur()){
+      if (article.get().getFournisseur().getCode() != bonDeLivraisonModel.getCodeFournisseur()){
         ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(), 616, "Cet article n'appartient pas a ce fournisseur");
         return new ResponseEntity<>(errorResponseModel, HttpStatus.BAD_REQUEST);
       }

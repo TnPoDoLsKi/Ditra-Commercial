@@ -21,9 +21,6 @@ import java.util.Collection;
 public class Fournisseur {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private long id;
-
   private String nom;
 
   private String code;
@@ -92,14 +89,6 @@ public class Fournisseur {
   private Collection<DemandeOffre> demandeOffres= new ArrayList<>();
 
   public Fournisseur() {
-  }
-
-  public long getId() {
-    return id;
-  }
-
-  public void setId(long id) {
-    this.id = id;
   }
 
   public String getCode() {
