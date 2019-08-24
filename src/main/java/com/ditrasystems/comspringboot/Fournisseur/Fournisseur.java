@@ -21,9 +21,9 @@ import java.util.Collection;
 public class Fournisseur {
 
   @Id
-  private String nom;
-
   private String code;
+
+  private String nom;
 
   private String activite;
 

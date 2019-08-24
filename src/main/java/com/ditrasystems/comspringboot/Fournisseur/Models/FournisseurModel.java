@@ -2,30 +2,20 @@ package com.ditrasystems.comspringboot.Fournisseur.Models;
 
 import com.ditrasystems.comspringboot.Agenda.Agenda;
 import com.ditrasystems.comspringboot.Fournisseur.Fournisseur;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 
 import java.util.List;
 
+@FieldDefaults(level= AccessLevel.PRIVATE)
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
 public class FournisseurModel {
 
-  //{ code, name, activite, pays, ville, codePostal, address, codeTVA, solde, plafontCredit, email, siteweb, observation }
+   Fournisseur fournisseur;
 
-  private Fournisseur fournisseur;
+   List<Agenda> agendaList;
 
-  private List<Agenda> agendaList;
-
-  public Fournisseur getFournisseur() {
-    return fournisseur;
-  }
-
-  public void setFournisseur(Fournisseur fournisseur) {
-    this.fournisseur = fournisseur;
-  }
-
-  public List<Agenda> getAgendaList() {
-    return agendaList;
-  }
-
-  public void setAgendaList(List<Agenda> agendaList) {
-    this.agendaList = agendaList;
-  }
 }

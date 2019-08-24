@@ -1,42 +1,18 @@
 package com.ditrasystems.comspringboot.Banque.Models;
 
+import lombok.*;
+import lombok.experimental.FieldDefaults;
+
+@FieldDefaults(level= AccessLevel.PRIVATE)
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
 public class BanqueModel {
 
-    private String nom;
+     String nom;
 
-    private String rip;
+     String rip;
 
-    private String agence;
-
-    public BanqueModel() {}
-
-    public BanqueModel(String nom, String rip, String agence) {
-        this.nom = nom;
-        this.rip = rip;
-        this.agence = agence;
-    }
-
-    public String getNom() {
-        return nom;
-    }
-
-    public void setNom(String nom) {
-        this.nom = nom;
-    }
-
-    public String getRip() {
-        return rip;
-    }
-
-    public void setRip(String rip) {
-        this.rip = rip;
-    }
-
-    public String getAgence() {
-        return agence;
-    }
-
-    public void setAgence(String agence) {
-        this.agence = agence;
-    }
+     String agence;
 }

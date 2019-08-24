@@ -48,22 +48,22 @@ public class BonDeCommandeServices {
 
     for (ArticleQuantityModel articleQuantityModel :bonDeCommandeModel.getArticlesQuantity()) {
 
-     Optional<Article> article = articleRepository.findById(articleQuantityModel.getarticle());
+     Article article = articleRepository.findByCode(articleQuantityModel.getCodeArticle());
 
-      if (!article.isPresent()) {
+      if (article == null) {
         ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(), 609, "Article n'existe pas");
         return new ResponseEntity<>(errorResponseModel, HttpStatus.BAD_REQUEST);
       }
 
-      if (article.get().getFournisseur().getCode() != bonDeCommandeModel.getCodeFournisseur()){
+      if (article.getFournisseur().getCode() != bonDeCommandeModel.getCodeFournisseur()){
         ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(), 616, "Cet article n'appartient pas a ce fournisseur");
         return new ResponseEntity<>(errorResponseModel, HttpStatus.BAD_REQUEST);
       }
 
       ArticleBonCommande articleBonCommande = new ArticleBonCommande();
 
-      articleBonCommande.setArticle(article.get());
-      articleBonCommande.setPrix(article.get().getPAchatHT());
+      articleBonCommande.setArticle(article);
+      articleBonCommande.setPrix(article.getPAchatHT());
       articleBonCommande.setQuantite(articleQuantityModel.getQuantity());
       articleBonCommandes.add(articleBonCommande);
     }
@@ -122,22 +122,22 @@ public class BonDeCommandeServices {
 
     for (ArticleQuantityModel articleQuantityModel :articleQuantityModels) {
 
-      Optional<Article> article = articleRepository.findById(articleQuantityModel.getarticle());
+      Article article = articleRepository.findByCode(articleQuantityModel.getCodeArticle());
 
-      if (!article.isPresent()) {
+      if (article == null) {
         ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(), 609, "Article n'existe pas");
         return new ResponseEntity<>(errorResponseModel, HttpStatus.BAD_REQUEST);
       }
 
-      if (article.get().getFournisseur().getCode() != bonDeCommande.get().getFournisseur().getCode()){
+      if (article.getFournisseur().getCode() != bonDeCommande.get().getFournisseur().getCode()){
         ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(), 616, "Cet article n'appartient pas a ce fournisseur");
         return new ResponseEntity<>(errorResponseModel, HttpStatus.BAD_REQUEST);
       }
 
       ArticleBonCommande articleBonCommande = new ArticleBonCommande();
 
-      articleBonCommande.setArticle(article.get());
-      articleBonCommande.setPrix(article.get().getPAchatHT());
+      articleBonCommande.setArticle(article);
+      articleBonCommande.setPrix(article.getPAchatHT());
       articleBonCommande.setQuantite(articleQuantityModel.getQuantity());
       articleBonCommandes.add(articleBonCommande);
     }

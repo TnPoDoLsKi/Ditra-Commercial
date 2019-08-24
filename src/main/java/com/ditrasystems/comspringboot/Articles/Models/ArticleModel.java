@@ -2,42 +2,24 @@ package com.ditrasystems.comspringboot.Articles.Models;
 
 import com.ditrasystems.comspringboot.Articles.Article;
 import com.ditrasystems.comspringboot.Marge.Marge;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@FieldDefaults(level= AccessLevel.PRIVATE)
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
 public class ArticleModel {
 
-  private Article article;
+   Article article;
 
-  private List<MatierePremierQuantity> matierePremierQuantities=new ArrayList<>();
+   List<MatierePremierQuantity> matierePremierQuantities=new ArrayList<>();
 
-  private List<Marge> marges = new ArrayList<>();
+   List<Marge> marges = new ArrayList<>();
 
-  public ArticleModel() {
-  }
 
-  public Article getArticle() {
-    return article;
-  }
-
-  public void setArticle(Article article) {
-    this.article = article;
-  }
-
-  public List<MatierePremierQuantity> getMatierePremierQuantities() {
-    return matierePremierQuantities;
-  }
-
-  public void setMatierePremierQuantities(List<MatierePremierQuantity> matierePremierQuantities) {
-    this.matierePremierQuantities = matierePremierQuantities;
-  }
-
-  public List<Marge> getMarges() {
-    return marges;
-  }
-
-  public void setMarges(List<Marge> marges) {
-    this.marges = marges;
-  }
 }

@@ -48,22 +48,22 @@ public class DemandeOffreServices {
 
     for (ArticleQuantityModel articleQuantityModel :demandeOffreModel.getArticlesQuantity()) {
 
-     Optional<Article> article = articleRepository.findById(articleQuantityModel.getarticle());
+     Article article = articleRepository.findByCode(articleQuantityModel.getCodeArticle());
 
-      if (!article.isPresent()) {
+      if (article == null) {
         ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(), 609, "Article n'existe pas");
         return new ResponseEntity<>(errorResponseModel, HttpStatus.BAD_REQUEST);
       }
 
-      if (article.get().getFournisseur().getCode() != demandeOffreModel.getCodeFournisseur()){
+      if (article.getFournisseur().getCode() != demandeOffreModel.getCodeFournisseur()){
         ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(), 616, "Cet article n'appartient pas a ce fournisseur");
         return new ResponseEntity<>(errorResponseModel, HttpStatus.BAD_REQUEST);
       }
 
       ArticleOffre articleOffre = new ArticleOffre();
 
-      articleOffre.setArticle(article.get());
-      articleOffre.setPrix(article.get().getPAchatHT());
+      articleOffre.setArticle(article);
+      articleOffre.setPrix(article.getPAchatHT());
       articleOffre.setQuantite(articleQuantityModel.getQuantity());
       articleOffres.add(articleOffre);
     }
@@ -121,22 +121,22 @@ public class DemandeOffreServices {
 
     for (ArticleQuantityModel articleQuantityModel :articleQuantityModels) {
 
-      Optional<Article> article = articleRepository.findById(articleQuantityModel.getarticle());
+      Article article = articleRepository.findByCode(articleQuantityModel.getCodeArticle());
 
-      if (!article.isPresent()) {
+      if (article == null) {
         ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(), 609, "Article n'existe pas");
         return new ResponseEntity<>(errorResponseModel, HttpStatus.BAD_REQUEST);
       }
 
-      if (article.get().getFournisseur().getCode() != demandeOffre.get().getFournisseur().getCode()){
+      if (article.getFournisseur().getCode() != demandeOffre.get().getFournisseur().getCode()){
         ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(), 616, "Cet article n'appartient pas a ce fournisseur");
         return new ResponseEntity<>(errorResponseModel, HttpStatus.BAD_REQUEST);
       }
 
       ArticleOffre articleOffre = new ArticleOffre();
 
-      articleOffre.setArticle(article.get());
-      articleOffre.setPrix(article.get().getPAchatHT());
+      articleOffre.setArticle(article);
+      articleOffre.setPrix(article.getPAchatHT());
       articleOffre.setQuantite(articleQuantityModel.getQuantity());
       articleOffres.add(articleOffre);
     }

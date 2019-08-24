@@ -1,48 +1,20 @@
 package com.ditrasystems.comspringboot.BonDeLivraison.Models;
 
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 
+@FieldDefaults(level= AccessLevel.PRIVATE)
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
 public class ArticleQuantityModel {
 
-  private  Long article;
+   Long article;
 
-  private  Float quantity;
+   Float quantity;
 
-  private  Float prix;
+   Float prix;
 
-  private Long bonDeCommande;
-
-  public ArticleQuantityModel() {
-  }
-
-  public Long getArticle() {
-    return article;
-  }
-
-  public void setArticle(Long article) {
-    this.article = article;
-  }
-
-  public Float getQuantity() {
-    return quantity;
-  }
-
-  public void setQuantity(Float quantity) {
-    this.quantity = quantity;
-  }
-
-  public Long getBonDeCommande() {
-    return bonDeCommande;
-  }
-
-  public void setBonDeCommande(Long bonDeCommande) {
-    this.bonDeCommande = bonDeCommande;
-  }
-
-  public Float getPrix() {
-    return prix;
-  }
-
-  public void setPrix(Float prix) {
-    this.prix = prix;
-  }
+   Long bonDeCommande;
 }

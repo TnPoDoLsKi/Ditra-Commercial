@@ -68,6 +68,24 @@ public class ArticleServices {
 
     }
 
+    if (article.getFournisseur().getCode() ==null) {
+      ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),637,"Article requis un fournisseur");
+      return new ResponseEntity<>(errorResponseModel, HttpStatus.BAD_REQUEST);
+
+    }
+
+    if (article.getFamille() ==null) {
+      ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),638,"Article requis une famille");
+      return new ResponseEntity<>(errorResponseModel, HttpStatus.BAD_REQUEST);
+
+    }
+
+    if ((Float) article.getPAchatHT() ==null) {
+      ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),639,"Article requis un PAchatHT");
+      return new ResponseEntity<>(errorResponseModel, HttpStatus.BAD_REQUEST);
+
+    }
+
     if (article.getType().equals("PF")){
 
       if (articleModel.getMatierePremierQuantities().size() == 0){

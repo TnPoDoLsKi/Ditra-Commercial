@@ -20,7 +20,10 @@ public class Marge {
 
   private float quantite;
 
-  private float prix;
+  private float PVente;
+
+  private float margeGagner;
+
 
   @JsonIgnore
   @ManyToOne
@@ -62,11 +65,19 @@ public class Marge {
     this.quantite = quantite;
   }
 
-  public float getPrix() {
-    return prix;
+  public float getPVente() {
+    return PVente;
   }
 
-  public void setPrix(float prix) {
-    this.prix = prix;
+  public void setPVente(float PVente) {
+    this.PVente = PVente;
+  }
+
+  public float getMargeGagner() {
+    return margeGagner;
+  }
+
+  public void setMargeGagner(float margeGagner) {
+    this.margeGagner = margeGagner;
   }
 }
