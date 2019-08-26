@@ -186,7 +186,7 @@ public class DemandeOffreServices {
         articleOffreModel.setCodeArticle(articleOffre.getArticle().getCode());
       }
       articleOffreModel.setDesignation(articleOffre.getDesignation());
-
+//
 
 
     }
