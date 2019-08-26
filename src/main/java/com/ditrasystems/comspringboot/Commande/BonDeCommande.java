@@ -1,7 +1,7 @@
-package com.ditrasystems.comspringboot.BonDeCommande;
+package com.ditrasystems.comspringboot.Commande;
 
-import com.ditrasystems.comspringboot.ArticleBonCommande.ArticleBonCommande;
-import com.ditrasystems.comspringboot.BonDeLivraison.BonDeLivrasion;
+import com.ditrasystems.comspringboot.ArticleCommande.ArticleBonCommande;
+import com.ditrasystems.comspringboot.Livraison.BonDeLivrasion;
 import com.ditrasystems.comspringboot.Facture.Facture;
 import com.ditrasystems.comspringboot.Fournisseur.Fournisseur;
 import org.hibernate.annotations.SQLDelete;

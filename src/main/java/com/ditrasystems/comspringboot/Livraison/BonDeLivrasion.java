@@ -1,9 +1,8 @@
-package com.ditrasystems.comspringboot.BonDeLivraison;
+package com.ditrasystems.comspringboot.Livraison;
 
-import com.ditrasystems.comspringboot.ArticleBonLivraison.ArticleBonLivraison;
-import com.ditrasystems.comspringboot.Banque.Banque;
-import com.ditrasystems.comspringboot.BonDeCommande.BonDeCommande;
-import com.ditrasystems.comspringboot.BonDeRetour.BonDeRetour;
+import com.ditrasystems.comspringboot.ArticleLivraison.ArticleBonLivraison;
+import com.ditrasystems.comspringboot.Commande.BonDeCommande;
+import com.ditrasystems.comspringboot.Retour.BonDeRetour;
 import com.ditrasystems.comspringboot.Facture.Facture;
 import com.ditrasystems.comspringboot.Fournisseur.Fournisseur;
 import com.ditrasystems.comspringboot.Paiement.Paiement;

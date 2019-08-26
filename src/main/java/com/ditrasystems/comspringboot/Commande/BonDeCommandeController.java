@@ -1,8 +1,8 @@
-package com.ditrasystems.comspringboot.BonDeCommande;
+package com.ditrasystems.comspringboot.Commande;
 
 import com.ditrasystems.comspringboot.Articles.Article;
-import com.ditrasystems.comspringboot.BonDeCommande.Models.ArticleQuantityModel;
-import com.ditrasystems.comspringboot.BonDeCommande.Models.BonDeCommandeModel;
+import com.ditrasystems.comspringboot.Commande.Models.ArticleQuantityModel;
+import com.ditrasystems.comspringboot.Commande.Models.BonDeCommandeModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

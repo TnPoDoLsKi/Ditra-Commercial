@@ -1,8 +1,8 @@
 package com.ditrasystems.comspringboot.Articles;
 
 
-import com.ditrasystems.comspringboot.ArticleBonCommande.ArticleBonCommande;
-import com.ditrasystems.comspringboot.ArticleBonLivraison.ArticleBonLivraison;
+import com.ditrasystems.comspringboot.ArticleCommande.ArticleBonCommande;
+import com.ditrasystems.comspringboot.ArticleLivraison.ArticleBonLivraison;
 import com.ditrasystems.comspringboot.ArticleFacture.ArticleFacture;
 import com.ditrasystems.comspringboot.ArticleOffre.ArticleOffre;
 import com.ditrasystems.comspringboot.Construction.Construction;

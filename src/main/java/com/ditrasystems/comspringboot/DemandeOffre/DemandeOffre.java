@@ -7,6 +7,7 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
@@ -28,7 +29,7 @@ public class DemandeOffre {
 
   @JsonIgnore
   @OneToMany(mappedBy = "demandeOffre",cascade = CascadeType.ALL)
-  private Collection<ArticleOffre> articleOffres;
+  private Collection<ArticleOffre> articleOffres = new ArrayList<>();
 
   @ManyToOne
   private Fournisseur fournisseur;

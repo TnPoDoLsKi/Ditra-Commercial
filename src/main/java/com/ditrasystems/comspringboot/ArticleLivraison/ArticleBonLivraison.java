@@ -1,8 +1,7 @@
-package com.ditrasystems.comspringboot.ArticleBonLivraison;
+package com.ditrasystems.comspringboot.ArticleLivraison;
 
 import com.ditrasystems.comspringboot.Articles.Article;
-import com.ditrasystems.comspringboot.BonDeCommande.BonDeCommande;
-import com.ditrasystems.comspringboot.BonDeLivraison.BonDeLivrasion;
+import com.ditrasystems.comspringboot.Livraison.BonDeLivrasion;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 

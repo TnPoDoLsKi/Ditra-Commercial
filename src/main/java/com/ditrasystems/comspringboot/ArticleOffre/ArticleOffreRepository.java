@@ -8,5 +8,6 @@ import java.util.Optional;
 
 public interface ArticleOffreRepository extends JpaRepository<ArticleOffre ,Long> {
 
-  Optional<ArticleOffre> findArticleOffreByArticleAndAndDemandeOffre(Article article, DemandeOffre demandeOffre);
+  ArticleOffre findArticleOffreByArticleAndDemandeOffre(Article article, DemandeOffre demandeOffre);
+
 }

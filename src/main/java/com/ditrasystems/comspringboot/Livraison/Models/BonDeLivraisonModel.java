@@ -1,6 +1,6 @@
-package com.ditrasystems.comspringboot.BonDeLivraison.Models;
+package com.ditrasystems.comspringboot.Livraison.Models;
 
-import com.ditrasystems.comspringboot.BonDeCommande.BonDeCommande;
+import com.ditrasystems.comspringboot.Commande.BonDeCommande;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 

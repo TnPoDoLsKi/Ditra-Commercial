@@ -1,12 +1,11 @@
-package com.ditrasystems.comspringboot.ArticleBonCommande;
+package com.ditrasystems.comspringboot.ArticleCommande;
 
 import com.ditrasystems.comspringboot.Articles.Article;
-import com.ditrasystems.comspringboot.BonDeCommande.BonDeCommande;
+import com.ditrasystems.comspringboot.Commande.BonDeCommande;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 
 @Entity
 @SQLDelete(sql=" UPDATE article_bon_commande SET deleted =true WHERE id = ?")

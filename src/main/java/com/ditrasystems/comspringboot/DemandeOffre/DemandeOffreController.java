@@ -17,39 +17,44 @@ public class DemandeOffreController {
   @Autowired
   DemandeOffreServices demandeOffreServices;
 
-  @PostMapping("/demandeOffre")
+
+  @PostMapping("/offre")
   public ResponseEntity<?> create(@RequestBody DemandeOffreModel demandeOffreModel){
     return  demandeOffreServices.create(demandeOffreModel);
   }
 
-  @GetMapping("/demandeOffres")
+
+  @PostMapping("/offre/{code}/article")
+  public ResponseEntity<?> addArticle(@PathVariable long code,String codeArticle,String designation,float quantiteDemander){
+    return demandeOffreServices.addArticle(code,codeArticle,designation,quantiteDemander);
+  }
+
+  @GetMapping("/offres")
   public ResponseEntity<?> getAll(){
     return demandeOffreServices.getAll();
   }
 
-  @GetMapping("/demandeOffre/{id}")
-  public ResponseEntity<?> getById(@PathVariable Long id){
-    return demandeOffreServices.getById(id);
-  }
 
-  @PutMapping("/demandeOffre/{id}")
-  public ResponseEntity<?> edit(@PathVariable Long id , String code , Date date, String fournisseurCode){
-    return demandeOffreServices.edit(id,code,date, fournisseurCode);
-  }
-
-  @PutMapping("/demandeOffre/article/{id}")
-  public ResponseEntity<?> editArticle(@PathVariable Long id , @RequestBody List<ArticleQuantityModel> articleQuantityModels){
-    return demandeOffreServices.editArticle(id,  articleQuantityModels);
-  }
-
-  @DeleteMapping("/demandeOffre/article/{id}")
-  public ResponseEntity<?> deleteArticle(@PathVariable Long id , List<Article> articles){
-    return demandeOffreServices.deleteArticle(id,articles);
+  @GetMapping("/offre/{code}")
+  public ResponseEntity<?> getById(@PathVariable long code){
+    return demandeOffreServices.getById(code);
   }
 
 
-  @DeleteMapping("/demandeOffre/{id}")
-  public ResponseEntity<?> delete(@PathVariable Long id){
-    return demandeOffreServices.delete(id);
+  @PutMapping("/offre/{code}")
+  public ResponseEntity<?> edit(@PathVariable long code , String codeUpdate , Date date, String fournisseurCode){
+    return demandeOffreServices.edit(code,codeUpdate,date, fournisseurCode);
+  }
+
+
+  @DeleteMapping("/offre/article/{idArticleOffre}")
+  public ResponseEntity<?> deleteArticle(@PathVariable long idArticleOffre){
+    return demandeOffreServices.deleteArticle(idArticleOffre);
+  }
+
+
+  @DeleteMapping("/offre/{code}")
+  public ResponseEntity<?> delete(@PathVariable long code){
+    return demandeOffreServices.delete(code);
   }
 }

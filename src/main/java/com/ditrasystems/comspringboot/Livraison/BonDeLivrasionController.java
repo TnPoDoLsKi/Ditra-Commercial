@@ -1,9 +1,8 @@
-package com.ditrasystems.comspringboot.BonDeLivraison;
+package com.ditrasystems.comspringboot.Livraison;
 
 
-import com.ditrasystems.comspringboot.ArticleBonLivraison.ArticleBonLivraison;
-import com.ditrasystems.comspringboot.BonDeLivraison.Models.ArticleQuantityModel;
-import com.ditrasystems.comspringboot.BonDeLivraison.Models.BonDeLivraisonModel;
+import com.ditrasystems.comspringboot.ArticleLivraison.ArticleBonLivraison;
+import com.ditrasystems.comspringboot.Livraison.Models.BonDeLivraisonModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

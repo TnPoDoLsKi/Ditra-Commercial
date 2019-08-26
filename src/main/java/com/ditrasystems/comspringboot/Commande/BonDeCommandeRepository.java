@@ -1,6 +1,5 @@
-package com.ditrasystems.comspringboot.BonDeCommande;
+package com.ditrasystems.comspringboot.Commande;
 
-import com.ditrasystems.comspringboot.DemandeOffre.DemandeOffre;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface BonDeCommandeRepository extends JpaRepository<BonDeCommande,Long> {

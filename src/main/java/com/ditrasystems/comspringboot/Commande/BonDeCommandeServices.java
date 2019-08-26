@@ -1,11 +1,11 @@
-package com.ditrasystems.comspringboot.BonDeCommande;
+package com.ditrasystems.comspringboot.Commande;
 
-import com.ditrasystems.comspringboot.ArticleBonCommande.ArticleBonCommande;
-import com.ditrasystems.comspringboot.ArticleBonCommande.ArticleBonCommandeRepository;
+import com.ditrasystems.comspringboot.ArticleCommande.ArticleBonCommande;
+import com.ditrasystems.comspringboot.ArticleCommande.ArticleBonCommandeRepository;
 import com.ditrasystems.comspringboot.Articles.Article;
 import com.ditrasystems.comspringboot.Articles.ArticleRepository;
-import com.ditrasystems.comspringboot.BonDeCommande.Models.ArticleQuantityModel;
-import com.ditrasystems.comspringboot.BonDeCommande.Models.BonDeCommandeModel;
+import com.ditrasystems.comspringboot.Commande.Models.ArticleQuantityModel;
+import com.ditrasystems.comspringboot.Commande.Models.BonDeCommandeModel;
 import com.ditrasystems.comspringboot.Fournisseur.Fournisseur;
 import com.ditrasystems.comspringboot.Fournisseur.FournisseurRepository;
 import com.ditrasystems.comspringboot.Utils.ErrorResponseModel;

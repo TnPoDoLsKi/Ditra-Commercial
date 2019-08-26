@@ -1,8 +1,7 @@
 package com.ditrasystems.comspringboot.Paiement;
 
-import com.ditrasystems.comspringboot.Articles.Article;
 import com.ditrasystems.comspringboot.Banque.Banque;
-import com.ditrasystems.comspringboot.BonDeLivraison.BonDeLivrasion;
+import com.ditrasystems.comspringboot.Livraison.BonDeLivrasion;
 import com.ditrasystems.comspringboot.Caisse.Caisse;
 import com.ditrasystems.comspringboot.Facture.Facture;
 import org.hibernate.annotations.SQLDelete;

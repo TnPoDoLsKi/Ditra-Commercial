@@ -1,7 +1,6 @@
-package com.ditrasystems.comspringboot.BonDeRetour;
+package com.ditrasystems.comspringboot.Retour;
 
-import com.ditrasystems.comspringboot.Avoir.Avoir;
-import com.ditrasystems.comspringboot.BonDeLivraison.BonDeLivrasion;
+import com.ditrasystems.comspringboot.Livraison.BonDeLivrasion;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 

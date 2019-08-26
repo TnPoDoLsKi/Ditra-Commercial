@@ -1,4 +1,4 @@
-package com.ditrasystems.comspringboot.BonDeCommande.Models;
+package com.ditrasystems.comspringboot.Commande.Models;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;

@@ -1,4 +1,4 @@
-package com.ditrasystems.comspringboot.ArticleBonLivraison;
+package com.ditrasystems.comspringboot.ArticleLivraison;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

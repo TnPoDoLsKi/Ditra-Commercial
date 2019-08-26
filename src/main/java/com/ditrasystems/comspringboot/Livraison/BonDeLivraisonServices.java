@@ -1,16 +1,16 @@
-package com.ditrasystems.comspringboot.BonDeLivraison;
+package com.ditrasystems.comspringboot.Livraison;
 
 
-import com.ditrasystems.comspringboot.ArticleBonCommande.ArticleBonCommande;
-import com.ditrasystems.comspringboot.ArticleBonCommande.ArticleBonCommandeRepository;
-import com.ditrasystems.comspringboot.ArticleBonLivraison.ArticleBonLivraison;
-import com.ditrasystems.comspringboot.ArticleBonLivraison.ArticleBonLivraisonRepository;
+import com.ditrasystems.comspringboot.ArticleCommande.ArticleBonCommande;
+import com.ditrasystems.comspringboot.ArticleCommande.ArticleBonCommandeRepository;
+import com.ditrasystems.comspringboot.ArticleLivraison.ArticleBonLivraison;
+import com.ditrasystems.comspringboot.ArticleLivraison.ArticleBonLivraisonRepository;
 import com.ditrasystems.comspringboot.Articles.Article;
 import com.ditrasystems.comspringboot.Articles.ArticleRepository;
-import com.ditrasystems.comspringboot.BonDeCommande.BonDeCommande;
-import com.ditrasystems.comspringboot.BonDeCommande.BonDeCommandeRepository;
-import com.ditrasystems.comspringboot.BonDeLivraison.Models.ArticleQuantityModel;
-import com.ditrasystems.comspringboot.BonDeLivraison.Models.BonDeLivraisonModel;
+import com.ditrasystems.comspringboot.Commande.BonDeCommande;
+import com.ditrasystems.comspringboot.Commande.BonDeCommandeRepository;
+import com.ditrasystems.comspringboot.Livraison.Models.ArticleQuantityModel;
+import com.ditrasystems.comspringboot.Livraison.Models.BonDeLivraisonModel;
 import com.ditrasystems.comspringboot.Fournisseur.Fournisseur;
 import com.ditrasystems.comspringboot.Fournisseur.FournisseurRepository;
 import com.ditrasystems.comspringboot.Utils.ErrorResponseModel;
