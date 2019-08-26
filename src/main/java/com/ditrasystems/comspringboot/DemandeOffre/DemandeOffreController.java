@@ -22,9 +22,19 @@ public class DemandeOffreController {
     return  demandeOffreServices.create(demandeOffreModel);
   }
 
+  @GetMapping("/demandeOffres")
+  public ResponseEntity<?> getAll(){
+    return demandeOffreServices.getAll();
+  }
+
+  @GetMapping("/demandeOffre/{id}")
+  public ResponseEntity<?> getById(@PathVariable Long id){
+    return demandeOffreServices.getById(id);
+  }
+
   @PutMapping("/demandeOffre/{id}")
-  public ResponseEntity<?> edit(@PathVariable Long id , String code , Date date){
-    return demandeOffreServices.edit(id,code,date);
+  public ResponseEntity<?> edit(@PathVariable Long id , String code , Date date, String fournisseurCode){
+    return demandeOffreServices.edit(id,code,date, fournisseurCode);
   }
 
   @PutMapping("/demandeOffre/article/{id}")
@@ -41,16 +51,5 @@ public class DemandeOffreController {
   @DeleteMapping("/demandeOffre/{id}")
   public ResponseEntity<?> delete(@PathVariable Long id){
     return demandeOffreServices.delete(id);
-  }
-
-
-  @GetMapping("/demandeOffres")
-  public ResponseEntity<?> getAll(){
-    return demandeOffreServices.getAll();
-  }
-
-  @GetMapping("/demandeOffre/{id}")
-  public ResponseEntity<?> getById(@PathVariable Long id){
-    return demandeOffreServices.getById(id);
   }
 }

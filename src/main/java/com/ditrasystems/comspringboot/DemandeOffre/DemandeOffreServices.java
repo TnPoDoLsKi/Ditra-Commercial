@@ -4,8 +4,10 @@ import com.ditrasystems.comspringboot.ArticleOffre.ArticleOffre;
 import com.ditrasystems.comspringboot.ArticleOffre.ArticleOffreRepository;
 import com.ditrasystems.comspringboot.Articles.Article;
 import com.ditrasystems.comspringboot.Articles.ArticleRepository;
+import com.ditrasystems.comspringboot.DemandeOffre.Models.ArticleOffreModel;
 import com.ditrasystems.comspringboot.DemandeOffre.Models.ArticleQuantityModel;
 import com.ditrasystems.comspringboot.DemandeOffre.Models.DemandeOffreModel;
+import com.ditrasystems.comspringboot.DemandeOffre.Models.GetByIdModel;
 import com.ditrasystems.comspringboot.Fournisseur.Fournisseur;
 import com.ditrasystems.comspringboot.Fournisseur.FournisseurRepository;
 import com.ditrasystems.comspringboot.Utils.ErrorResponseModel;
@@ -42,15 +44,13 @@ public class DemandeOffreServices {
       return new ResponseEntity<>(errorResponseModel,HttpStatus.BAD_REQUEST);
     }
 
-
-
     List<ArticleOffre> articleOffres = new ArrayList<>();
 
     for (ArticleQuantityModel articleQuantityModel :demandeOffreModel.getArticlesQuantity()) {
 
-     Article article = articleRepository.findByCode(articleQuantityModel.getCodeArticle());
+      Article article = articleRepository.findByCode(articleQuantityModel.getCodeArticle());
 
-      if (article == null) {
+/*      if (article == null) {
         ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(), 609, "Article n'existe pas");
         return new ResponseEntity<>(errorResponseModel, HttpStatus.BAD_REQUEST);
       }
@@ -58,13 +58,31 @@ public class DemandeOffreServices {
       if (article.getFournisseur().getCode() != demandeOffreModel.getCodeFournisseur()){
         ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(), 616, "Cet article n'appartient pas a ce fournisseur");
         return new ResponseEntity<>(errorResponseModel, HttpStatus.BAD_REQUEST);
-      }
+      }*/
 
       ArticleOffre articleOffre = new ArticleOffre();
 
-      articleOffre.setArticle(article);
-      articleOffre.setPrix(article.getPAchatHT());
-      articleOffre.setQuantite(articleQuantityModel.getQuantity());
+      if(article == null){
+
+        articleOffre.setArticle(null);
+        articleOffre.setDesignation(articleQuantityModel.getDesignation());
+        articleOffre.setQuantiteStock(0);
+
+      }else {
+
+        if (article.getFournisseur().getCode() != demandeOffreModel.getCodeFournisseur()){
+          ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(), 616, "Cet article n'appartient pas a ce fournisseur");
+          return new ResponseEntity<>(errorResponseModel, HttpStatus.BAD_REQUEST);
+        }
+
+        articleOffre.setArticle(article);
+        articleOffre.setDesignation(article.getDesignation());
+        articleOffre.setQuantiteStock(article.getStock());
+
+      }
+
+      articleOffre.setQuantiteDemander(articleQuantityModel.getQuantiteDemander());
+
       articleOffres.add(articleOffre);
     }
 
@@ -77,6 +95,7 @@ public class DemandeOffreServices {
     demandeOffre = demandeOffreRepository.save(demandeOffre);
 
     for (ArticleOffre articleOffre :articleOffres){
+
       articleOffre.setDemandeOffre(demandeOffre);
       articleOffreRepository.save(articleOffre);
     }
@@ -85,13 +104,33 @@ public class DemandeOffreServices {
     return new ResponseEntity<>(HttpStatus.OK);
   }
 
+  public ResponseEntity<?> edit(Long id, String code, Date date, String fournisseurCode) {
 
-  public ResponseEntity<?> edit(Long id, String code, Date date) {
     Optional<DemandeOffre> demandeOffre = demandeOffreRepository.findById(id);
 
     if (!demandeOffre.isPresent()){
       ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),617,"Demande d'offre n'existe pas");
       return new ResponseEntity<>(errorResponseModel,HttpStatus.BAD_REQUEST);
+    }
+
+    Optional<Fournisseur> fournisseur = fournisseurRepository.findFournisseurByCode(fournisseurCode);
+
+    if (fournisseurCode != null) {
+      if (!fournisseur.isPresent()) {
+        ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(), 605, "Fournisseur n'existe pas");
+        return new ResponseEntity<>(errorResponseModel, HttpStatus.BAD_REQUEST);
+      }
+
+      for (ArticleOffre articleOffre : demandeOffre.get().getArticleOffres()) {
+        if (articleOffre.getArticle() != null) {
+          if (articleOffre.getArticle().getFournisseur().getCode() != fournisseurCode) {
+            ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(), 640, "il y'a un Article qui n'appartient pas a ce fournisseur");
+            return new ResponseEntity<>(errorResponseModel, HttpStatus.BAD_REQUEST);
+
+          }
+        }
+      }
+      demandeOffre.get().setFournisseur(fournisseur.get());
     }
 
     if (code != null){
@@ -102,9 +141,58 @@ public class DemandeOffreServices {
       demandeOffre.get().setDate(date);
     }
 
-
     demandeOffreRepository.save(demandeOffre.get());
     return new ResponseEntity<>(HttpStatus.OK);
+  }
+
+  public ResponseEntity<?> delete(Long id) {
+    Optional<DemandeOffre> demandeOffre = demandeOffreRepository.findById(id);
+
+    if (!demandeOffre.isPresent()) {
+      ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(), 617, "Demande d'offre n'existe pas");
+      return new ResponseEntity<>(errorResponseModel, HttpStatus.BAD_REQUEST);
+    }
+
+    demandeOffreRepository.delete(demandeOffre.get());
+
+    return new ResponseEntity<>(HttpStatus.OK);
+  }
+
+  public ResponseEntity<?> getAll() {
+    return new ResponseEntity<>(demandeOffreRepository.findAll(),HttpStatus.OK);
+
+  }
+
+
+  public ResponseEntity<?> getById(Long id) {
+    //{ id, code, fournisseur, date, articles : [{ codeArticle, designation, quantiteStock, quantiteDemander }] }
+    Optional<DemandeOffre> demandeOffre = demandeOffreRepository.findById(id);
+
+    if (!demandeOffre.isPresent()) {
+      ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(), 617, "Demande d'offre n'existe pas");
+      return new ResponseEntity<>(errorResponseModel, HttpStatus.BAD_REQUEST);
+
+    }
+
+    GetByIdModel getByIdModel = new GetByIdModel();
+    getByIdModel.setDemandeOffre(demandeOffre.get());
+
+    ArticleOffreModel articleOffreModel = new ArticleOffreModel();
+    ArrayList<ArticleOffreModel> articleOffreModels = new ArrayList<>();
+
+    for(ArticleOffre articleOffre : demandeOffre.get().getArticleOffres()){
+
+      if(articleOffre.getArticle() != null) {
+        articleOffreModel.setCodeArticle(articleOffre.getArticle().getCode());
+      }
+      articleOffreModel.setDesignation(articleOffre.getDesignation());
+
+
+
+    }
+
+
+    return new ResponseEntity<>(demandeOffre.get(),HttpStatus.OK);
   }
 
   public ResponseEntity<?> editArticle(Long id, List<ArticleQuantityModel> articleQuantityModels) {
@@ -136,8 +224,6 @@ public class DemandeOffreServices {
       ArticleOffre articleOffre = new ArticleOffre();
 
       articleOffre.setArticle(article);
-      articleOffre.setPrix(article.getPAchatHT());
-      articleOffre.setQuantite(articleQuantityModel.getQuantity());
       articleOffres.add(articleOffre);
     }
 
@@ -189,33 +275,5 @@ public class DemandeOffreServices {
 
   }
 
-  public ResponseEntity<?> delete(Long id) {
-    Optional<DemandeOffre> demandeOffre = demandeOffreRepository.findById(id);
 
-    if (!demandeOffre.isPresent()) {
-      ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(), 617, "Demande d'offre n'existe pas");
-      return new ResponseEntity<>(errorResponseModel, HttpStatus.BAD_REQUEST);
-    }
-
-    demandeOffreRepository.delete(demandeOffre.get());
-
-    return new ResponseEntity<>(HttpStatus.OK);
-  }
-
-  public ResponseEntity<?> getAll() {
-    return new ResponseEntity<>(demandeOffreRepository.findAll(),HttpStatus.OK);
-
-  }
-
-  public ResponseEntity<?> getById(Long id) {
-    Optional<DemandeOffre> demandeOffre = demandeOffreRepository.findById(id);
-
-    if (!demandeOffre.isPresent()) {
-      ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(), 617, "Demande d'offre n'existe pas");
-      return new ResponseEntity<>(errorResponseModel, HttpStatus.BAD_REQUEST);
-    }
-
-
-    return new ResponseEntity<>(demandeOffre.get(),HttpStatus.OK);
-  }
 }

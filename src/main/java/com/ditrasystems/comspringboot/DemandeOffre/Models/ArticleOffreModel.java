@@ -8,10 +8,13 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @Getter
 @Setter
-public class ArticleQuantityModel {
+public class ArticleOffreModel {
 
-    String codeArticle;
-    String designation;
-    Float quantiteDemander;
+     String codeArticle;
 
+     float quantiteDemander;
+
+     float quantiteStock;
+
+     String designation;
 }

@@ -89,6 +89,7 @@ public class FournisseurServices {
       for (Agenda agenda : fournisseur.getAgendas()){
         if (agenda.getPrincipale() == true){
           telephone = agenda.getTelephone_1();
+          break;
         }
       }
 

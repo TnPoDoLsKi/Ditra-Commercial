@@ -3,6 +3,7 @@ package com.ditrasystems.comspringboot.ArticleOffre;
 import com.ditrasystems.comspringboot.Articles.Article;
 import com.ditrasystems.comspringboot.BonDeCommande.BonDeCommande;
 import com.ditrasystems.comspringboot.DemandeOffre.DemandeOffre;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
@@ -17,20 +18,25 @@ public class ArticleOffre {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private long id;
 
+  private float quantiteDemander;
+
+  private float quantiteStock;
+
+  private String designation;
+
+
+  @JsonIgnore
   private boolean deleted;
 
+  @JsonIgnore
   @ManyToOne
   @JoinColumn(name = "article_id")
   private Article article;
 
+  @JsonIgnore
   @ManyToOne
   @JoinColumn(name = "demandeOffre_id")
   private DemandeOffre demandeOffre;
-
-
-  private float prix;
-
-  private float quantite;
 
   public ArticleOffre() {
   }
@@ -67,19 +73,27 @@ public class ArticleOffre {
     this.demandeOffre = demandeOffre;
   }
 
-  public float getPrix() {
-    return prix;
+  public float getQuantiteDemander() {
+    return quantiteDemander;
   }
 
-  public void setPrix(float prix) {
-    this.prix = prix;
+  public void setQuantiteDemander(float quantiteDemander) {
+    this.quantiteDemander = quantiteDemander;
   }
 
-  public float getQuantite() {
-    return quantite;
+  public float getQuantiteStock() {
+    return quantiteStock;
   }
 
-  public void setQuantite(float quantite) {
-    this.quantite = quantite;
+  public void setQuantiteStock(float quantiteStock) {
+    this.quantiteStock = quantiteStock;
+  }
+
+  public String getDesignation() {
+    return designation;
+  }
+
+  public void setDesignation(String designation) {
+    this.designation = designation;
   }
 }
