@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 @Entity
-@SQLDelete(sql=" UPDATE fournisseur SET deleted =true WHERE id = ?")
+@SQLDelete(sql=" UPDATE fournisseur SET deleted =true WHERE code = ?")
 @Where(clause = "deleted = false")
 public class Fournisseur {
 

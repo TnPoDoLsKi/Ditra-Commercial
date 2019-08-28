@@ -2,6 +2,7 @@ package com.ditrasystems.comspringboot.DemandeOffre;
 
 import com.ditrasystems.comspringboot.ArticleOffre.ArticleOffre;
 import com.ditrasystems.comspringboot.Fournisseur.Fournisseur;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
@@ -12,17 +13,15 @@ import java.util.Collection;
 import java.util.Date;
 
 @Entity
-@SQLDelete(sql=" UPDATE demande_offre SET deleted =true WHERE id = ?")
+@SQLDelete(sql=" UPDATE demande_offre SET deleted =true WHERE code = ?")
 @Where(clause = "deleted = false")
 public class DemandeOffre {
-//    //{ id, code, fournisseur, date, articles : [{ codeArticle, designation, quantiteStock, quantiteDemander }] }
+
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private long id;
-
-  private Date date;
-
   private String code;
+
+  @JsonFormat(pattern = "dd/MM/yyyy")
+  private Date date;
 
   @JsonIgnore
   private boolean deleted;
@@ -35,14 +34,6 @@ public class DemandeOffre {
   private Fournisseur fournisseur;
 
   public DemandeOffre() {
-  }
-
-  public long getId() {
-    return id;
-  }
-
-  public void setId(long id) {
-    this.id = id;
   }
 
   public Date getDate() {

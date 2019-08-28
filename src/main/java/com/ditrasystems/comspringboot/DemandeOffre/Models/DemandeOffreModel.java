@@ -19,4 +19,5 @@ public class DemandeOffreModel {
 
    String code;
 
+   String date;
 }

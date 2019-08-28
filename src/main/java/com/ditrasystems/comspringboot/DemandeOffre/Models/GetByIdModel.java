@@ -4,26 +4,15 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 @FieldDefaults(level= AccessLevel.PRIVATE)
 @Getter
 @Setter
 public class GetByIdModel {
-    //    //{ id, code, fournisseur, date, articles : [{ codeArticle, designation, quantiteStock, quantiteDemander }] }
-    long id;
 
-/*    String code;
+    DemandeOffre Offre;
 
-    Date date;
-
-    String codeFournisseur;
-
-    String designation ;*/
-
-    DemandeOffre demandeOffre;
-
-    ArrayList<ArticleOffreModel> articleOffreModels = new ArrayList<>();
+    ArrayList<ArticleOffreModel> articles= new ArrayList<>();
 
     public GetByIdModel() {
     }

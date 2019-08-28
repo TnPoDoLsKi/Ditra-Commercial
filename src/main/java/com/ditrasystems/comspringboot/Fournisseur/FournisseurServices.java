@@ -22,6 +22,12 @@ public class FournisseurServices {
 
     Fournisseur fournisseur=fournisseurModel.getFournisseur();
 
+    Optional<Fournisseur> fournisseurTest = fournisseurRepository.findFournisseurByCode(fournisseur.getCode());
+
+    if (fournisseurTest.isPresent()){
+      ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),645,"Fournisseur deja exister");
+      return new ResponseEntity<>(errorResponseModel,HttpStatus.BAD_REQUEST);
+    }
 
     if (fournisseur.getName()==null)
     {
