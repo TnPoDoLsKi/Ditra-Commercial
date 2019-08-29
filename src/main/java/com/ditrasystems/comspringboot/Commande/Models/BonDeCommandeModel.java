@@ -13,9 +13,12 @@ import java.util.List;
 @Setter
 public class BonDeCommandeModel {
 
-   List<ArticleQuantityModel> articlesQuantity = new ArrayList<>();
+   List<ArticleQuantityModel> articles = new ArrayList<>();
 
    String codeFournisseur ;
 
    String code;
+
+   String date;
+
 }

@@ -31,8 +31,8 @@ public class ArticleController {
 
 
   @PutMapping("/article/{code}")
-  public ResponseEntity<?> edit(@PathVariable String code,  Long familleId,  Long fournisseurId ,  String codeA,  String designation,  String type,  String codeABarre,  Float PAchatHT,  Float remise,  Float tva,  Float fodec,  Float stock ,  Float quantiteVendu,  Float stockMin,  Float prixVenteHTMin ){
-    return  articleServices.edit( code , familleId , fournisseurId,  codeA, designation, type, codeABarre, PAchatHT,  remise, tva, fodec, stock ,  quantiteVendu,  stockMin, prixVenteHTMin );
+  public ResponseEntity<?> edit(@PathVariable String code,  Long familleId,  String fournisseurCode ,  String codeA,  String designation,  String type,  String codeABarre,  Float PAchatHT,  Float remise,  Float tva,  Float fodec,  Float stock ,  Float quantiteVendu,  Float stockMin,  Float prixVenteHTMin ){
+    return  articleServices.edit( code , familleId , fournisseurCode,  codeA, designation, type, codeABarre, PAchatHT,  remise, tva, fodec, stock ,  quantiteVendu,  stockMin, prixVenteHTMin );
   }
 
   @DeleteMapping("/article/{code}")

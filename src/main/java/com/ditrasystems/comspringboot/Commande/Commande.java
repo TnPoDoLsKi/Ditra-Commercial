@@ -1,9 +1,10 @@
 package com.ditrasystems.comspringboot.Commande;
 
-import com.ditrasystems.comspringboot.ArticleCommande.ArticleBonCommande;
+import com.ditrasystems.comspringboot.ArticleCommande.ArticleCommande;
 import com.ditrasystems.comspringboot.Livraison.BonDeLivrasion;
 import com.ditrasystems.comspringboot.Facture.Facture;
 import com.ditrasystems.comspringboot.Fournisseur.Fournisseur;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
@@ -13,36 +14,34 @@ import java.util.Collection;
 import java.util.Date;
 
 @Entity
-@SQLDelete(sql=" UPDATE bon_de_commande SET deleted =true WHERE id = ?")
+@SQLDelete(sql=" UPDATE commande SET deleted =true WHERE code = ?")
 @Where(clause = "deleted = false")
-public class BonDeCommande {
+public class Commande {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private long id;
-
-
-  private boolean deleted;
-
-
   private String code;
-
 
   private Date date;
 
+  private String etat;
 
-  @OneToMany(mappedBy = "bonDeCommande",cascade = CascadeType.ALL)
-  private Collection<ArticleBonCommande> articleBonCommandes;
+  @JsonIgnore
+  private boolean deleted;
 
+  @JsonIgnore
+  @OneToMany(mappedBy = "commande",cascade = CascadeType.ALL)
+  private Collection<ArticleCommande> articleCommandes =new ArrayList<>();
 
+  @JsonIgnore
   @ManyToOne
   Fournisseur fournisseur;
 
-
-  @ManyToMany(mappedBy = "bonDeCommandes")
+  @JsonIgnore
+  @ManyToMany(mappedBy = "commandes")
   private Collection<BonDeLivrasion> bonDeLivrasions = new ArrayList<>();
 
 
+  @JsonIgnore
   @ManyToMany
   @JoinTable(name = "bonDeCommandes_facture",
       joinColumns = { @JoinColumn(name = "bonDeCommandesId") },
@@ -50,15 +49,7 @@ public class BonDeCommande {
   private Collection<Facture> factures =new ArrayList<>();
 
 
-  public BonDeCommande() {
-  }
-
-  public long getId() {
-    return id;
-  }
-
-  public void setId(long id) {
-    this.id = id;
+  public Commande() {
   }
 
   public boolean isDeleted() {
@@ -85,12 +76,20 @@ public class BonDeCommande {
     this.date = date;
   }
 
-  public Collection<ArticleBonCommande> getArticleBonCommandes() {
-    return articleBonCommandes;
+  public Collection<ArticleCommande> getArticleCommandes() {
+    return articleCommandes;
   }
 
-  public void setArticleBonCommandes(Collection<ArticleBonCommande> articleBonCommandes) {
-    this.articleBonCommandes = articleBonCommandes;
+  public void setArticleCommandes(Collection<ArticleCommande> articleCommandes) {
+    this.articleCommandes = articleCommandes;
+  }
+
+  public Collection<Facture> getFactures() {
+    return factures;
+  }
+
+  public void setFactures(Collection<Facture> factures) {
+    this.factures = factures;
   }
 
   public Fournisseur getFournisseur() {
@@ -107,5 +106,13 @@ public class BonDeCommande {
 
   public void setBonDeLivrasions(Collection<BonDeLivrasion> bonDeLivrasions) {
     this.bonDeLivrasions = bonDeLivrasions;
+  }
+
+  public String getEtat() {
+    return etat;
+  }
+
+  public void setEtat(String etat) {
+    this.etat = etat;
   }
 }

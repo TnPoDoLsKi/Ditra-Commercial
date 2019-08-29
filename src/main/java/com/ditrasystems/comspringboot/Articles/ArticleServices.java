@@ -48,9 +48,9 @@ public class ArticleServices {
 
     }
 
-    Article articleTest = articleRepository.findByCode(article.getCode());
+    Optional<Article> articleTest = articleRepository.findById(article.getCode());
 
-    if (articleTest != null) {
+    if (!articleTest.isPresent()) {
       ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),636,"article deja existé ");
       return new ResponseEntity<>(errorResponseModel, HttpStatus.BAD_REQUEST);
 
@@ -97,7 +97,7 @@ public class ArticleServices {
 
       for (MatierePremierQuantity matierePremierQuantity : articleModel.getMatierePremierQuantities()){
 
-        Article MP = articleRepository.findByCode(matierePremierQuantity.getCode());
+        Optional<Article> MP = articleRepository.findById(matierePremierQuantity.getCode());
 
         if (MP == null){
           ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),609,"Article n'existe pas");
@@ -106,7 +106,7 @@ public class ArticleServices {
 
         Construction construction = new Construction();
         construction.setQuantite(matierePremierQuantity.getQuantity());
-        construction.setMatierePrimaire(MP);
+        construction.setMatierePrimaire(MP.get());
         construction.setProduitFini(article);
         article.addConstruction(construction);
       }
@@ -145,34 +145,35 @@ public class ArticleServices {
   }
 
   public ResponseEntity<?> getByCode(String code) {
-    Article article = articleRepository.findByCode(code);
+    Optional<Article> article = articleRepository.findById(code);
 
-    if (article == null){
+    if (!article.isPresent()){
       ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),609,"Article n'existe pas");
       return new ResponseEntity<>(errorResponseModel,HttpStatus.BAD_REQUEST);
     }
 
     ArticleModelGetOne articleModelGetOne = new ArticleModelGetOne();
-    articleModelGetOne.setArticle(article);
-    articleModelGetOne.setMarges(article.getMarges());
-    articleModelGetOne.setConstructions(article.getConstructions());
+    articleModelGetOne.setArticle(article.get());
+    articleModelGetOne.setMarges(article.get().getMarges());
+    articleModelGetOne.setConstructions(article.get().getConstructions());
 
     return new ResponseEntity<>(articleModelGetOne,HttpStatus.OK);
   }
 
-  public ResponseEntity<?> edit(String codeArticle,Long familleId,Long fournisseurId, String code, String designation, String type, String codeABarre, Float PAchatHT, Float remise, Float tva, Float fodec, Float stock, Float quantiteVendu, Float stockMin, Float prixVenteHTMin) {
+  public ResponseEntity<?> edit(String codeArticle,Long familleId,String fournisseurCode, String code, String designation, String type, String codeABarre, Float PAchatHT, Float remise, Float tva, Float fodec, Float stock, Float quantiteVendu, Float stockMin, Float prixVenteHTMin) {
 
-    Article article = articleRepository.findByCode(codeArticle);
+    Optional<Article> articleOptional = articleRepository.findById(codeArticle);
+    Article article = articleOptional.get();
 
-    if (article == null){
+    if (articleOptional == null){
       ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),609,"Article n'existe pas");
       return new ResponseEntity<>(errorResponseModel,HttpStatus.BAD_REQUEST);
     }
 
 
 
-    if (fournisseurId != null){
-      Optional<Fournisseur> fournisseur = fournisseurRepository.findById(fournisseurId);
+    if (fournisseurCode != null){
+      Optional<Fournisseur> fournisseur = fournisseurRepository.findById(fournisseurCode);
 
       if (!fournisseur.isPresent()){
         ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),605,"Fournisseur n'existe pas");
@@ -197,9 +198,9 @@ public class ArticleServices {
 
 
     if (code != null){
-      Article articleTest = articleRepository.findByCode(code);
+      Optional<Article> articleTest = articleRepository.findById(code);
 
-      if (articleTest != null && articleTest.getCode() != codeArticle) {
+      if (articleTest != null && articleTest.get().getCode() != codeArticle) {
         ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),636,"article deja existé ");
         return new ResponseEntity<>(errorResponseModel, HttpStatus.BAD_REQUEST);
 
@@ -259,14 +260,14 @@ public class ArticleServices {
 
   public ResponseEntity<?> delete(String code) {
 
-    Article article = articleRepository.findByCode(code);
+    Optional<Article> article = articleRepository.findById(code);
 
-    if (article == null){
+    if (!article.isPresent()){
       ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),609,"Article n'existe pas");
       return new ResponseEntity<>(errorResponseModel,HttpStatus.BAD_REQUEST);
     }
 
-    articleRepository.delete(article);
+    articleRepository.delete(article.get());
 
     return new ResponseEntity<>(HttpStatus.OK);
 

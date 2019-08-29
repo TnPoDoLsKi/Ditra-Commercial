@@ -1,13 +1,13 @@
 package com.ditrasystems.comspringboot.Livraison;
 
 
-import com.ditrasystems.comspringboot.ArticleCommande.ArticleBonCommande;
+import com.ditrasystems.comspringboot.ArticleCommande.ArticleCommande;
 import com.ditrasystems.comspringboot.ArticleCommande.ArticleBonCommandeRepository;
 import com.ditrasystems.comspringboot.ArticleLivraison.ArticleBonLivraison;
 import com.ditrasystems.comspringboot.ArticleLivraison.ArticleBonLivraisonRepository;
 import com.ditrasystems.comspringboot.Articles.Article;
 import com.ditrasystems.comspringboot.Articles.ArticleRepository;
-import com.ditrasystems.comspringboot.Commande.BonDeCommande;
+import com.ditrasystems.comspringboot.Commande.Commande;
 import com.ditrasystems.comspringboot.Commande.BonDeCommandeRepository;
 import com.ditrasystems.comspringboot.Livraison.Models.ArticleQuantityModel;
 import com.ditrasystems.comspringboot.Livraison.Models.BonDeLivraisonModel;
@@ -50,7 +50,7 @@ public class BonDeLivraisonServices {
   public ResponseEntity<?> create(BonDeLivraisonModel bonDeLivraisonModel) {
     BonDeLivrasion bonDeLivrasion = new BonDeLivrasion();
 
-    Optional<Fournisseur> fournisseur = fournisseurRepository.findFournisseurByCode(bonDeLivraisonModel.getCodeFournisseur());
+    Optional<Fournisseur> fournisseur = fournisseurRepository.findById(bonDeLivraisonModel.getCodeFournisseur());
 
     if (!fournisseur.isPresent()){
       ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),605,"Fournisseur n'existe pas");
@@ -60,11 +60,11 @@ public class BonDeLivraisonServices {
 
     bonDeLivrasion.setFournisseur(fournisseur.get());
 
-    for (BonDeCommande bonDeCommandeId : bonDeLivraisonModel.getBonDeCommandes()) {
-      Optional<BonDeCommande> bonDeCommande = bonDeCommandeRepository.findById(bonDeCommandeId.getId());
+    for (Commande commandeId : bonDeLivraisonModel.getCommandes()) {
+      Optional<Commande> bonDeCommande = bonDeCommandeRepository.findCommandeByCode(commandeId.getCode());
 
       if (!bonDeCommande.isPresent()){
-        ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),617,"Bon de commande n'existe pas");
+        ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),618,"commande n'existe pas");
         return new ResponseEntity<>(errorResponseModel,HttpStatus.BAD_REQUEST);
       }
 
@@ -90,18 +90,18 @@ public class BonDeLivraisonServices {
         return new ResponseEntity<>(errorResponseModel, HttpStatus.BAD_REQUEST);
       }
 
-      Optional<BonDeCommande> bonDeCommande = Optional.empty();
+      Optional<Commande> bonDeCommande = Optional.empty();
 
-      if (articleQuantityModel.getBonDeCommande() != null){
+      if (articleQuantityModel.getCodeCommande() != null){
 
-       bonDeCommande = bonDeCommandeRepository.findById(articleQuantityModel.getBonDeCommande());
+       bonDeCommande = bonDeCommandeRepository.findCommandeByCode(articleQuantityModel.getCodeCommande());
 
         if (!bonDeCommande.isPresent()){
-          ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),617,"Bon de commande n'existe pas");
+          ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),618,"commande n'existe pas");
           return new ResponseEntity<>(errorResponseModel,HttpStatus.BAD_REQUEST);
         }
 
-        Optional<ArticleBonCommande> articleBonCommande = articleBonCommandeRepository.findArticleBonCommandeByArticleAndBonDeCommande(article.get(),bonDeCommande.get());
+        Optional<ArticleCommande> articleBonCommande = articleBonCommandeRepository.findArticleCommandeByArticleAndCommande(article.get(),bonDeCommande.get());
 
         if (!articleBonCommande.isPresent()){
           ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),620,"il y a aucune bon commande qui a cette article");
@@ -109,8 +109,8 @@ public class BonDeLivraisonServices {
         }
 
 
-        for (BonDeCommande bonDeCommande1 : bonDeLivraisonModel.getBonDeCommandes()){
-          if (bonDeCommande1.getId() != articleQuantityModel.getBonDeCommande() ){
+        for (Commande commande1 : bonDeLivraisonModel.getCommandes()){
+          if (commande1.getCode() != articleQuantityModel.getCodeCommande()){
             ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),619,"il y a un article que sa bon de commande nappartient pas au bon de livraison");
             return new ResponseEntity<>(errorResponseModel,HttpStatus.BAD_REQUEST);
           }
@@ -136,10 +136,10 @@ public class BonDeLivraisonServices {
        articleBonLivraison.setQuantite(articleQuantityModel.getQuantity());
 
       if (bonDeCommande.isPresent()) {
-        articleBonLivraison.setBonDeCommande(bonDeCommande.get().getId());
+        articleBonLivraison.setCodeCommande(bonDeCommande.get().getCode());
       }
       else {
-        articleBonLivraison.setBonDeCommande(null);
+        articleBonLivraison.setCodeCommande(null);
       }
 
       articleBonLivraisons.add(articleBonLivraison);
@@ -210,10 +210,10 @@ public class BonDeLivraisonServices {
 
       if (articleBonLivraison.getQuantite() != null){
 
-        if (articleBonLivraison1.get().getBonDeCommande() != null){
-          Optional<BonDeCommande> bonDeCommande = bonDeCommandeRepository.findById(articleBonLivraison1.get().getBonDeCommande());
+        if (articleBonLivraison1.get().getCodeCommande() != null){
+          Optional<Commande> bonDeCommande = bonDeCommandeRepository.findCommandeByCode(articleBonLivraison1.get().getCodeCommande());
 
-          Optional<ArticleBonCommande>articleBonCommande = articleBonCommandeRepository.findArticleBonCommandeByArticleAndBonDeCommande(articleBonLivraison1.get().getArticle(),bonDeCommande.get());
+          Optional<ArticleCommande>articleBonCommande = articleBonCommandeRepository.findArticleCommandeByArticleAndCommande(articleBonLivraison1.get().getArticle(),bonDeCommande.get());
 
           articleBonCommande.get().setQuantiteLivrer(articleBonCommande.get().getQuantiteLivrer() - articleBonLivraison.getQuantite() + articleBonLivraison1.get().getQuantite());
 
@@ -257,10 +257,10 @@ public class BonDeLivraisonServices {
 
 
 
-        if (articleBonLivraison1.get().getBonDeCommande() != null){
-          Optional<BonDeCommande> bonDeCommande = bonDeCommandeRepository.findById(articleBonLivraison1.get().getBonDeCommande());
+        if (articleBonLivraison1.get().getCodeCommande() != null){
+          Optional<Commande> bonDeCommande = bonDeCommandeRepository.findCommandeByCode(articleBonLivraison1.get().getCodeCommande());
 
-          Optional<ArticleBonCommande> articleBonCommande = articleBonCommandeRepository.findArticleBonCommandeByArticleAndBonDeCommande(articleBonLivraison1.get().getArticle(),bonDeCommande.get());
+          Optional<ArticleCommande> articleBonCommande = articleBonCommandeRepository.findArticleCommandeByArticleAndCommande(articleBonLivraison1.get().getArticle(),bonDeCommande.get());
 
           System.out.println(articleBonCommande.get().getId());
 

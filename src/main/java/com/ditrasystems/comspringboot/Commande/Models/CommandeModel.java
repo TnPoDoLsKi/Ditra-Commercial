@@ -1,28 +1,20 @@
 package com.ditrasystems.comspringboot.Commande.Models;
 
+
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+
+import java.util.ArrayList;
 
 @FieldDefaults(level= AccessLevel.PRIVATE)
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-public class ArticleQuantityModel {
+public class CommandeModel {
 
-    String codeArticle;
+    CommandesModel commande ;
 
-    Float quantityCommander;
-
-    Float quantityLivrer ;
-
-    Float PAchatHT;
-
-    Float fodec;
-
-    Float tva;
-
-
-
+    ArrayList<CommandeArticleModel> commandeArticle = new ArrayList<>();
 
 }

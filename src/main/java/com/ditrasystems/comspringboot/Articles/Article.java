@@ -1,7 +1,7 @@
 package com.ditrasystems.comspringboot.Articles;
 
 
-import com.ditrasystems.comspringboot.ArticleCommande.ArticleBonCommande;
+import com.ditrasystems.comspringboot.ArticleCommande.ArticleCommande;
 import com.ditrasystems.comspringboot.ArticleLivraison.ArticleBonLivraison;
 import com.ditrasystems.comspringboot.ArticleFacture.ArticleFacture;
 import com.ditrasystems.comspringboot.ArticleOffre.ArticleOffre;
@@ -60,7 +60,7 @@ public class Article implements Serializable {
 
   @JsonIgnore
   @OneToMany(mappedBy = "article",cascade = CascadeType.ALL)
-  private Collection<ArticleBonCommande> articleBonCommandes= new ArrayList<>();;
+  private Collection<ArticleCommande> articleCommandes = new ArrayList<>();;
 
   @JsonIgnore
   @OneToMany(mappedBy = "article")
@@ -201,12 +201,12 @@ public class Article implements Serializable {
     this.prixVenteHTMin = prixVenteHTMin;
   }
 
-  public Collection<ArticleBonCommande> getArticleBonCommandes() {
-    return articleBonCommandes;
+  public Collection<ArticleCommande> getArticleCommandes() {
+    return articleCommandes;
   }
 
-  public void setArticleBonCommandes(Collection<ArticleBonCommande> articleBonCommandes) {
-    this.articleBonCommandes = articleBonCommandes;
+  public void setArticleCommandes(Collection<ArticleCommande> articleCommandes) {
+    this.articleCommandes = articleCommandes;
   }
 
   public Collection<ArticleBonLivraison> getArticleBonLivraisons() {

@@ -9,7 +9,7 @@ import lombok.experimental.FieldDefaults;
 @Getter
 @Setter
 public class ArticleQuantityModel {
-
+// codeArticle, quantite, PAchatHT, fodec, TVA, PAchatTTC
     String codeArticle;
     String designation;
     Float quantiteDemander;

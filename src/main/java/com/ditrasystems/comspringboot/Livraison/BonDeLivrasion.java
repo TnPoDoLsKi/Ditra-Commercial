@@ -1,7 +1,7 @@
 package com.ditrasystems.comspringboot.Livraison;
 
 import com.ditrasystems.comspringboot.ArticleLivraison.ArticleBonLivraison;
-import com.ditrasystems.comspringboot.Commande.BonDeCommande;
+import com.ditrasystems.comspringboot.Commande.Commande;
 import com.ditrasystems.comspringboot.Retour.BonDeRetour;
 import com.ditrasystems.comspringboot.Facture.Facture;
 import com.ditrasystems.comspringboot.Fournisseur.Fournisseur;
@@ -40,7 +40,7 @@ public class BonDeLivrasion {
   @JoinTable(name = "bondecommande_bondelivrasion",
       joinColumns = { @JoinColumn(name = "bondelivraisonId") },
       inverseJoinColumns = { @JoinColumn(name = "bondecommandeId") })
-  private Collection<BonDeCommande> bonDeCommandes =new ArrayList<>();
+  private Collection<Commande> commandes =new ArrayList<>();
 
 
 
@@ -111,12 +111,12 @@ public class BonDeLivrasion {
     this.paiements = paiements;
   }
 
-  public Collection<BonDeCommande> getBonDeCommandes() {
-    return bonDeCommandes;
+  public Collection<Commande> getCommandes() {
+    return commandes;
   }
 
-  public void setBonDeCommandes(Collection<BonDeCommande> bonDeCommandes) {
-    this.bonDeCommandes = bonDeCommandes;
+  public void setCommandes(Collection<Commande> commandes) {
+    this.commandes = commandes;
   }
 
   public Fournisseur getFournisseur() {
@@ -143,7 +143,7 @@ public class BonDeLivrasion {
     this.bonDeRetour = bonDeRetour;
   }
 
-  public void addBonDeCommande(BonDeCommande bonDeCommande){
-    this.bonDeCommandes.add(bonDeCommande);
+  public void addBonDeCommande(Commande commande){
+    this.commandes.add(commande);
   }
 }

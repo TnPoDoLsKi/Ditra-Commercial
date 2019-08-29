@@ -3,7 +3,7 @@ package com.ditrasystems.comspringboot.Fournisseur;
 import com.ditrasystems.comspringboot.Agenda.Agenda;
 import com.ditrasystems.comspringboot.Articles.Article;
 import com.ditrasystems.comspringboot.Banque.Banque;
-import com.ditrasystems.comspringboot.Commande.BonDeCommande;
+import com.ditrasystems.comspringboot.Commande.Commande;
 import com.ditrasystems.comspringboot.Livraison.BonDeLivrasion;
 import com.ditrasystems.comspringboot.DemandeOffre.DemandeOffre;
 import com.ditrasystems.comspringboot.Facture.Facture;
@@ -74,7 +74,7 @@ public class Fournisseur {
 
   @JsonIgnore
   @OneToMany(mappedBy = "fournisseur",cascade = CascadeType.ALL)
-  private Collection<BonDeCommande> bonDeCommandes  = new ArrayList<>();
+  private Collection<Commande> commandes = new ArrayList<>();
 
   @JsonIgnore
   @OneToMany(mappedBy = "fournisseur",cascade = CascadeType.ALL)
@@ -219,12 +219,12 @@ public class Fournisseur {
     this.bonDeLivrasions = bonDeLivrasions;
   }
 
-  public Collection<BonDeCommande> getBonDeCommandes() {
-    return bonDeCommandes;
+  public Collection<Commande> getCommandes() {
+    return commandes;
   }
 
-  public void setBonDeCommandes(Collection<BonDeCommande> bonDeCommandes) {
-    this.bonDeCommandes = bonDeCommandes;
+  public void setCommandes(Collection<Commande> commandes) {
+    this.commandes = commandes;
   }
 
   public Collection<Facture> getFactures() {

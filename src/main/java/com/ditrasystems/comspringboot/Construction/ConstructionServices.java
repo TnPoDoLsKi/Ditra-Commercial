@@ -24,8 +24,10 @@ public class ConstructionServices {
 
   public ResponseEntity<?> create(String codePF, String codeMP,float quantity) {
 
-    Article articlePF = articleRepository.findByCode(codePF);
-    if (articlePF == null){
+    Optional<Article> articlePFOptional = articleRepository.findById(codePF);
+    Article articlePF = articlePFOptional.get();
+
+    if (!articlePFOptional.isPresent()){
       ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),634,"articlePF n'existe pas");
       return new ResponseEntity<>(errorResponseModel,HttpStatus.BAD_REQUEST);
     }
@@ -36,8 +38,10 @@ public class ConstructionServices {
     }
 
 
-    Article articleMP = articleRepository.findByCode(codeMP);
-    if (articleMP == null){
+    Optional<Article> articleMPOptional = articleRepository.findById(codeMP);
+    Article articleMP = articlePFOptional.get();
+
+    if (!articleMPOptional.isPresent()){
       ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),635,"articleMP n'existe pas");
       return new ResponseEntity<>(errorResponseModel,HttpStatus.BAD_REQUEST);
     }
@@ -59,8 +63,11 @@ public class ConstructionServices {
   public ResponseEntity<?> getAll(String codePF) {
 
     ArrayList<ConstructionModelGetALL> constructionModelGetALLS = new ArrayList<>();
-    Article articlePF = articleRepository.findByCode(codePF);
-    if (articlePF == null){
+
+    Optional<Article> articlePFOptional = articleRepository.findById(codePF);
+    Article articlePF = articlePFOptional.get();
+
+    if (!articlePFOptional.isPresent()){
       ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),634,"articlePF n'existe pas");
       return new ResponseEntity<>(errorResponseModel,HttpStatus.BAD_REQUEST);
     }
@@ -91,13 +98,17 @@ public class ConstructionServices {
 
   public ResponseEntity<?> edit(String codePF, String codeMP,String codeMPUpdate, Float quantity) {
 
-    Article articlePF = articleRepository.findByCode(codePF);
-    if (articlePF == null){
+    Optional<Article> articlePFOptional = articleRepository.findById(codePF);
+    Article articlePF = articlePFOptional.get();
+
+    if (!articlePFOptional.isPresent()){
       ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),634,"articlePF n'existe pas");
       return new ResponseEntity<>(errorResponseModel,HttpStatus.BAD_REQUEST);
     }
 
-    Article articleMP = articleRepository.findByCode(codeMP);
+    Optional<Article> articleMPOptional = articleRepository.findById(codePF);
+    Article articleMP = articlePFOptional.get();
+
     if (articleMP == null){
       ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),635,"articleMP n'existe pas");
       return new ResponseEntity<>(errorResponseModel,HttpStatus.BAD_REQUEST);
@@ -115,12 +126,12 @@ public class ConstructionServices {
     }
 
     if (codeMPUpdate !=null){
-      Article articleMPUpdate = articleRepository.findByCode(codeMPUpdate);
-      if (articleMPUpdate == null){
+      Optional<Article> articleMPUpdate = articleRepository.findById(codeMPUpdate);
+      if (!articleMPUpdate.isPresent()){
         ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),635,"articleMP n'existe pas");
         return new ResponseEntity<>(errorResponseModel,HttpStatus.BAD_REQUEST);
       }
-      construction.setMatierePrimaire(articleMPUpdate);
+      construction.setMatierePrimaire(articleMPUpdate.get());
     }
 
     constructionRepository.save(construction);
@@ -129,19 +140,19 @@ public class ConstructionServices {
 
 
   public ResponseEntity<?> delete(String codePF, String codeMP) {
-    Article articlePF = articleRepository.findByCode(codePF);
-    if (articlePF == null){
+    Optional<Article> articlePF = articleRepository.findById(codePF);
+    if (!articlePF.isPresent()){
       ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),634,"articlePF n'existe pas");
       return new ResponseEntity<>(errorResponseModel,HttpStatus.BAD_REQUEST);
     }
 
-    Article articleMP = articleRepository.findByCode(codeMP);
-    if (articleMP == null){
+    Optional<Article> articleMP = articleRepository.findById(codeMP);
+    if (!articleMP.isPresent()){
       ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),635,"articleMP n'existe pas");
       return new ResponseEntity<>(errorResponseModel,HttpStatus.BAD_REQUEST);
     }
 
-    Construction construction = constructionRepository.findByMatierePrimaireAndProduitFini(articleMP,articlePF);
+    Construction construction = constructionRepository.findByMatierePrimaireAndProduitFini(articleMP.get(),articlePF.get());
 
     if (construction == null){
       ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),614,"Construction n'existe pas");

@@ -30,7 +30,7 @@ public class ArticleBonLivraison {
 
   private Float quantite;
 
-  private Long bonDeCommande;
+  private String codeCommande;
 
   public ArticleBonLivraison() {
   }
@@ -83,11 +83,12 @@ public class ArticleBonLivraison {
     this.quantite = quantite;
   }
 
-  public Long getBonDeCommande() {
-    return bonDeCommande;
+  public String getCodeCommande() {
+    return codeCommande;
   }
 
-  public void setBonDeCommande(Long bonDeCommande) {
-    this.bonDeCommande = bonDeCommande;
+  public void setCodeCommande(String codeCommande) {
+    this.codeCommande = codeCommande;
   }
+
 }

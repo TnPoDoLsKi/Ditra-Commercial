@@ -1,12 +1,13 @@
 package com.ditrasystems.comspringboot.ArticleCommande;
 
 import com.ditrasystems.comspringboot.Articles.Article;
-import com.ditrasystems.comspringboot.Commande.BonDeCommande;
+import com.ditrasystems.comspringboot.Commande.Commande;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
 
-public interface ArticleBonCommandeRepository extends JpaRepository<ArticleBonCommande,Long> {
+public interface ArticleBonCommandeRepository extends JpaRepository<ArticleCommande,Long> {
 
-  Optional<ArticleBonCommande> findArticleBonCommandeByArticleAndBonDeCommande(Article article, BonDeCommande bonDeCommande);
+  Optional<ArticleCommande> findArticleCommandeByArticleAndCommande(Article article, Commande commande);
+
 }

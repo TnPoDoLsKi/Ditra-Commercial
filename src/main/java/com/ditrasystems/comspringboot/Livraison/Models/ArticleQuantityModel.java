@@ -10,11 +10,11 @@ import lombok.experimental.FieldDefaults;
 @Setter
 public class ArticleQuantityModel {
 
-   Long article;
+   String article;
 
    Float quantity;
 
    Float prix;
 
-   Long bonDeCommande;
+   String codeCommande;
 }

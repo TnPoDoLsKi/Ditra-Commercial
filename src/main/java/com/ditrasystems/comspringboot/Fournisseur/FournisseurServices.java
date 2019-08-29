@@ -22,7 +22,7 @@ public class FournisseurServices {
 
     Fournisseur fournisseur=fournisseurModel.getFournisseur();
 
-    Optional<Fournisseur> fournisseurTest = fournisseurRepository.findFournisseurByCode(fournisseur.getCode());
+    Optional<Fournisseur> fournisseurTest = fournisseurRepository.findById(fournisseur.getCode());
 
     if (fournisseurTest.isPresent()){
       ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),645,"Fournisseur deja exister");
@@ -71,7 +71,7 @@ public class FournisseurServices {
   }
 
   public ResponseEntity<?> getByCodeService(String code) {
-    Optional<Fournisseur> fournisseur = fournisseurRepository.findFournisseurByCode(code);
+    Optional<Fournisseur> fournisseur = fournisseurRepository.findById(code);
 
     if (!fournisseur.isPresent()){
       ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),605,"Fournisseur n'existe pas");
@@ -108,7 +108,7 @@ public class FournisseurServices {
 
   public ResponseEntity<?> updateService(String code, String name, String codeUpdate, String activite, String adresse, String codePostale, String ville, String pays, String codeTva, String matFiscale, Float solde, String email, String website, Float plafont_credit,String observation) {
 
-    Optional<Fournisseur> fournisseur = fournisseurRepository.findFournisseurByCode(code);
+    Optional<Fournisseur> fournisseur = fournisseurRepository.findById(code);
 
     if (!fournisseur.isPresent()){
       ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),605,"Fournisseur n'existe pas");
@@ -176,7 +176,7 @@ public class FournisseurServices {
   }
 
   public ResponseEntity<?> deleteService(String code) {
-    Optional<Fournisseur> fournisseur = fournisseurRepository.findFournisseurByCode(code);
+    Optional<Fournisseur> fournisseur = fournisseurRepository.findById(code);
 
     if (!fournisseur.isPresent()){
       ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),605,"Fournisseur n'existe pas");

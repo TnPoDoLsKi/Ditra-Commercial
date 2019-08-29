@@ -18,39 +18,46 @@ public class BonDeCommandeController {
   @Autowired
   BonDeCommandeServices bonDeCommandeServices;
 
-  @PostMapping("/bonCommande")
+
+
+  @PostMapping("/commande")
   public ResponseEntity<?> create(@RequestBody BonDeCommandeModel bonDeCommandeModel){
     return  bonDeCommandeServices.create(bonDeCommandeModel);
   }
 
-  @PutMapping("/bonCommande/{id}")
-  public ResponseEntity<?> edit(@PathVariable Long id , String code , Date date){
-    return bonDeCommandeServices.edit(id,code,date);
-  }
-
-  @PutMapping("/bonCommande/article/{id}")
-  public ResponseEntity<?> editArticle(@PathVariable Long id , @RequestBody List<ArticleQuantityModel> articleQuantityModels){
-    return bonDeCommandeServices.editArticle(id,  articleQuantityModels);
-  }
-
-  @DeleteMapping("/bonCommande/article/{id}")
-  public ResponseEntity<?> deleteArticle(@PathVariable Long id , List<Article> articles){
-    return bonDeCommandeServices.deleteArticle(id,articles);
+  @PostMapping("/commande/{code}/article")
+  public ResponseEntity<?> addArticle(@PathVariable String code, @RequestBody  ArticleQuantityModel articleQuantityModel){
+    return bonDeCommandeServices.addArticle(code, articleQuantityModel);
   }
 
 
-  @DeleteMapping("/bonCommande/{id}")
-  public ResponseEntity<?> delete(@PathVariable Long id){
-    return bonDeCommandeServices.delete(id);
-  }
-
-  @GetMapping("/bonCommandes")
+  @GetMapping("/commandes")
   public ResponseEntity<?> getAll(){
     return bonDeCommandeServices.getAll();
   }
 
-  @GetMapping("/bonCommande/{id}")
-  public ResponseEntity<?> getById(@PathVariable Long id){
-    return bonDeCommandeServices.getById(id);
+
+  @GetMapping("/commande/{code}")
+  public ResponseEntity<?> getByCode(@PathVariable String code){
+    return bonDeCommandeServices.getByCode(code);
   }
+
+
+  @PutMapping("/commande/{code}")
+  public ResponseEntity<?> edit(@PathVariable String code, String codeUpdate, String fournisseurCode,String date, String etat){
+    return bonDeCommandeServices.edit(code,codeUpdate,fournisseurCode,date,etat);
+  }
+
+
+  @DeleteMapping("/commande/{codeCommande}/article/{codeArticle}")
+  public ResponseEntity<?> deleteArticle(@PathVariable String codeCommande,@PathVariable String codeArticle ){
+    return bonDeCommandeServices.deleteArticle(codeCommande,codeArticle);
+  }
+
+
+  @DeleteMapping("/commande/{code}")
+  public ResponseEntity<?> delete(@PathVariable String code){
+    return bonDeCommandeServices.delete(code);
+  }
+
 }

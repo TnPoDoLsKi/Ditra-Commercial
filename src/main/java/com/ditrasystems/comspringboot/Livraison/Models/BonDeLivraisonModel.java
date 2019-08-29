@@ -1,6 +1,6 @@
 package com.ditrasystems.comspringboot.Livraison.Models;
 
-import com.ditrasystems.comspringboot.Commande.BonDeCommande;
+import com.ditrasystems.comspringboot.Commande.Commande;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -16,7 +16,7 @@ public class BonDeLivraisonModel {
 
    List<ArticleQuantityModel> articlesQuantity = new ArrayList<>();
 
-   List<BonDeCommande> bonDeCommandes = new ArrayList<>();
+   List<Commande> commandes = new ArrayList<>();
 
    String codeFournisseur ;
 

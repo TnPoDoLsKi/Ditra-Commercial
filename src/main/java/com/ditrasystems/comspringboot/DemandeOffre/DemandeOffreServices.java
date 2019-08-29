@@ -47,20 +47,26 @@ public class DemandeOffreServices {
           return new ResponseEntity<>(errorResponseModel, HttpStatus.BAD_REQUEST);
      }
 
-    Optional<Fournisseur> fournisseur = fournisseurRepository.findFournisseurByCode(demandeOffreModel.getCodeFournisseur());
+    if (demandeOffreModel.getCodeFournisseur()==null)
+      {
+          ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),601,"Fournisseur code requis");
+          return new ResponseEntity<>(errorResponseModel,HttpStatus.BAD_REQUEST);
+      }
+
+    Optional<Fournisseur> fournisseur = fournisseurRepository.findById(demandeOffreModel.getCodeFournisseur());
 
     if (!fournisseur.isPresent()){
       ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),605,"Fournisseur n'existe pas");
       return new ResponseEntity<>(errorResponseModel,HttpStatus.BAD_REQUEST);
     }
 
-    if (demandeOffreModel.getCodeFournisseur()==null)
-     {
-      ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),601,"Fournisseur code requis");
-      return new ResponseEntity<>(errorResponseModel,HttpStatus.BAD_REQUEST);
-     }
 
-      Date date = null;
+    if(demandeOffreModel.getDate() == null){
+          ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),650,"offre date required");
+          return new ResponseEntity<>(errorResponseModel,HttpStatus.BAD_REQUEST);
+      }
+
+    Date date = null;
       try {
           date = new SimpleDateFormat("dd/MM/yyyy").parse(demandeOffreModel.getDate());
       } catch (ParseException e) {
@@ -77,7 +83,8 @@ public class DemandeOffreServices {
            return new ResponseEntity<>(errorResponseModel,HttpStatus.BAD_REQUEST);
         }
 
-      Article article = articleRepository.findByCode(articleQuantityModel.getCodeArticle());
+      Optional<Article> articleOptional = articleRepository.findById(articleQuantityModel.getCodeArticle());
+      Article article = articleOptional.get();
 
       ArticleOffre articleOffre = new ArticleOffre();
 
@@ -141,7 +148,8 @@ public class DemandeOffreServices {
 
         if(codeArticle != null){
 
-            Article article = articleRepository.findByCode(codeArticle);
+            Optional<Article> articleOptional = articleRepository.findById(codeArticle);
+            Article article = articleOptional.get();
 
             if (article == null){
                 ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),609,"Article n'existe pas");
@@ -229,7 +237,7 @@ public class DemandeOffreServices {
       return new ResponseEntity<>(errorResponseModel,HttpStatus.BAD_REQUEST);
     }
 
-    Optional<Fournisseur> fournisseur = fournisseurRepository.findFournisseurByCode(fournisseurCode);
+    Optional<Fournisseur> fournisseur = fournisseurRepository.findById(fournisseurCode);
 
     if (fournisseurCode != null) {
       if (!fournisseur.isPresent()) {

@@ -49,7 +49,7 @@ public class BanqueService {
 
     public ResponseEntity<?> getBanqueByFournisseurCodeService(String fournisseurCode){
 
-        Optional<Fournisseur> fournisseur = fournisseurRepository.findFournisseurByCode(fournisseurCode);
+        Optional<Fournisseur> fournisseur = fournisseurRepository.findById(fournisseurCode);
 
         if (!fournisseur.isPresent()){
             ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),605,"Fournisseur n'existe pas");

@@ -22,9 +22,10 @@ public class MargeServices {
 
   public ResponseEntity<?> create(String codeArticle, float quantity, float prix,float margeGagner) {
 
-    Article article = articleRepository.findByCode(codeArticle);
+    Optional<Article> articleOptional = articleRepository.findById(codeArticle);
+    Article article = articleOptional.get();
 
-    if (article == null){
+    if (articleOptional.isPresent()){
       ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),609,"Article n'existe pas");
       return new ResponseEntity<>(errorResponseModel,HttpStatus.BAD_REQUEST);
     }
@@ -41,9 +42,10 @@ public class MargeServices {
   }
 
   public ResponseEntity<?> getByArticle(String codeArticle) {
-    Article article = articleRepository.findByCode(codeArticle);
+    Optional<Article> articleOptional = articleRepository.findById(codeArticle);
+    Article article = articleOptional.get();
 
-    if (article == null){
+    if (articleOptional.isPresent()){
       ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),609,"Article n'existe pas");
       return new ResponseEntity<>(errorResponseModel,HttpStatus.BAD_REQUEST);
     }
