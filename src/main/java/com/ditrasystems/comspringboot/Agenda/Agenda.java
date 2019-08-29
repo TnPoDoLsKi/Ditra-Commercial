@@ -16,7 +16,7 @@ public class Agenda {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private long id;
+  private Long id;
 
   private String nom;
 
@@ -35,7 +35,7 @@ public class Agenda {
 
   private String email;
 
-  private Boolean principale;
+  private Boolean principale = false;
 
   @JsonIgnore
   @ManyToOne
@@ -55,11 +55,11 @@ public class Agenda {
     this.fournisseur = fournisseur;
   }
 
-  public long getId() {
+  public Long getId() {
     return id;
   }
 
-  public void setId(long id) {
+  public void setId(Long id) {
     this.id = id;
   }
 
@@ -141,5 +141,22 @@ public class Agenda {
 
   public void setFax(String fax) {
     this.fax = fax;
+  }
+
+  @Override
+  public String toString() {
+    return "Agenda{" +
+        "id=" + id +
+        ", nom='" + nom + '\'' +
+        ", profession='" + profession + '\'' +
+        ", telephone_1='" + telephone_1 + '\'' +
+        ", telephone_2='" + telephone_2 + '\'' +
+        ", fax='" + fax + '\'' +
+        ", cin='" + cin + '\'' +
+        ", deleted=" + deleted +
+        ", email='" + email + '\'' +
+        ", principale=" + principale +
+        ", fournisseur=" + fournisseur +
+        '}';
   }
 }

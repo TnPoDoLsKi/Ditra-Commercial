@@ -55,9 +55,6 @@ public class FournisseurServices {
 
       if (agenda.getPrincipale())
         telephone = agenda.getTelephone_1();
-      else
-        if (agenda.getPrincipale() == null)
-          agenda.setPrincipale(false);
 
       agenda.setFournisseur(fournisseur);
       fournisseur.addAgenda(agenda);
@@ -82,16 +79,16 @@ public class FournisseurServices {
 
   public ResponseEntity<?> getAllService() {
 
-    String  telephone = "";
-
     ArrayList<FournisseurWithAgendaPrincipal> fournisseurWithAgendaPrincipals = new ArrayList<>();
 
     ArrayList<Fournisseur> fournisseurs = (ArrayList<Fournisseur>) fournisseurRepository.findAll();
 
     for(Fournisseur fournisseur : fournisseurs){
 
-      for (Agenda agenda : fournisseur.getAgendas()){
-        if (agenda.getPrincipale() == true){
+      String telephone = fournisseur.getAgendas().stream().findFirst().get().getTelephone_1();
+
+      for (Agenda agenda : fournisseur.getAgendas()) {
+        if (agenda.getPrincipale()) {
           telephone = agenda.getTelephone_1();
           break;
         }
