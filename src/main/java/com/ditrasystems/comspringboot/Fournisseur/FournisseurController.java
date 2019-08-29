@@ -30,8 +30,8 @@ public class FournisseurController {
   }
 
   @PutMapping("/fournisseur/{code}")
-  public ResponseEntity<?> editByCode(@PathVariable String code, String name, String codeUpdate, String activite, String adresse,  String codePostale,  String ville,  String pays,  String codeTva,  String matFiscale,  Float solde,  String email,  String website,Float plafont_credit,String observation){
-    return  fournisseurServices.updateService(code,name,codeUpdate,activite,adresse,codePostale,ville,pays,codeTva,matFiscale,solde,email,website,plafont_credit,observation);
+  public ResponseEntity<?> editByCode(@PathVariable String code, @RequestBody Fournisseur fournisseur){
+      return  fournisseurServices.updateService(code, fournisseur);
   }
 
   @DeleteMapping("/fournisseur/{code}")

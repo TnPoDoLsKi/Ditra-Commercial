@@ -1,12 +1,12 @@
 package com.ditrasystems.comspringboot.Fournisseur;
 
 import com.ditrasystems.comspringboot.Agenda.Agenda;
-import com.ditrasystems.comspringboot.Articles.Article;
 import com.ditrasystems.comspringboot.Banque.Banque;
 import com.ditrasystems.comspringboot.Commande.Commande;
-import com.ditrasystems.comspringboot.Livraison.BonDeLivrasion;
 import com.ditrasystems.comspringboot.DemandeOffre.DemandeOffre;
 import com.ditrasystems.comspringboot.Facture.Facture;
+import com.ditrasystems.comspringboot.Livraison.BonDeLivrasion;
+import com.ditrasystems.comspringboot.Articles.Article;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 @Entity
-@SQLDelete(sql=" UPDATE fournisseur SET deleted =true WHERE code = ?")
+@SQLDelete(sql=" UPDATE fournisseur SET deleted = true WHERE code = ?")
 @Where(clause = "deleted = false")
 public class Fournisseur {
 
@@ -60,8 +60,6 @@ public class Fournisseur {
       joinColumns = { @JoinColumn(name = "fournisseurId") },
       inverseJoinColumns = { @JoinColumn(name = "banqueId") })
   private Collection<Banque> banques =new ArrayList<>();
-
-
 
 
   @JsonIgnore

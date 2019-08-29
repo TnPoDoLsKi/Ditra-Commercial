@@ -1,5 +1,6 @@
 package com.ditrasystems.comspringboot.Fournisseur.Models;
 
+import com.ditrasystems.comspringboot.Fournisseur.Fournisseur;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -10,16 +11,20 @@ import lombok.experimental.FieldDefaults;
 @Setter
 public class FournisseurWithAgendaPrincipal {
 
-     String code;
+    String code;
+    String nom;
+    String activite;
+    String ville;
+    Float solde;
+    String telephone;
 
-     String nom;
-
-     String activite;
-
-     String ville;
-
-     Float solde;
-
-     String telephone;
+    public FournisseurWithAgendaPrincipal(Fournisseur fournisseur, String telephone) {
+        this.code = fournisseur.getCode();
+        this.nom = fournisseur.getNom();
+        this.activite = fournisseur.getActivite();
+        this.ville = fournisseur.getVille();
+        this.solde = fournisseur.getSolde();
+        this.telephone = telephone;
+    }
 
 }
