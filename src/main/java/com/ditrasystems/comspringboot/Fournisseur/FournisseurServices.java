@@ -2,12 +2,14 @@ package com.ditrasystems.comspringboot.Fournisseur;
 
 import com.ditrasystems.comspringboot.Agenda.Agenda;
 import com.ditrasystems.comspringboot.Fournisseur.Models.FournisseurModel;
-import com.ditrasystems.comspringboot.Utils.ErrorResponseModel;
+import com.ditrasystems.comspringboot.Fournisseur.Models.FournisseurWithAgendaPrincipal;
+import com.ditrasystems.comspringboot.Utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Optional;
 
 @Service
@@ -16,152 +18,112 @@ public class FournisseurServices {
   @Autowired
   FournisseurRepository fournisseurRepository;
 
-  public ResponseEntity<?> create(FournisseurModel fournisseurModel) {
+  public ResponseEntity<?> createService(FournisseurModel fournisseurModel) {
 
     Fournisseur fournisseur=fournisseurModel.getFournisseur();
 
+    Optional<Fournisseur> fournisseurOptional = fournisseurRepository.findById(fournisseur.getCode());
+
+    if (fournisseurOptional.isPresent())
+      return Utils.badRequestResponse(645,"Fournisseur deja exister");
 
     if (fournisseur.getName()==null)
-    {
-        ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),600,"Fournisseur name requis");
-        return new ResponseEntity<>(errorResponseModel,HttpStatus.BAD_REQUEST);
-    }
+      return Utils.badRequestResponse(600,"Fournisseur nom requis");
 
     if (fournisseur.getCode()==null)
-    {
-      ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),601,"Fournisseur code requis");
-      return new ResponseEntity<>(errorResponseModel,HttpStatus.BAD_REQUEST);
-    }
+      return Utils.badRequestResponse(601,"Fournisseur code requis");
 
     if (fournisseur.getAdresse()==null)
-    {
-      ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),602,"Fournisseur adresse requis");
-      return new ResponseEntity<>(errorResponseModel,HttpStatus.BAD_REQUEST);
-    }
+      return Utils.badRequestResponse(602,"Fournisseur adresse requis");
 
     if (fournisseurModel.getAgendaList().size() == 0)
-    {
-      ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),603,"ajouter une agneda au min");
-      return new ResponseEntity<>(errorResponseModel,HttpStatus.BAD_REQUEST);
-    }
+      return Utils.badRequestResponse(603,"ajouter une agneda au min");
 
     if (fournisseur.getVille()==null)
-    {
-      ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),604,"Fournisseur ville requis");
-      return new ResponseEntity<>(errorResponseModel,HttpStatus.BAD_REQUEST);
-    }
+      return Utils.badRequestResponse(604,"Fournisseur ville requis");
 
-    for (Agenda agenda:fournisseurModel.getAgendaList()){
+
+    String telephone = "";
+
+    for (Agenda agenda : fournisseurModel.getAgendaList()) {
+
+      if (agenda.getNom() == null)
+        return Utils.badRequestResponse(640,"un contact doit contenir un nom");
+
+      if (agenda.getTelephone_1() == null)
+        return Utils.badRequestResponse(641,"un contact doit contenir un numero de telephone");
+
+      if (agenda.getPrincipale())
+        telephone = agenda.getTelephone_1();
+
       agenda.setFournisseur(fournisseur);
       fournisseur.addAgenda(agenda);
     }
 
     fournisseurRepository.save(fournisseur);
 
+    FournisseurWithAgendaPrincipal fournisseurWithAgendaPrincipal = new FournisseurWithAgendaPrincipal(fournisseur, telephone);
 
-    return new ResponseEntity<Fournisseur>(fournisseur, HttpStatus.CREATED);
+    return new ResponseEntity<>(fournisseurWithAgendaPrincipal, HttpStatus.CREATED);
   }
 
-  public ResponseEntity<?> delete(long id) {
-    Optional<Fournisseur> fournisseur1 = fournisseurRepository.findById(id);
+  public ResponseEntity<?> getByCodeService(String code) {
 
-    if (!fournisseur1.isPresent()){
-      ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),605,"Fournisseur n'existe pas");
-      return new ResponseEntity<>(errorResponseModel,HttpStatus.BAD_REQUEST);
-    }
+    Optional<Fournisseur> fournisseurOptional = fournisseurRepository.findById(code);
 
-    fournisseurRepository.delete(fournisseur1.get());
+    if (!fournisseurOptional.isPresent())
+      return Utils.badRequestResponse(605,"Fournisseur n'existe pas");
 
-    return new ResponseEntity<>(HttpStatus.OK);
-
+    return new ResponseEntity<>(fournisseurOptional.get(),HttpStatus.OK);
   }
 
-  public ResponseEntity<?> getById(long id) {
-    Optional<Fournisseur> fournisseur = fournisseurRepository.findById(id);
+  public ResponseEntity<?> getAllService() {
 
-    if (!fournisseur.isPresent()){
-      ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),605,"Fournisseur n'existe pas");
-      return new ResponseEntity<>(errorResponseModel,HttpStatus.BAD_REQUEST);
+    ArrayList<FournisseurWithAgendaPrincipal> fournisseurWithAgendaPrincipals = new ArrayList<>();
+
+    ArrayList<Fournisseur> fournisseurs = (ArrayList<Fournisseur>) fournisseurRepository.findAll();
+
+    for(Fournisseur fournisseur : fournisseurs){
+
+      String telephone = fournisseur.getAgendas().stream().findFirst().get().getTelephone_1();
+
+      for (Agenda agenda : fournisseur.getAgendas()) {
+        if (agenda.getPrincipale()) {
+          telephone = agenda.getTelephone_1();
+          break;
+        }
+      }
+
+      FournisseurWithAgendaPrincipal fournisseurWithAgendaPrincipal = new FournisseurWithAgendaPrincipal(fournisseur, telephone);
+      fournisseurWithAgendaPrincipals.add(fournisseurWithAgendaPrincipal);
     }
 
-    return new ResponseEntity<>(fournisseur.get(),HttpStatus.OK);
-
+    return new ResponseEntity<>(fournisseurWithAgendaPrincipals,HttpStatus.OK);
   }
 
-  public ResponseEntity<?> getAll() {
-    return new ResponseEntity<>(fournisseurRepository.findAll(),HttpStatus.OK);
-  }
+  public ResponseEntity<?> updateService(String code, Fournisseur fournisseur) {
 
-  public ResponseEntity<?> getByCode(String code) {
+    Optional<Fournisseur> fournisseurLocal = fournisseurRepository.findById(code);
 
-    Optional<Fournisseur> fournisseur = fournisseurRepository.findFournisseurByCode(code);
+    if (!fournisseurLocal.isPresent())
+      return Utils.badRequestResponse(605,"Fournisseur n'existe pas");
 
-    if (!fournisseur.isPresent()){
-      ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),605,"Fournisseur n'existe pas");
-      return new ResponseEntity<>(errorResponseModel,HttpStatus.BAD_REQUEST);
-    }
+    fournisseur = Utils.merge(fournisseurLocal.get(),fournisseur);
 
-    return new ResponseEntity<Fournisseur>(fournisseur.get(),HttpStatus.OK);
-  }
-
-  public ResponseEntity<?> edit(long id, String name, String code, String activite, String adresse, String codePostale, String ville, String pays, String codeTva, String matFiscale, Float solde, String email, String website) {
-
-    Optional<Fournisseur> fournisseur = fournisseurRepository.findById(id);
-
-    if (!fournisseur.isPresent()){
-      ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),605,"Fournisseur n'existe pas");
-      return new ResponseEntity<>(errorResponseModel,HttpStatus.BAD_REQUEST);
-    }
-
-    if (name != null){
-      fournisseur.get().setName(name);
-    }
-
-    if (code != null){
-      fournisseur.get().setCode(code);
-    }
-
-    if (activite != null){
-      fournisseur.get().setActivite(activite);
-    }
-
-    if (adresse != null){
-      fournisseur.get().setAdresse(adresse);
-    }
-
-    if (codePostale != null){
-      fournisseur.get().setCodePostal(codePostale);
-    }
-
-    if (ville != null){
-      fournisseur.get().setVille(ville);
-    }
-
-    if (pays != null){
-      fournisseur.get().setPays(pays);
-    }
-
-    if (codeTva != null){
-      fournisseur.get().setCodeTVA(codeTva);
-    }
-
-    if (matFiscale != null){
-      fournisseur.get().setMatFiscale(matFiscale);
-    }
-
-    if (solde != null){
-      fournisseur.get().setSolde(solde);
-    }
-    if (email != null){
-      fournisseur.get().setEmail(email);
-    }
-
-    if (website != null){
-      fournisseur.get().setWebsite(website);
-    }
-
-    fournisseurRepository.save(fournisseur.get());
+    fournisseurRepository.save(fournisseur);
 
     return new ResponseEntity<>(HttpStatus.OK);
   }
+
+  public ResponseEntity<?> deleteService(String code) {
+    Optional<Fournisseur> fournisseur = fournisseurRepository.findById(code);
+
+    if (!fournisseur.isPresent())
+      return Utils.badRequestResponse(605,"Fournisseur n'existe pas");
+
+    fournisseurRepository.delete(fournisseur.get());
+
+    return new ResponseEntity<>(HttpStatus.OK);
+  }
+
 }

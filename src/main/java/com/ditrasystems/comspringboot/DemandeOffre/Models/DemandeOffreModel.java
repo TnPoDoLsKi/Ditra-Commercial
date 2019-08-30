@@ -1,44 +1,23 @@
 package com.ditrasystems.comspringboot.DemandeOffre.Models;
 
+import lombok.*;
+import lombok.experimental.FieldDefaults;
+
 import java.util.ArrayList;
 import java.util.List;
 
+@FieldDefaults(level= AccessLevel.PRIVATE)
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
 public class DemandeOffreModel {
 
-  private List<ArticleQuantityModel> articlesQuantity = new ArrayList<>();
+   List<ArticleQuantityModel> articlesQuantity = new ArrayList<>();
 
-  private Long fournisseur ;
+   String codeFournisseur ;
 
-  private String code;
+   String code;
 
-
-  public DemandeOffreModel() {
-  }
-
-
-  public List<ArticleQuantityModel> getArticlesQuantity() {
-    return articlesQuantity;
-  }
-
-  public void setArticlesQuantity(List<ArticleQuantityModel> articlesQuantity) {
-    this.articlesQuantity = articlesQuantity;
-  }
-
-  public Long getFournisseur() {
-    return fournisseur;
-  }
-
-  public void setFournisseur(Long fournisseur) {
-    this.fournisseur = fournisseur;
-  }
-
-  public String getCode() {
-    return code;
-  }
-
-  public void setCode(String code) {
-    this.code = code;
-  }
-
-
+   String date;
 }

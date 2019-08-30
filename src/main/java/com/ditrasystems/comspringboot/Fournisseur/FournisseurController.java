@@ -16,33 +16,26 @@ public class FournisseurController {
 
   @PostMapping("/fournisseur")
   public ResponseEntity<?> create(@RequestBody FournisseurModel fournisseur){
-    return fournisseurServices.create(fournisseur);
-  }
-
-
-  @PutMapping("/fournisseur/{id}")
-  public ResponseEntity<?> edit(@PathVariable long id, String name, String code, String activite, String adresse,  String codePostale,  String ville,  String pays,  String codeTva,  String matFiscale,  Float solde,  String email,  String website){
-    return  fournisseurServices.edit(id,name,code,activite,adresse,codePostale,ville,pays,codeTva,matFiscale,solde,email,website);
-  }
-
-  @DeleteMapping("/fournisseur/{id}")
-  public ResponseEntity<?> delete(@PathVariable long id){
-    return  fournisseurServices.delete(id);
-  }
-
-
-  @GetMapping("/fournisseur/{id}")
-  public ResponseEntity<?> getById(@PathVariable long id){
-    return fournisseurServices.getById(id);
+    return fournisseurServices.createService(fournisseur);
   }
 
   @GetMapping("/fournisseurs")
   public ResponseEntity<?> getAll(){
-    return fournisseurServices.getAll();
+    return fournisseurServices.getAllService();
   }
 
   @GetMapping("/fournisseur/{code}")
   public ResponseEntity<?> getByCode(@PathVariable String code){
-    return fournisseurServices.getByCode(code);
+    return fournisseurServices.getByCodeService(code);
+  }
+
+  @PutMapping("/fournisseur/{code}")
+  public ResponseEntity<?> editByCode(@PathVariable String code, @RequestBody Fournisseur fournisseur){
+      return  fournisseurServices.updateService(code, fournisseur);
+  }
+
+  @DeleteMapping("/fournisseur/{code}")
+  public ResponseEntity<?> delete(@PathVariable String code){
+    return  fournisseurServices.deleteService(code);
   }
 }

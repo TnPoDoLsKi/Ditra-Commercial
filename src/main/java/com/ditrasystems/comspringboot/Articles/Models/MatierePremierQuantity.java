@@ -1,32 +1,17 @@
 package com.ditrasystems.comspringboot.Articles.Models;
 
+import lombok.*;
+import lombok.experimental.FieldDefaults;
+
+@FieldDefaults(level= AccessLevel.PRIVATE)
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
 public class MatierePremierQuantity {
 
-  private  long id;
+    String code;
 
-  private  float quantity;
+    float quantity;
 
-  public MatierePremierQuantity(long id, float quantity) {
-    this.id = id;
-    this.quantity = quantity;
-  }
-
-  public MatierePremierQuantity() {
-  }
-
-  public long getId() {
-    return id;
-  }
-
-  public void setId(long id) {
-    this.id = id;
-  }
-
-  public float getQuantity() {
-    return quantity;
-  }
-
-  public void setQuantity(float quantity) {
-    this.quantity = quantity;
-  }
 }

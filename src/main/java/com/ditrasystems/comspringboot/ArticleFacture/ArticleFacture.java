@@ -1,7 +1,6 @@
 package com.ditrasystems.comspringboot.ArticleFacture;
 
 import com.ditrasystems.comspringboot.Articles.Article;
-import com.ditrasystems.comspringboot.BonDeCommande.BonDeCommande;
 import com.ditrasystems.comspringboot.Facture.Facture;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;

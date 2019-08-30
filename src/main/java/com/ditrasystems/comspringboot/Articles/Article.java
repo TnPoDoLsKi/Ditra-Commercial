@@ -1,14 +1,15 @@
 package com.ditrasystems.comspringboot.Articles;
 
 
-import com.ditrasystems.comspringboot.ArticleBonCommande.ArticleBonCommande;
-import com.ditrasystems.comspringboot.ArticleBonLivraison.ArticleBonLivraison;
+import com.ditrasystems.comspringboot.ArticleCommande.ArticleCommande;
+import com.ditrasystems.comspringboot.ArticleLivraison.ArticleBonLivraison;
 import com.ditrasystems.comspringboot.ArticleFacture.ArticleFacture;
 import com.ditrasystems.comspringboot.ArticleOffre.ArticleOffre;
 import com.ditrasystems.comspringboot.Construction.Construction;
 import com.ditrasystems.comspringboot.Famille.Famille;
 import com.ditrasystems.comspringboot.Fournisseur.Fournisseur;
 import com.ditrasystems.comspringboot.Marge.Marge;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
@@ -19,25 +20,23 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 @Entity
-@SQLDelete(sql=" UPDATE article SET deleted =true WHERE id = ?")
+@SQLDelete(sql=" UPDATE article SET deleted =true WHERE code = ?")
 @Where(clause = "deleted = false")
 public class Article implements Serializable {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private long id;
-
-  private boolean deleted;
-  
   private String code;
-  
+
+  @JsonIgnore
+  private boolean deleted;
+
   private String designation;
 
   private String type;
 
   private String codeABarre;
 
-  private float prixHT;
+  private float PAchatHT;
 
   private float remise;
 
@@ -53,44 +52,48 @@ public class Article implements Serializable {
       
   private float prixVenteHTMin;
 
+  private float PRevient;
 
+  private float PVenteMin;
+
+  private String image;
+
+  @JsonIgnore
   @OneToMany(mappedBy = "article",cascade = CascadeType.ALL)
-  private Collection<ArticleBonCommande> articleBonCommandes;
+  private Collection<ArticleCommande> articleCommandes = new ArrayList<>();;
 
+  @JsonIgnore
   @OneToMany(mappedBy = "article")
-  private Collection<ArticleBonLivraison> articleBonLivraisons;
+  private Collection<ArticleBonLivraison> articleBonLivraisons= new ArrayList<>();;
 
-   @OneToMany(mappedBy = "article")
+  @JsonIgnore
+  @OneToMany(mappedBy = "article")
   private Collection<ArticleFacture> articleFactures;
 
+  @JsonIgnore
   @OneToMany(mappedBy = "article" ,cascade = CascadeType.ALL)
-  private Collection<ArticleOffre> articleOffres;
+  private Collection<ArticleOffre> articleOffres= new ArrayList<>();;
 
 
-
+  @JsonIgnore
   @OneToMany(mappedBy = "article" , cascade = CascadeType.ALL )
   private Collection<Marge> marges = new ArrayList<>();
 
+  @JsonIgnore
   @OneToMany(mappedBy = "produitFini",cascade = CascadeType.ALL)
   private Collection<Construction> constructions = new ArrayList<>();
 
 
+  @JsonIgnore
   @ManyToOne
   private Famille famille;
 
+  @JsonIgnore
   @ManyToOne
   private Fournisseur fournisseur;
 
 
   public Article() {
-  }
-
-  public long getId() {
-    return id;
-  }
-
-  public void setId(long id) {
-    this.id = id;
   }
 
   public boolean isDeleted() {
@@ -134,12 +137,12 @@ public class Article implements Serializable {
     this.codeABarre = codeABarre;
   }
 
-  public float getPrixHT() {
-    return prixHT;
+  public float getPAchatHT() {
+    return PAchatHT;
   }
 
-  public void setPrixHT(float prixHT) {
-    this.prixHT = prixHT;
+  public void setPAchatHT(float PAchatHT) {
+    this.PAchatHT = PAchatHT;
   }
 
   public float getRemise() {
@@ -198,12 +201,12 @@ public class Article implements Serializable {
     this.prixVenteHTMin = prixVenteHTMin;
   }
 
-  public Collection<ArticleBonCommande> getArticleBonCommandes() {
-    return articleBonCommandes;
+  public Collection<ArticleCommande> getArticleCommandes() {
+    return articleCommandes;
   }
 
-  public void setArticleBonCommandes(Collection<ArticleBonCommande> articleBonCommandes) {
-    this.articleBonCommandes = articleBonCommandes;
+  public void setArticleCommandes(Collection<ArticleCommande> articleCommandes) {
+    this.articleCommandes = articleCommandes;
   }
 
   public Collection<ArticleBonLivraison> getArticleBonLivraisons() {
@@ -239,7 +242,7 @@ public class Article implements Serializable {
   }
 
   public Collection<Construction> getConstructions() {
-    return constructions;
+    return  constructions;
   }
 
   public void setConstructions(Collection<Construction> constructions) {
@@ -265,8 +268,32 @@ public class Article implements Serializable {
   public void  addConstruction(Construction construction){
     constructions.add(construction);
   }
+
   public void  addMarge(Marge marge){
     marges.add(marge);
   }
 
+  public float getPRevient() {
+    return PRevient;
+  }
+
+  public void setPRevient(float PRevient) {
+    this.PRevient = PRevient;
+  }
+
+  public float getPVenteMin() {
+    return PVenteMin;
+  }
+
+  public void setPVenteMin(float PVenteMin) {
+    this.PVenteMin = PVenteMin;
+  }
+
+  public String getImage() {
+    return image;
+  }
+
+  public void setImage(String image) {
+    this.image = image;
+  }
 }

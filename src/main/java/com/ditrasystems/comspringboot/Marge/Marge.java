@@ -1,6 +1,7 @@
 package com.ditrasystems.comspringboot.Marge;
 
 import com.ditrasystems.comspringboot.Articles.Article;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
@@ -14,13 +15,17 @@ public class Marge {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private long id;
 
+  @JsonIgnore
   private boolean deleted;
 
   private float quantite;
 
-  private float prix;
+  private float PVente;
+
+  private float margeGagner;
 
 
+  @JsonIgnore
   @ManyToOne
   private Article article;
 
@@ -60,11 +65,19 @@ public class Marge {
     this.quantite = quantite;
   }
 
-  public float getPrix() {
-    return prix;
+  public float getPVente() {
+    return PVente;
   }
 
-  public void setPrix(float prix) {
-    this.prix = prix;
+  public void setPVente(float PVente) {
+    this.PVente = PVente;
+  }
+
+  public float getMargeGagner() {
+    return margeGagner;
+  }
+
+  public void setMargeGagner(float margeGagner) {
+    this.margeGagner = margeGagner;
   }
 }

@@ -2,8 +2,8 @@ package com.ditrasystems.comspringboot.Facture;
 
 import com.ditrasystems.comspringboot.ArticleFacture.ArticleFacture;
 import com.ditrasystems.comspringboot.Avoir.Avoir;
-import com.ditrasystems.comspringboot.BonDeCommande.BonDeCommande;
-import com.ditrasystems.comspringboot.BonDeLivraison.BonDeLivrasion;
+import com.ditrasystems.comspringboot.Commande.Commande;
+import com.ditrasystems.comspringboot.Livraison.BonDeLivrasion;
 
 import com.ditrasystems.comspringboot.Fournisseur.Fournisseur;
 import com.ditrasystems.comspringboot.Paiement.Paiement;
@@ -42,7 +42,7 @@ public class Facture {
 
 
   @ManyToMany(mappedBy = "factures")
-  private Collection<BonDeCommande> bonDeCommandes = new ArrayList<>();
+  private Collection<Commande> commandes = new ArrayList<>();
 
   @ManyToOne
   private Fournisseur fournisseur;

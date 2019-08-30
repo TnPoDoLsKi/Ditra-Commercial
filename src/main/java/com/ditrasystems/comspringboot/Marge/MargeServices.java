@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Optional;
 
 @Service
@@ -19,7 +20,42 @@ public class MargeServices {
   @Autowired
   ArticleRepository articleRepository;
 
-  public ResponseEntity<?> edit(Long id, Float quantity, Float prix) {
+  public ResponseEntity<?> create(String codeArticle, float quantity, float prix,float margeGagner) {
+
+    Optional<Article> articleOptional = articleRepository.findById(codeArticle);
+    Article article = articleOptional.get();
+
+    if (articleOptional.isPresent()){
+      ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),609,"Article n'existe pas");
+      return new ResponseEntity<>(errorResponseModel,HttpStatus.BAD_REQUEST);
+    }
+
+    Marge marge = new Marge();
+    marge.setPVente(prix);
+    marge.setQuantite(quantity);
+    marge.setArticle(article);
+    marge.setMargeGagner(margeGagner);
+
+    margeRepository.save(marge);
+
+    return new ResponseEntity<>(marge,HttpStatus.OK);
+  }
+
+  public ResponseEntity<?> getByArticle(String codeArticle) {
+    Optional<Article> articleOptional = articleRepository.findById(codeArticle);
+    Article article = articleOptional.get();
+
+    if (articleOptional.isPresent()){
+      ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),609,"Article n'existe pas");
+      return new ResponseEntity<>(errorResponseModel,HttpStatus.BAD_REQUEST);
+    }
+
+    ArrayList<Marge> marges = margeRepository.findByArticleCode(codeArticle);
+
+    return new ResponseEntity<>(marges,HttpStatus.OK);
+  }
+
+  public ResponseEntity<?> edit(long id, Float quantity, Float PVente, Float margeGagner ){
     Optional<Marge> marge = margeRepository.findById(id);
 
     if (!marge.isPresent()){
@@ -27,23 +63,24 @@ public class MargeServices {
       return new ResponseEntity<>(errorResponseModel,HttpStatus.BAD_REQUEST);
     }
 
-
-
     if (quantity !=null){
       marge.get().setQuantite(quantity);
     }
 
-    if (prix !=null){
-      marge.get().setPrix(prix);
+    if (PVente !=null){
+      marge.get().setPVente(PVente);
     }
 
+    if (margeGagner !=null){
+      marge.get().setMargeGagner(margeGagner);
+    }
 
     margeRepository.save(marge.get());
 
     return new ResponseEntity<>(HttpStatus.OK);
   }
 
-  public ResponseEntity<?> delete(Long id) {
+  public ResponseEntity<?> delete(long id) {
 
     Optional<Marge> marge = margeRepository.findById(id);
 
@@ -58,21 +95,4 @@ public class MargeServices {
 
   }
 
-  public ResponseEntity<?> create(Long articleId, Float quantity, Float prix) {
-    Optional<Article> article = articleRepository.findById(articleId);
-
-    if (!article.isPresent()){
-      ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),609,"Article n'existe pas");
-      return new ResponseEntity<>(errorResponseModel,HttpStatus.BAD_REQUEST);
-    }
-
-    Marge marge = new Marge();
-    marge.setPrix(prix);
-    marge.setQuantite(quantity);
-    marge.setArticle(article.get());
-
-    margeRepository.save(marge);
-
-    return new ResponseEntity<>(HttpStatus.OK);
-  }
 }

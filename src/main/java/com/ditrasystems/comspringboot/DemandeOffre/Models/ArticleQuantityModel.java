@@ -1,28 +1,17 @@
 package com.ditrasystems.comspringboot.DemandeOffre.Models;
 
-import java.util.List;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 
+@FieldDefaults(level= AccessLevel.PRIVATE)
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
 public class ArticleQuantityModel {
+// codeArticle, quantite, PAchatHT, fodec, TVA, PAchatTTC
+    String codeArticle;
+    String designation;
+    Float quantiteDemander;
 
-  private  Long article;
-  private  Float quantity;
-
-  public ArticleQuantityModel() {
-  }
-
-  public Long getarticle() {
-    return article;
-  }
-
-  public void setarticle(Long article) {
-    this.article = article;
-  }
-
-  public Float getQuantity() {
-    return quantity;
-  }
-
-  public void setQuantity(Float quantity) {
-    this.quantity = quantity;
-  }
 }

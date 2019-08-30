@@ -1,5 +1,7 @@
 package com.ditrasystems.comspringboot.Articles;
 
+import com.ditrasystems.comspringboot.Articles.Models.ArticleModelGetAll;
+import com.ditrasystems.comspringboot.Articles.Models.ArticleModelGetOne;
 import com.ditrasystems.comspringboot.Articles.Models.MatierePremierQuantity;
 import com.ditrasystems.comspringboot.Articles.Models.ArticleModel;
 import com.ditrasystems.comspringboot.Construction.Construction;
@@ -15,6 +17,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -37,14 +41,23 @@ public class ArticleServices {
 
     Article article= articleModel.getArticle();
 
-    if (article.getDesignation()==null) {
-      ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),607,"Article requis une designation ");
+
+    if (article.getCode()==null) {
+      ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),608,"Article requis un code ");
       return new ResponseEntity<>(errorResponseModel, HttpStatus.BAD_REQUEST);
 
     }
 
-    if (article.getCode()==null) {
-      ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),608,"Article requis un code ");
+    Optional<Article> articleTest = articleRepository.findById(article.getCode());
+
+    if (!articleTest.isPresent()) {
+      ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),636,"article deja existé ");
+      return new ResponseEntity<>(errorResponseModel, HttpStatus.BAD_REQUEST);
+
+    }
+
+    if (article.getDesignation()==null) {
+      ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),607,"Article requis une designation ");
       return new ResponseEntity<>(errorResponseModel, HttpStatus.BAD_REQUEST);
 
     }
@@ -55,20 +68,38 @@ public class ArticleServices {
 
     }
 
+    if (article.getFournisseur().getCode() ==null) {
+      ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),637,"Article requis un fournisseur");
+      return new ResponseEntity<>(errorResponseModel, HttpStatus.BAD_REQUEST);
+
+    }
+
+    if (article.getFamille() ==null) {
+      ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),638,"Article requis une famille");
+      return new ResponseEntity<>(errorResponseModel, HttpStatus.BAD_REQUEST);
+
+    }
+
+    if ((Float) article.getPAchatHT() ==null) {
+      ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),639,"Article requis un PAchatHT");
+      return new ResponseEntity<>(errorResponseModel, HttpStatus.BAD_REQUEST);
+
+    }
+
     if (article.getType().equals("PF")){
 
       if (articleModel.getMatierePremierQuantities().size() == 0){
         ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),612,"Produit Fini requis au min une matiere premiere");
         return new ResponseEntity<>(errorResponseModel, HttpStatus.BAD_REQUEST);
       }
-      article = articleRepository.save(article);
+      //article = articleRepository.save(article);
 
 
       for (MatierePremierQuantity matierePremierQuantity : articleModel.getMatierePremierQuantities()){
 
-        Optional<Article> MP = articleRepository.findById(matierePremierQuantity.getId());
+        Optional<Article> MP = articleRepository.findById(matierePremierQuantity.getCode());
 
-        if (!MP.isPresent()){
+        if (MP == null){
           ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),609,"Article n'existe pas");
           return new ResponseEntity<>(errorResponseModel,HttpStatus.BAD_REQUEST);
         }
@@ -89,29 +120,67 @@ public class ArticleServices {
 
     article = articleRepository.save(article);
 
-    return new ResponseEntity<>(article,HttpStatus.OK);
+    return new ResponseEntity<>(articleModel,HttpStatus.OK);
   }
 
-  public ResponseEntity<?> edit(long id,Long familleId,Long fournisseurId, String code, String designation, String type, String codeABarre, Float prixHT, Float remise, Float tva, Float fodec, Float stock, Float quantiteVendu, Float stockMin, Float prixVenteHTMin) {
+  public ResponseEntity<?> getAll(String type) {
 
-    Optional<Article> article = articleRepository.findById(id);
+    ArrayList<Article> articles = new ArrayList<>();
+    ArrayList<ArticleModelGetAll> articleModelGetAlls = new ArrayList<>();
+
+    if (type!= null){
+      articles = articleRepository.findByType(type);
+    }else {
+      articles = (ArrayList<Article>) articleRepository.findAll();
+    }
+
+    for (Article article : articles) {
+
+      Float PAchatTTC = article.getPAchatHT() + ((article.getPAchatHT() * article.getTva()) / 100) + ((article.getPAchatHT() * article.getFodec()) / 100);
+      ArticleModelGetAll articleModelGetAll = new ArticleModelGetAll(article.getCode(), article.getDesignation(), article.getStock(), article.getType(), PAchatTTC, article.getFamille(),article.getFournisseur().getCode(),article.getFournisseur().getNom());
+      articleModelGetAlls.add(articleModelGetAll);
+    }
+
+    return new ResponseEntity<>(articleModelGetAlls,HttpStatus.OK);
+  }
+
+  public ResponseEntity<?> getByCode(String code) {
+    Optional<Article> article = articleRepository.findById(code);
 
     if (!article.isPresent()){
       ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),609,"Article n'existe pas");
       return new ResponseEntity<>(errorResponseModel,HttpStatus.BAD_REQUEST);
     }
 
+    ArticleModelGetOne articleModelGetOne = new ArticleModelGetOne();
+    articleModelGetOne.setArticle(article.get());
+    articleModelGetOne.setMarges(article.get().getMarges());
+    articleModelGetOne.setConstructions(article.get().getConstructions());
+
+    return new ResponseEntity<>(articleModelGetOne,HttpStatus.OK);
+  }
+
+  public ResponseEntity<?> edit(String codeArticle,Long familleId,String fournisseurCode, String code, String designation, String type, String codeABarre, Float PAchatHT, Float remise, Float tva, Float fodec, Float stock, Float quantiteVendu, Float stockMin, Float prixVenteHTMin) {
+
+    Optional<Article> articleOptional = articleRepository.findById(codeArticle);
+    Article article = articleOptional.get();
+
+    if (articleOptional == null){
+      ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),609,"Article n'existe pas");
+      return new ResponseEntity<>(errorResponseModel,HttpStatus.BAD_REQUEST);
+    }
 
 
-    if (fournisseurId != null){
-      Optional<Fournisseur> fournisseur = fournisseurRepository.findById(fournisseurId);
+
+    if (fournisseurCode != null){
+      Optional<Fournisseur> fournisseur = fournisseurRepository.findById(fournisseurCode);
 
       if (!fournisseur.isPresent()){
         ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),605,"Fournisseur n'existe pas");
         return new ResponseEntity<>(errorResponseModel,HttpStatus.BAD_REQUEST);
       }
 
-      article.get().setFournisseur(fournisseur.get());
+      article.setFournisseur(fournisseur.get());
 
     }
 
@@ -123,68 +192,75 @@ public class ArticleServices {
         return new ResponseEntity<>(errorResponseModel,HttpStatus.BAD_REQUEST);
       }
 
-      article.get().setFamille(famille.get());
+      article.setFamille(famille.get());
 
     }
 
 
     if (code != null){
-      article.get().setCode(code);
+      Optional<Article> articleTest = articleRepository.findById(code);
+
+      if (articleTest != null && articleTest.get().getCode() != codeArticle) {
+        ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),636,"article deja existé ");
+        return new ResponseEntity<>(errorResponseModel, HttpStatus.BAD_REQUEST);
+
+      }
+      article.setCode(code);
     }
 
     if (designation != null){
-      article.get().setDesignation(designation);
+      article.setDesignation(designation);
     }
 
     if (type != null){
-      article.get().setType(type);
+      article.setType(type);
     }
 
     if (codeABarre!= null){
-      article.get().setCodeABarre(codeABarre);
+      article.setCodeABarre(codeABarre);
     }
 
 
-    if ( prixHT != null){
-      article.get().setPrixHT(prixHT);
+    if ( PAchatHT != null){
+      article.setPAchatHT(PAchatHT);
     }
 
     if ( remise!= null){
-      article.get().setRemise(remise);
+      article.setRemise(remise);
     }
 
     if ( tva!= null){
-      article.get().setTva(tva);
+      article.setTva(tva);
     }
 
     if (fodec != null){
-      article.get().setFodec(fodec);
+      article.setFodec(fodec);
     }
 
     if ( stock != null){
-      article.get().setStock(stock);
+      article.setStock(stock);
     }
 
     if (quantiteVendu!= null){
-      article.get().setQuantiteVendu(quantiteVendu);
+      article.setQuantiteVendu(quantiteVendu);
     }
 
     if (stockMin != null){
-      article.get().setStockMin(stockMin);
+      article.setStockMin(stockMin);
     }
 
     if (prixVenteHTMin != null){
-      article.get().setPrixVenteHTMin(prixVenteHTMin);
+      article.setPrixVenteHTMin(prixVenteHTMin);
     }
 
-    articleRepository.save(article.get());
+    articleRepository.save(article);
 
     return new  ResponseEntity<>(HttpStatus.OK);
   }
 
-  public ResponseEntity<?> delete(long id) {
+  public ResponseEntity<?> delete(String code) {
 
-    Optional<Article> article = articleRepository.findById(id);
+    Optional<Article> article = articleRepository.findById(code);
 
     if (!article.isPresent()){
       ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),609,"Article n'existe pas");
@@ -195,80 +271,5 @@ public class ArticleServices {
 
     return new ResponseEntity<>(HttpStatus.OK);
 
-  }
-
-  public ResponseEntity<?> addMatierePremier(long id, Long matieresPremiers,float quantity) {
-    Optional<Article> article = articleRepository.findById(id);
-
-    if (!article.isPresent()){
-      ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),609,"Article n'existe pas");
-      return new ResponseEntity<>(errorResponseModel,HttpStatus.BAD_REQUEST);
-    }
-
-    if (!article.get().getType().equals("PF")){
-      ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),611,"Article isn't a PF");
-      return new ResponseEntity<>(errorResponseModel,HttpStatus.BAD_REQUEST);
-    }
-
-
-    Optional<Article> articleMP = articleRepository.findById(matieresPremiers);
-
-    if (!articleMP.isPresent()){
-      ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),609,"Article n'existe pas");
-      return new ResponseEntity<>(errorResponseModel,HttpStatus.BAD_REQUEST);
-    }
-
-    if (!articleMP.get().getType().equals("MP")){
-      ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),612,"Article isn't a MP");
-      return new ResponseEntity<>(errorResponseModel,HttpStatus.BAD_REQUEST);
-    }
-
-      Construction construction=new Construction();
-
-      construction.setMatierePrimaire(articleMP.get());
-      construction.setProduitFini(article.get());
-      construction.setQuantite(quantity);
-
-      constructionRepository.save(construction);
-      return new ResponseEntity<>(HttpStatus.OK);
-    }
-
-  public ResponseEntity<?> getAll(String type) {
-
-    if (type!= null){
-      return new ResponseEntity<>(articleRepository.findByType(type),HttpStatus.OK);
-    }
-
-    return new ResponseEntity<>(articleRepository.findAll(),HttpStatus.OK);
-  }
-
-  public ResponseEntity<?> getConstructions(long id) {
-    Optional<Article> article = articleRepository.findById(id);
-
-    if (!article.isPresent()){
-      ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),609,"Article n'existe pas");
-      return new ResponseEntity<>(errorResponseModel,HttpStatus.BAD_REQUEST);
-    }
-
-    if (!article.get().getType().equals("PF")){
-      ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),611,"L'Article n'est pas un PF");
-      return new ResponseEntity<>(errorResponseModel,HttpStatus.BAD_REQUEST);
-    }
-
-
-
-    return new ResponseEntity<>(article.get().getConstructions(),HttpStatus.OK);
-
-  }
-
-  public ResponseEntity<?> getById(long id) {
-    Optional<Article> article = articleRepository.findById(id);
-
-    if (!article.isPresent()){
-      ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),609,"Article n'existe pas");
-      return new ResponseEntity<>(errorResponseModel,HttpStatus.BAD_REQUEST);
-    }
-
-    return new ResponseEntity<>(article,HttpStatus.OK);
   }
 }

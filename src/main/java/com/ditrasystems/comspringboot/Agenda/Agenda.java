@@ -1,6 +1,9 @@
 package com.ditrasystems.comspringboot.Agenda;
 
 import com.ditrasystems.comspringboot.Fournisseur.Fournisseur;
+import com.ditrasystems.comspringboot.Utils.View;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonView;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
@@ -11,36 +14,52 @@ import javax.persistence.*;
 @Where(clause = "deleted = false")
 public class Agenda {
 
-
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private long id;
+  private Long id;
 
   private String nom;
 
   private String profession;
 
-  private String tel1;
+  private String telephone_1;
 
-  private String tel2;
+  private String telephone_2;
+
+  private String fax;
 
   private String cin;
 
+  @JsonIgnore
   private boolean deleted;
 
   private String email;
 
+  private Boolean principale = false;
+
+  @JsonIgnore
   @ManyToOne
   Fournisseur fournisseur;
 
   public Agenda() {
   }
 
-  public long getId() {
+  public Agenda(String nom, String profession, String tel1, String tel2, String cin, String email, Boolean principale, Fournisseur fournisseur) {
+    this.nom = nom;
+    this.profession = profession;
+    this.telephone_1 = tel1;
+    this.telephone_2 = tel2;
+    this.cin = cin;
+    this.email = email;
+    this.principale = principale;
+    this.fournisseur = fournisseur;
+  }
+
+  public Long getId() {
     return id;
   }
 
-  public void setId(long id) {
+  public void setId(Long id) {
     this.id = id;
   }
 
@@ -52,28 +71,28 @@ public class Agenda {
     this.nom = nom;
   }
 
-  public String getprofession() {
+  public String getProfession() {
     return profession;
   }
 
-  public void setprofession(String profession) {
+  public void setProfession(String profession) {
     this.profession = profession;
   }
 
-  public String getTel1() {
-    return tel1;
+  public String getTelephone_1() {
+    return telephone_1;
   }
 
-  public void setTel1(String tel1) {
-    this.tel1 = tel1;
+  public void setTelephone_1(String telephone_1) {
+    this.telephone_1 = telephone_1;
   }
 
-  public String getTel2() {
-    return tel2;
+  public String getTelephone_2() {
+    return telephone_2;
   }
 
-  public void setTel2(String tel2) {
-    this.tel2 = tel2;
+  public void setTelephone_2(String telephone_2) {
+    this.telephone_2 = telephone_2;
   }
 
   public String getCin() {
@@ -100,11 +119,44 @@ public class Agenda {
     this.email = email;
   }
 
+  public Boolean getPrincipale() {
+    return principale;
+  }
+
+  public void setPrincipale(Boolean principale) {
+    this.principale = principale;
+  }
+
   public Fournisseur getFournisseur() {
     return fournisseur;
   }
 
   public void setFournisseur(Fournisseur fournisseur) {
     this.fournisseur = fournisseur;
+  }
+
+  public String getFax() {
+    return fax;
+  }
+
+  public void setFax(String fax) {
+    this.fax = fax;
+  }
+
+  @Override
+  public String toString() {
+    return "Agenda{" +
+        "id=" + id +
+        ", nom='" + nom + '\'' +
+        ", profession='" + profession + '\'' +
+        ", telephone_1='" + telephone_1 + '\'' +
+        ", telephone_2='" + telephone_2 + '\'' +
+        ", fax='" + fax + '\'' +
+        ", cin='" + cin + '\'' +
+        ", deleted=" + deleted +
+        ", email='" + email + '\'' +
+        ", principale=" + principale +
+        ", fournisseur=" + fournisseur +
+        '}';
   }
 }
