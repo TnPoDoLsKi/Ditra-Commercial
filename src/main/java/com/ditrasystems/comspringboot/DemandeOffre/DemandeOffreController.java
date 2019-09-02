@@ -34,25 +34,25 @@ public class DemandeOffreController {
 
 
   @GetMapping("/offre/{code}")
-  public ResponseEntity<?> getById(@PathVariable String code){
-    return demandeOffreServices.getById(code);
+  public ResponseEntity<?> getByCode(@PathVariable String code){
+    return demandeOffreServices.getByCode(code);
   }
 
 
   @PutMapping("/offre/{code}")
-  public ResponseEntity<?> edit(@PathVariable String code , String codeUpdate , String date, String fournisseurCode){
-    return demandeOffreServices.edit(code,codeUpdate,date, fournisseurCode);
+  public ResponseEntity<?> editByCode(@PathVariable String code ,@RequestBody DemandeOffre demandeOffre){
+    return demandeOffreServices.editByCode(code,demandeOffre);
   }
 
 
   @DeleteMapping("/offre/article/{idArticleOffre}")
-  public ResponseEntity<?> deleteArticle(@PathVariable long idArticleOffre){
-    return demandeOffreServices.deleteArticle(idArticleOffre);
+  public ResponseEntity<?> deleteArticleByCode(@PathVariable long idArticleOffre){
+    return demandeOffreServices.deleteArticleByCode(idArticleOffre);
   }
 
 
   @DeleteMapping("/offre/{code}")
-  public ResponseEntity<?> delete(@PathVariable String code){
-    return demandeOffreServices.delete(code);
+  public ResponseEntity<?> deleteByCode(@PathVariable String code){
+    return demandeOffreServices.deleteByCode(code);
   }
 }

@@ -26,7 +26,7 @@ public class AgendaService {
 
   public ResponseEntity<?> createService(String codeFournisseur, Agenda agenda) {
 
-    Optional<Fournisseur> fournisseur = fournisseurRepository.findById(codeFournisseur);
+    Optional<Fournisseur> fournisseur = fournisseurRepository.findByCode(codeFournisseur);
 
     if (!fournisseur.isPresent())
       return Utils.badRequestResponse(605,"Fournisseur n'existe pas");
@@ -69,7 +69,7 @@ public class AgendaService {
 
   public ResponseEntity<?> getAgendaByCodeFournisseurService(String codeFournisseur){
 
-    Optional<Fournisseur> fournisseur = fournisseurRepository.findById(codeFournisseur);
+    Optional<Fournisseur> fournisseur = fournisseurRepository.findByCode(codeFournisseur);
 
     if (!fournisseur.isPresent())
       return Utils.badRequestResponse(605,"Fournisseur n'existe pas");
@@ -89,7 +89,7 @@ public class AgendaService {
     Agenda agenda = agendaOptional.get();
 
     if (agendaUpdateModel.getCodeFournisseur() != null) {
-      Optional<Fournisseur> fournisseur = fournisseurRepository.findById(agendaUpdateModel.getCodeFournisseur());
+      Optional<Fournisseur> fournisseur = fournisseurRepository.findByCode(agendaUpdateModel.getCodeFournisseur());
 
       if (!fournisseur.isPresent())
         return Utils.badRequestResponse(605,"Fournisseur n'existe pas");

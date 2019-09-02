@@ -44,20 +44,20 @@ public class BonDeCommandeController {
 
 
   @PutMapping("/commande/{code}")
-  public ResponseEntity<?> edit(@PathVariable String code, String codeUpdate, String fournisseurCode,String date, String etat){
-    return bonDeCommandeServices.edit(code,codeUpdate,fournisseurCode,date,etat);
+  public ResponseEntity<?> editByCode(@PathVariable String code, String codeUpdate, String fournisseurCode,String date, String etat){
+    return bonDeCommandeServices.editByCode(code,codeUpdate,fournisseurCode,date,etat);
   }
 
 
   @DeleteMapping("/commande/{codeCommande}/article/{codeArticle}")
-  public ResponseEntity<?> deleteArticle(@PathVariable String codeCommande,@PathVariable String codeArticle ){
-    return bonDeCommandeServices.deleteArticle(codeCommande,codeArticle);
+  public ResponseEntity<?> deleteArticleByCode(@PathVariable String codeCommande,@PathVariable String codeArticle ){
+    return bonDeCommandeServices.deleteArticleByCode(codeCommande,codeArticle);
   }
 
 
   @DeleteMapping("/commande/{code}")
-  public ResponseEntity<?> delete(@PathVariable String code){
-    return bonDeCommandeServices.delete(code);
+  public ResponseEntity<?> deleteByCode(@PathVariable String code){
+    return bonDeCommandeServices.deleteByCode(code);
   }
 
 }

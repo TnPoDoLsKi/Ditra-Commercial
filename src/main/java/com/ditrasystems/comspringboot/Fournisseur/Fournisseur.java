@@ -21,10 +21,13 @@ import java.util.Collection;
 @Getter
 @Setter
 @Where(clause = "deleted = false")
-@SQLDelete(sql=" UPDATE fournisseur SET deleted = true WHERE code = ?")
+@SQLDelete(sql=" UPDATE fournisseur SET deleted = true WHERE id = ?")
 public class Fournisseur {
 
   @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
+
   private String code;
 
   private String nom;

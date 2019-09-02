@@ -2,5 +2,8 @@ package com.ditrasystems.comspringboot.Fournisseur;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface FournisseurRepository extends JpaRepository<Fournisseur, String> {
+import java.util.Optional;
+
+public interface FournisseurRepository extends JpaRepository<Fournisseur, Long> {
+	Optional<Fournisseur> findByCode(String code);
 }

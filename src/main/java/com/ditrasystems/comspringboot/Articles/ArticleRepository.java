@@ -4,8 +4,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
-public interface ArticleRepository extends JpaRepository<Article,String> {
+public interface ArticleRepository extends JpaRepository<Article,Long> {
   ArrayList<Article> findByType(String type);
- // Article findByCode(String code);
+  Optional<Article> findByCode(String code);
 }

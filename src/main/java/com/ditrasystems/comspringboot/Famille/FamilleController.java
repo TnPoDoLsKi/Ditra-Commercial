@@ -18,8 +18,8 @@ public class FamilleController  {
   }
 
   @PutMapping("/famille/{id}")
-  public ResponseEntity<?> edit(@PathVariable long id,@RequestParam String name){
-    return familleService.edit(id,name);
+  public ResponseEntity<?> edit(@PathVariable long id,@RequestBody Famille famille){
+    return familleService.edit(id,famille);
   }
 
   @DeleteMapping("/famille/{id}")
