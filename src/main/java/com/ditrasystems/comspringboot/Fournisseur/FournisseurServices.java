@@ -27,7 +27,7 @@ public class FournisseurServices {
     if (fournisseurOptional.isPresent())
       return Utils.badRequestResponse(645,"Fournisseur deja exister");
 
-    if (fournisseur.getName()==null)
+    if (fournisseur.getNom()==null)
       return Utils.badRequestResponse(600,"Fournisseur nom requis");
 
     if (fournisseur.getCode()==null)
