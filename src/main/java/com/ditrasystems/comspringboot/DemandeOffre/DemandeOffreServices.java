@@ -246,6 +246,8 @@ public class DemandeOffreServices {
         return new ResponseEntity<>(errorResponseModel, HttpStatus.BAD_REQUEST);
       }
 
+      demandeOffre.setFournisseur(fournisseur.get());
+
       for (ArticleOffre articleOffre : demandeOffre.getArticleOffres()) {
         if (articleOffre.getArticle() != null) {
           if (articleOffre.getArticle().getFournisseur().getCode() != demandeOffre.getFournisseur().getCode()) {

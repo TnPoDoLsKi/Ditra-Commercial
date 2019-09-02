@@ -44,8 +44,8 @@ public class BonDeCommandeController {
 
 
   @PutMapping("/commande/{code}")
-  public ResponseEntity<?> editByCode(@PathVariable String code, String codeUpdate, String fournisseurCode,String date, String etat){
-    return bonDeCommandeServices.editByCode(code,codeUpdate,fournisseurCode,date,etat);
+  public ResponseEntity<?> editByCode(@PathVariable String code, Commande commande){
+    return bonDeCommandeServices.editByCode(code,commande);
   }
 
 

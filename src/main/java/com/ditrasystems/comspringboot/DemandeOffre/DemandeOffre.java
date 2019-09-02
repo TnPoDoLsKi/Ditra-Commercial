@@ -27,7 +27,7 @@ public class DemandeOffre {
 
   private String code;
 
-  @JsonFormat(pattern = "dd/MM/yyyy")
+  //@JsonFormat(pattern = "dd/MM/yyyy")
   private Date date;
 
   @JsonIgnore
