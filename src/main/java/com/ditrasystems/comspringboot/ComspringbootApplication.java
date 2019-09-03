@@ -7,7 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class ComspringbootApplication {
 
   public static void main(String[] args) {
-    SpringApplication.run(ComspringbootApplication.class, args);//
+    SpringApplication.run(ComspringbootApplication.class, args);
   }
 
 }
