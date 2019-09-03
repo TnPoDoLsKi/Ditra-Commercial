@@ -1,6 +1,7 @@
 package com.ditrasystems.comspringboot.Articles;
 
 import com.ditrasystems.comspringboot.Articles.Models.ArticleModel;
+import com.ditrasystems.comspringboot.Fournisseur.Fournisseur;
 import com.ditrasystems.comspringboot.Utils.View;
 import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,13 +32,13 @@ public class ArticleController {
 
 
   @PutMapping("/article/{code}")
-  public ResponseEntity<?> edit(@PathVariable String code,  Long familleId,  String fournisseurCode ,  String codeA,  String designation,  String type,  String codeABarre,  Float PAchatHT,  Float remise,  Float tva,  Float fodec,  Float stock ,  Float quantiteVendu,  Float stockMin,  Float prixVenteHTMin ){
-    return  articleServices.edit( code , familleId , fournisseurCode,  codeA, designation, type, codeABarre, PAchatHT,  remise, tva, fodec, stock ,  quantiteVendu,  stockMin, prixVenteHTMin );
+  public ResponseEntity<?> editByCode(@PathVariable String code, @RequestParam Article article){
+    return  articleServices.editByCode( code , article);
   }
 
   @DeleteMapping("/article/{code}")
-  public ResponseEntity<?> delete(@PathVariable String code){
-    return articleServices.delete(code);
+  public ResponseEntity<?> deleteByCode(@PathVariable String code){
+    return articleServices.deleteByCode(code);
   }
 
 

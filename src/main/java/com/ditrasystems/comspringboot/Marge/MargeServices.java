@@ -4,6 +4,7 @@ import com.ditrasystems.comspringboot.Articles.Article;
 import com.ditrasystems.comspringboot.Articles.ArticleRepository;
 import com.ditrasystems.comspringboot.Construction.Construction;
 import com.ditrasystems.comspringboot.Utils.ErrorResponseModel;
+import com.ditrasystems.comspringboot.Utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +23,7 @@ public class MargeServices {
 
   public ResponseEntity<?> create(String codeArticle, float quantity, float prix,float margeGagner) {
 
-    Optional<Article> articleOptional = articleRepository.findById(codeArticle);
+    Optional<Article> articleOptional = articleRepository.findByCode(codeArticle);
     Article article = articleOptional.get();
 
     if (articleOptional.isPresent()){
@@ -42,7 +43,7 @@ public class MargeServices {
   }
 
   public ResponseEntity<?> getByArticle(String codeArticle) {
-    Optional<Article> articleOptional = articleRepository.findById(codeArticle);
+    Optional<Article> articleOptional = articleRepository.findByCode(codeArticle);
     Article article = articleOptional.get();
 
     if (articleOptional.isPresent()){
@@ -55,27 +56,17 @@ public class MargeServices {
     return new ResponseEntity<>(marges,HttpStatus.OK);
   }
 
-  public ResponseEntity<?> edit(long id, Float quantity, Float PVente, Float margeGagner ){
-    Optional<Marge> marge = margeRepository.findById(id);
+  public ResponseEntity<?> edit(long id, Marge marge ){
+    Optional<Marge> margeLocal = margeRepository.findById(id);
 
-    if (!marge.isPresent()){
+    if (!margeLocal.isPresent()){
       ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),615,"Marge n'existe pas");
       return new ResponseEntity<>(errorResponseModel,HttpStatus.BAD_REQUEST);
     }
 
-    if (quantity !=null){
-      marge.get().setQuantite(quantity);
-    }
+    marge = Utils.merge(margeLocal.get(),marge);
 
-    if (PVente !=null){
-      marge.get().setPVente(PVente);
-    }
-
-    if (margeGagner !=null){
-      marge.get().setMargeGagner(margeGagner);
-    }
-
-    margeRepository.save(marge.get());
+    margeRepository.save(marge);
 
     return new ResponseEntity<>(HttpStatus.OK);
   }

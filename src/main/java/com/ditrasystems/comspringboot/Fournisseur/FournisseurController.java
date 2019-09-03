@@ -21,21 +21,21 @@ public class FournisseurController {
 
   @GetMapping("/fournisseurs")
   public ResponseEntity<?> getAll(){
-    return fournisseurServices.getAllService();
+    return fournisseurServices.getAll();
   }
 
   @GetMapping("/fournisseur/{code}")
   public ResponseEntity<?> getByCode(@PathVariable String code){
-    return fournisseurServices.getByCodeService(code);
+    return fournisseurServices.getByCode(code);
   }
 
   @PutMapping("/fournisseur/{code}")
   public ResponseEntity<?> editByCode(@PathVariable String code, @RequestBody Fournisseur fournisseur){
-      return  fournisseurServices.updateService(code, fournisseur);
+      return  fournisseurServices.updateByCode(code, fournisseur);
   }
 
   @DeleteMapping("/fournisseur/{code}")
-  public ResponseEntity<?> delete(@PathVariable String code){
-    return  fournisseurServices.deleteService(code);
+  public ResponseEntity<?> deleteByCode(@PathVariable String code){
+    return  fournisseurServices.deleteByCode(code);
   }
 }

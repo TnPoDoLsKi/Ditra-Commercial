@@ -50,7 +50,7 @@ public class BonDeLivraisonServices {
   public ResponseEntity<?> create(BonDeLivraisonModel bonDeLivraisonModel) {
     BonDeLivrasion bonDeLivrasion = new BonDeLivrasion();
 
-    Optional<Fournisseur> fournisseur = fournisseurRepository.findById(bonDeLivraisonModel.getCodeFournisseur());
+    Optional<Fournisseur> fournisseur = fournisseurRepository.findByCode(bonDeLivraisonModel.getCodeFournisseur());
 
     if (!fournisseur.isPresent()){
       ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),605,"Fournisseur n'existe pas");
@@ -61,7 +61,7 @@ public class BonDeLivraisonServices {
     bonDeLivrasion.setFournisseur(fournisseur.get());
 
     for (Commande commandeId : bonDeLivraisonModel.getCommandes()) {
-      Optional<Commande> bonDeCommande = bonDeCommandeRepository.findCommandeByCode(commandeId.getCode());
+      Optional<Commande> bonDeCommande = bonDeCommandeRepository.findByCode(commandeId.getCode());
 
       if (!bonDeCommande.isPresent()){
         ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),618,"commande n'existe pas");
@@ -77,7 +77,7 @@ public class BonDeLivraisonServices {
 
     for (ArticleQuantityModel articleQuantityModel : bonDeLivraisonModel.getArticlesQuantity()){
 
-      Optional<Article> article = articleRepository.findById(articleQuantityModel.getArticle());
+      Optional<Article> article = articleRepository.findByCode(articleQuantityModel.getArticle());
 
 
       if (!article.isPresent()) {
@@ -94,7 +94,7 @@ public class BonDeLivraisonServices {
 
       if (articleQuantityModel.getCodeCommande() != null){
 
-       bonDeCommande = bonDeCommandeRepository.findCommandeByCode(articleQuantityModel.getCodeCommande());
+       bonDeCommande = bonDeCommandeRepository.findByCode(articleQuantityModel.getCodeCommande());
 
         if (!bonDeCommande.isPresent()){
           ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),618,"commande n'existe pas");
@@ -211,7 +211,7 @@ public class BonDeLivraisonServices {
       if (articleBonLivraison.getQuantite() != null){
 
         if (articleBonLivraison1.get().getCodeCommande() != null){
-          Optional<Commande> bonDeCommande = bonDeCommandeRepository.findCommandeByCode(articleBonLivraison1.get().getCodeCommande());
+          Optional<Commande> bonDeCommande = bonDeCommandeRepository.findByCode(articleBonLivraison1.get().getCodeCommande());
 
           Optional<ArticleCommande>articleBonCommande = articleBonCommandeRepository.findArticleCommandeByArticleAndCommande(articleBonLivraison1.get().getArticle(),bonDeCommande.get());
 
@@ -258,7 +258,7 @@ public class BonDeLivraisonServices {
 
 
         if (articleBonLivraison1.get().getCodeCommande() != null){
-          Optional<Commande> bonDeCommande = bonDeCommandeRepository.findCommandeByCode(articleBonLivraison1.get().getCodeCommande());
+          Optional<Commande> bonDeCommande = bonDeCommandeRepository.findByCode(articleBonLivraison1.get().getCodeCommande());
 
           Optional<ArticleCommande> articleBonCommande = articleBonCommandeRepository.findArticleCommandeByArticleAndCommande(articleBonLivraison1.get().getArticle(),bonDeCommande.get());
 

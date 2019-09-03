@@ -22,12 +22,12 @@ public class FournisseurServices {
 
     Fournisseur fournisseur=fournisseurModel.getFournisseur();
 
-    Optional<Fournisseur> fournisseurOptional = fournisseurRepository.findById(fournisseur.getCode());
+    Optional<Fournisseur> fournisseurOptional = fournisseurRepository.findByCode(fournisseur.getCode());
 
     if (fournisseurOptional.isPresent())
       return Utils.badRequestResponse(645,"Fournisseur deja exister");
 
-    if (fournisseur.getName()==null)
+    if (fournisseur.getNom()==null)
       return Utils.badRequestResponse(600,"Fournisseur nom requis");
 
     if (fournisseur.getCode()==null)
@@ -67,9 +67,9 @@ public class FournisseurServices {
     return new ResponseEntity<>(fournisseurWithAgendaPrincipal, HttpStatus.CREATED);
   }
 
-  public ResponseEntity<?> getByCodeService(String code) {
+  public ResponseEntity<?> getByCode(String code) {
 
-    Optional<Fournisseur> fournisseurOptional = fournisseurRepository.findById(code);
+    Optional<Fournisseur> fournisseurOptional = fournisseurRepository.findByCode(code);
 
     if (!fournisseurOptional.isPresent())
       return Utils.badRequestResponse(605,"Fournisseur n'existe pas");
@@ -77,7 +77,7 @@ public class FournisseurServices {
     return new ResponseEntity<>(fournisseurOptional.get(),HttpStatus.OK);
   }
 
-  public ResponseEntity<?> getAllService() {
+  public ResponseEntity<?> getAll() {
 
     ArrayList<FournisseurWithAgendaPrincipal> fournisseurWithAgendaPrincipals = new ArrayList<>();
 
@@ -101,9 +101,9 @@ public class FournisseurServices {
     return new ResponseEntity<>(fournisseurWithAgendaPrincipals,HttpStatus.OK);
   }
 
-  public ResponseEntity<?> updateService(String code, Fournisseur fournisseur) {
+  public ResponseEntity<?> updateByCode(String code, Fournisseur fournisseur) {
 
-    Optional<Fournisseur> fournisseurLocal = fournisseurRepository.findById(code);
+    Optional<Fournisseur> fournisseurLocal = fournisseurRepository.findByCode(code);
 
     if (!fournisseurLocal.isPresent())
       return Utils.badRequestResponse(605,"Fournisseur n'existe pas");
@@ -115,8 +115,8 @@ public class FournisseurServices {
     return new ResponseEntity<>(HttpStatus.OK);
   }
 
-  public ResponseEntity<?> deleteService(String code) {
-    Optional<Fournisseur> fournisseur = fournisseurRepository.findById(code);
+  public ResponseEntity<?> deleteByCode(String code) {
+    Optional<Fournisseur> fournisseur = fournisseurRepository.findByCode(code);
 
     if (!fournisseur.isPresent())
       return Utils.badRequestResponse(605,"Fournisseur n'existe pas");

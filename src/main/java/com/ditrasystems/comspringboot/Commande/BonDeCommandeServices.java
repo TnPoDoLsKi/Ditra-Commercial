@@ -9,6 +9,7 @@ import com.ditrasystems.comspringboot.Fournisseur.Fournisseur;
 import com.ditrasystems.comspringboot.Fournisseur.FournisseurRepository;
 import com.ditrasystems.comspringboot.Utils.ErrorResponseModel;
 import com.ditrasystems.comspringboot.Utils.FournisseurModel;
+import com.ditrasystems.comspringboot.Utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -41,7 +42,7 @@ public class BonDeCommandeServices {
 
     float pAchatHT,fodec,tva,quantityCommander,quantityLivrer,quantityRestante,PAchatTTC;
 
-    Optional<Commande> bonDeCommande = bonDeCommandeRepository.findCommandeByCode(bonDeCommandeModel.getCode());
+    Optional<Commande> bonDeCommande = bonDeCommandeRepository.findByCode(bonDeCommandeModel.getCode());
 
     if (bonDeCommande.isPresent()) {
       ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(), 618, "commande deja exister");
@@ -54,7 +55,7 @@ public class BonDeCommandeServices {
       return new ResponseEntity<>(errorResponseModel,HttpStatus.BAD_REQUEST);
     }
 
-    Optional<Fournisseur> fournisseur = fournisseurRepository.findById(bonDeCommandeModel.getCodeFournisseur());
+    Optional<Fournisseur> fournisseur = fournisseurRepository.findByCode(bonDeCommandeModel.getCodeFournisseur());
 
     if (!fournisseur.isPresent()){
       ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),605,"Fournisseur n'existe pas");
@@ -84,7 +85,7 @@ public class BonDeCommandeServices {
         return new ResponseEntity<>(errorResponseModel,HttpStatus.BAD_REQUEST);
       }
 
-      Optional<Article> articleOptional = articleRepository.findById(articleQuantityModel.getCodeArticle());
+      Optional<Article> articleOptional = articleRepository.findByCode(articleQuantityModel.getCodeArticle());
       Article article = articleOptional.get();
 
 
@@ -178,7 +179,7 @@ public class BonDeCommandeServices {
 
     float pAchatHT,fodec,tva,quantityCommander,quantityLivrer,quantityRestante,PAchatTTC;
 
-    Optional<Commande> commande = bonDeCommandeRepository.findCommandeByCode(code);
+    Optional<Commande> commande = bonDeCommandeRepository.findByCode(code);
 
     if (!commande.isPresent()){
       ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),618,"commande n'existe pas");
@@ -191,7 +192,7 @@ public class BonDeCommandeServices {
       return new ResponseEntity<>(errorResponseModel,HttpStatus.BAD_REQUEST);
     }
 
-    Optional<Article> articleOptional = articleRepository.findById(articleQuantityModel.getCodeArticle());
+    Optional<Article> articleOptional = articleRepository.findByCode(articleQuantityModel.getCodeArticle());
     Article article = articleOptional.get();
 
     if (!articleOptional.isPresent()) {
@@ -290,7 +291,7 @@ public class BonDeCommandeServices {
     float totalHT,totalTTC;
 
 
-    Optional<Commande> commandeOptional = bonDeCommandeRepository.findCommandeByCode(code);
+    Optional<Commande> commandeOptional = bonDeCommandeRepository.findByCode(code);
 
     if (!commandeOptional.isPresent()) {
       ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(), 618, "commande n'existe pas");
@@ -317,60 +318,43 @@ public class BonDeCommandeServices {
     return new ResponseEntity<>(commandeModel,HttpStatus.OK);
   }
 
-  public ResponseEntity<?> edit(String code, String codeUpdate, String fournisseurCode,String dateUpdate, String etat) {
+  public ResponseEntity<?> editByCode(String code, Commande commande) {
 
-    Optional<Commande> commande = bonDeCommandeRepository.findCommandeByCode(code);
+    Optional<Commande> commandeLocal = bonDeCommandeRepository.findByCode(code);
 
-    if (!commande.isPresent()){
+    if (!commandeLocal.isPresent()){
       ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),618,"commande n'existe pas");
       return new ResponseEntity<>(errorResponseModel,HttpStatus.BAD_REQUEST);
     }
 
-    if (codeUpdate != null){
-      commande.get().setCode(code);
-    }
 
-    if (dateUpdate != null)
-    { Date date= null;
-      try {
-        date = new SimpleDateFormat("dd/MM/yyyy").parse(dateUpdate);
-      } catch (ParseException e) {
-        e.printStackTrace();
-      }
-      commande.get().setDate(date);
-    }
+    if (commande.getFournisseur()!= null) {
+      Optional<Fournisseur> fournisseur = fournisseurRepository.findByCode(commande.getFournisseur().getCode());
 
-    if(etat != null){
-      commande.get().setEtat(etat);
-    }
-
-    if (fournisseurCode != null){
-      Optional<Fournisseur> fournisseur = fournisseurRepository.findById(fournisseurCode);
-
-      if (!fournisseur.isPresent()){
-        ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),605,"Fournisseur n'existe pas");
-        return new ResponseEntity<>(errorResponseModel,HttpStatus.BAD_REQUEST);
+      if (!fournisseur.isPresent()) {
+        ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(), 605, "Fournisseur n'existe pas");
+        return new ResponseEntity<>(errorResponseModel, HttpStatus.BAD_REQUEST);
       }
 
-      commande.get().setFournisseur(fournisseur.get());
-
+      commande.setFournisseur(fournisseur.get());
     }
 
+      commande = Utils.merge(commandeLocal.get(),commande);
 
-    bonDeCommandeRepository.save(commande.get());
+    bonDeCommandeRepository.save(commande);
     return new ResponseEntity<>(HttpStatus.OK);
   }
 
-  public ResponseEntity<?> deleteArticle(String codeCommande, String codeArticle ) {
+  public ResponseEntity<?> deleteArticleByCode(String codeCommande, String codeArticle ) {
 
-    Optional<Commande> commande = bonDeCommandeRepository.findCommandeByCode(codeCommande);
+    Optional<Commande> commande = bonDeCommandeRepository.findByCode(codeCommande);
 
     if (!commande.isPresent()){
       ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(),618,"commande n'existe pas");
       return new ResponseEntity<>(errorResponseModel,HttpStatus.BAD_REQUEST);
     }
 
-    Optional<Article> article = articleRepository.findById(codeArticle);
+    Optional<Article> article = articleRepository.findByCode(codeArticle);
 
     if (!article.isPresent()) {
       ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(), 609, "Article n'existe pas");
@@ -393,9 +377,9 @@ public class BonDeCommandeServices {
 
   }
 
-  public ResponseEntity<?> delete(String code) {
+  public ResponseEntity<?> deleteByCode(String code) {
 
-    Optional<Commande> bonDeCommande = bonDeCommandeRepository.findCommandeByCode(code);
+    Optional<Commande> bonDeCommande = bonDeCommandeRepository.findByCode(code);
 
     if (!bonDeCommande.isPresent()) {
       ErrorResponseModel errorResponseModel = new ErrorResponseModel(HttpStatus.BAD_REQUEST.value(), 618, "commande n'existe pas");

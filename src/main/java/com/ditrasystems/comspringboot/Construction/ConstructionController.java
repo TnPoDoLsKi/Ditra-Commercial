@@ -23,8 +23,8 @@ public class ConstructionController {
   }
 
   @PutMapping("/construction/{codePF}/{codeMP}")
-  public ResponseEntity<?> edit(@PathVariable String codePF ,@PathVariable  String codeMP , String codeMPUpdate ,float quantity ){
-    return  constructionServices.edit(codePF,codeMP,codeMPUpdate,quantity);
+  public ResponseEntity<?> edit(@PathVariable String codePF ,@PathVariable  String codeMP , @RequestBody Construction construction ){
+    return  constructionServices.edit(codePF,codeMP,construction);
   }
 
   @DeleteMapping("/construction/{codePF}/{codeMP}")

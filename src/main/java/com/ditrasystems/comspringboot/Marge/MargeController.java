@@ -22,8 +22,8 @@ public class MargeController {
   }
 
   @PutMapping("/marge/{id}")
-  public ResponseEntity<?> edit(@PathVariable long id , float quantity , float PVente , float margeGagner ){
-    return  margeServices.edit(id,quantity,PVente,margeGagner);
+  public ResponseEntity<?> edit(@PathVariable Long id , @RequestBody Marge marge ){
+    return  margeServices.edit(id,marge);
   }
 
   @DeleteMapping("/marge/{id}")

@@ -5,6 +5,8 @@ import com.ditrasystems.comspringboot.Livraison.BonDeLivrasion;
 import com.ditrasystems.comspringboot.Facture.Facture;
 import com.ditrasystems.comspringboot.Fournisseur.Fournisseur;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
@@ -14,11 +16,16 @@ import java.util.Collection;
 import java.util.Date;
 
 @Entity
-@SQLDelete(sql=" UPDATE commande SET deleted =true WHERE code = ?")
+@Getter
+@Setter
+@SQLDelete(sql=" UPDATE commande SET deleted =true WHERE id = ?")
 @Where(clause = "deleted = false")
 public class Commande {
 
   @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
+
   private String code;
 
   private Date date;
@@ -48,71 +55,4 @@ public class Commande {
       inverseJoinColumns = { @JoinColumn(name = "factureId") })
   private Collection<Facture> factures =new ArrayList<>();
 
-
-  public Commande() {
-  }
-
-  public boolean isDeleted() {
-    return deleted;
-  }
-
-  public void setDeleted(boolean deleted) {
-    this.deleted = deleted;
-  }
-
-  public String getCode() {
-    return code;
-  }
-
-  public void setCode(String code) {
-    this.code = code;
-  }
-
-  public Date getDate() {
-    return date;
-  }
-
-  public void setDate(Date date) {
-    this.date = date;
-  }
-
-  public Collection<ArticleCommande> getArticleCommandes() {
-    return articleCommandes;
-  }
-
-  public void setArticleCommandes(Collection<ArticleCommande> articleCommandes) {
-    this.articleCommandes = articleCommandes;
-  }
-
-  public Collection<Facture> getFactures() {
-    return factures;
-  }
-
-  public void setFactures(Collection<Facture> factures) {
-    this.factures = factures;
-  }
-
-  public Fournisseur getFournisseur() {
-    return fournisseur;
-  }
-
-  public void setFournisseur(Fournisseur fournisseur) {
-    this.fournisseur = fournisseur;
-  }
-
-  public Collection<BonDeLivrasion> getBonDeLivrasions() {
-    return bonDeLivrasions;
-  }
-
-  public void setBonDeLivrasions(Collection<BonDeLivrasion> bonDeLivrasions) {
-    this.bonDeLivrasions = bonDeLivrasions;
-  }
-
-  public String getEtat() {
-    return etat;
-  }
-
-  public void setEtat(String etat) {
-    this.etat = etat;
-  }
 }
